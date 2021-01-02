@@ -1,0 +1,47 @@
+{
+	"code": "rotarygenerator",
+	"class": "BlockTFRotaryGenerator",
+	"entityclass": "TFRotaryGenerator",
+	"entityBehaviors": [ { "name": "BEBehaviorTFRotaryGenerator" } ],
+	"creativeinventory": {
+		"general": [ "*-north" ],
+		"temporalengineering": [ "*-north" ]
+	},
+	"variantgroups": [
+		{
+			"code": "side",
+			"states": [ "north", "east", "south", "west", "up", "down" ]
+		}
+	],
+	"resistance": 3.5,
+	"blockmaterial": "Wood",
+	"textures": {
+		"oak": { "base": "game:block/wood/debarked/oak" },
+		"copper": { "base": "game:block/metal/plate/copper" },
+		"iron": { "base": "game:block/metal/ingot/iron" },
+		"generic": { "base": "game:block/wood/planks/generic" }
+	},
+	"shape": {
+		"base": "block/testmodel4",
+		"rotateY": 0
+	},
+	"sidesolid": {
+		"all": false
+	},
+	"sideopaque": {
+		"all": false
+	},
+	"attributesByType": {
+		"*": {
+			"storage": 10000,
+			"maxgenerate": 10,
+			"output": 100
+		}
+	},
+	"sounds": {
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"place": "game:block/planks",
+		"walk": "game:walk/wood"
+	}
+}

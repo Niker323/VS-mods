@@ -1,0 +1,22 @@
+{
+  "code": "multiblockwood",
+  "class": "BlockMPMultiblockBase",
+  "entityClass": "BEMPMultiblockBase",
+  "shape": { "base": "game:block/basic/nothing" },
+  "blockmaterial": "Wood",
+  "drops": [],
+  "sidesolid": {
+    "all": false
+  },
+  "sideopaque": {
+    "all": false
+  },
+  "resistance": 6,
+  "sounds": {
+    "place": "block/planks",
+    "walk": "walk/wood",
+    "hit": "block/planks",
+    "break": "block/planks"
+  },
+  "lightAbsorption": 0
+}

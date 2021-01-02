@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C0B69DD9-C71D-4B3A-8E8D-602D8096CD34}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>temporalengineering</RootNamespace>
+    <AssemblyName>temporalengineering</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(ProjectDir)\bin</OutputPath>
+    <IntermediateOutputPath>..\..\obj\Debug\temporalengineering\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(ProjectDir)\bin</OutputPath>
+    <IntermediateOutputPath>..\..\obj\Release\temporalengineering\</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="VintagestoryAPI">
+      <HintPath>D:\VintageStory\Vintage Story v1.14.2\VintagestoryAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSSurvivalMod">
+      <HintPath>D:\VintageStory\Vintage Story v1.14.2\Mods\VSSurvivalMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSEssentials">
+      <HintPath>D:\VintageStory\Vintage Story v1.14.2\Mods\VSEssentials.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSCreativeMod">
+      <HintPath>D:\VintageStory\Vintage Story v1.14.2\Mods\VSCreativeMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\VintageStory\Vintage Story v1.14.2\Lib\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high-input.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high-none.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high-output.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low-input.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low-none.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low-output.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium-input.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium-none.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium-output.png" />
+    <Content Include="assets\temporalengineering\textures\block\moving.png" />
+    <Content Include="assets\temporalengineering\textures\block\trampoline.png" />
+    <Content Include="assets\temporalengineering\textures\item\wranch.png" />
+    <Content Include="modinfo.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\temporalengineering\blocktypes\capacitor.json" />
+    <None Include="assets\temporalengineering\blocktypes\clay\mold\toolmold.json" />
+    <None Include="assets\temporalengineering\blocktypes\energyduct.json" />
+    <None Include="assets\temporalengineering\blocktypes\engine.json" />
+    <None Include="assets\temporalengineering\blocktypes\furnace.json" />
+    <None Include="assets\temporalengineering\blocktypes\multiblockwood.json" />
+    <None Include="assets\temporalengineering\blocktypes\relay.json" />
+    <None Include="assets\temporalengineering\blocktypes\rotarygenerator.json" />
+    <None Include="assets\temporalengineering\blocktypes\tfforge.json" />
+    <None Include="assets\temporalengineering\blocktypes\watermill.json" />
+    <None Include="assets\temporalengineering\itemtypes\machinecasing.json" />
+    <None Include="assets\temporalengineering\itemtypes\resource\coil.json" />
+    <None Include="assets\temporalengineering\itemtypes\resource\wire.json" />
+    <None Include="assets\temporalengineering\itemtypes\tool\tfchisel.json" />
+    <None Include="assets\temporalengineering\itemtypes\tool\wranch.json" />
+    <None Include="assets\temporalengineering\lang\en.json" />
+    <None Include="assets\temporalengineering\recipes\clayforming\wiremold.json" />
+    <None Include="assets\temporalengineering\recipes\grid\coil.json" />
+    <None Include="assets\temporalengineering\recipes\grid\machinecasing.json" />
+    <None Include="assets\temporalengineering\recipes\grid\watermill.json" />
+    <None Include="assets\temporalengineering\shapes\block\clay\mold\wire.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct0.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct1.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct2_1.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct2_2.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct3_1.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct3_2.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct4_1.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct4_2.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct5.json" />
+    <None Include="assets\temporalengineering\shapes\block\duct6.json" />
+    <None Include="assets\temporalengineering\shapes\block\testmodel.json" />
+    <None Include="assets\temporalengineering\shapes\block\testmodel2.json" />
+    <None Include="assets\temporalengineering\shapes\block\testmodel3.json" />
+    <None Include="assets\temporalengineering\shapes\block\testmodel4.json" />
+    <None Include="assets\temporalengineering\shapes\block\watermill.json" />
+    <None Include="assets\temporalengineering\shapes\item\coil.json" />
+    <None Include="assets\temporalengineering\shapes\item\wire.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

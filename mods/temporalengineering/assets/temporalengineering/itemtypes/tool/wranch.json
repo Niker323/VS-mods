@@ -1,0 +1,11 @@
+{
+	"code": "wranch",
+	"class": "Wrench",
+	"texture": {
+		"base": "item/wranch"
+	},
+	"creativeinventory": {
+		"general": [ "*" ],
+		"temporalengineering": [ "*" ]
+	}
+}

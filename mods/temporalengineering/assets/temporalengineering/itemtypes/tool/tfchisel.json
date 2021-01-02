@@ -1,0 +1,28 @@
+{
+  "code": "tfchisel",
+  "class": "TFChisel",
+  "attributes": {
+    "toolrackTransform": {
+      "translation": {
+        "x": 0,
+        "y": 0.61,
+        "z": 0
+      },
+      "rotation": {
+        "x": 5,
+        "y": 180,
+        "z": -1
+      },
+      "scale": 1.25
+    }
+  },
+  "texture": {
+    "base": "item/tfchisel"
+  },
+  "creativeinventory": {
+    "general": [ "*" ],
+    "temporalengineering": [ "*" ]
+  },
+  "tool": "Chisel",
+  "enabled": true
+}

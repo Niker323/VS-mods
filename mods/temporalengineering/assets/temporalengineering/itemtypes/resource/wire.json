@@ -1,0 +1,311 @@
+{
+	"code": "wire",
+	"maxstacksize": 64,
+	"attributes": {
+		//"reinforcementStrengthByType": {
+		//	"*-copper": 150,
+		//	"*-tinbronze": 300,
+		//	"*-bismuthbronze": 300,
+		//	"*-blackbronze": 400,
+		//	"*-iron": 800
+		//},
+		//"handbook": {
+		//	"excludeByType": {
+		//		"*-chromium": true,
+		//		"*-platinum": true,
+		//		"*-titanium": true,
+		//		"*-rhodium": true,
+		//		"*-stainlessteel": true,
+		//		"*-uranium": true
+		//	}
+		//},
+	  //"handbook": {
+		//	"groupBy": [ "wire-*" ]
+		//},
+		"displaycaseable": true,
+		"shelvable": true
+	},
+	"variantgroups": [
+		{
+			"code": "metal",
+			"loadFromProperties": "block/metal"
+		}
+	],
+	//"attributesByType": {
+	//	"ingot-lead": {
+	//		"workableTemperature": 0
+	//	}
+	//},
+	"storageFlags": 5,
+	"shape": { "base": "item/wire" },
+	"textures": {
+		"metal": { "base": "game:block/metal/ingot/{metal}" }
+	},
+	"creativeinventory": {
+		"general": [ "*" ],
+		"temporalengineering": [ "*" ]
+	},
+	"materialDensityByType": {
+		"*-copper": 8960,
+		"*-brass": 8500,
+		"*-tinbronze": 7600,
+		"*-bismuthbronze": 7900,
+		"*-blackbronze": 9000,
+		"*-iron": 7870,
+		"*-gold": 19300,
+		"*-lead": 11300,
+		"*-tin": 7260,
+		"*-chromium": 7150,
+		"*-platinum": 21500,
+		"*-titanium": 4510,
+		"*-zinc": 7140,
+		"*-silver": 10500,
+		"*-bismuth": 9790,
+		"*-molybdochalkos": 9600
+	},
+	"combustiblePropsByType": {
+		"wire-copper": {
+			"meltingPoint": 1084,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-copper"
+			}
+		},
+		"wire-brass": {
+			"meltingPoint": 920,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-brass"
+			}
+		},
+		"wire-tinbronze": {
+			"meltingPoint": 950,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-tinbronze"
+			}
+		},
+		"wire-bismuthbronze": {
+			"meltingPoint": 850,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-bismuthbronze"
+			}
+		},
+		"wire-blackbronze": {
+			"meltingPoint": 1020,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-blackbronze"
+			}
+		},
+		"wire-iron": {
+			"meltingPoint": 1482,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-iron"
+			}
+		},
+		"wire-meteoriciron": {
+			"meltingPoint": 1476,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-meteoriciron"
+			}
+		},
+		"wire-steel": {
+			"meltingPoint": 1502,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-steel"
+			}
+		},
+		"wire-blistersteel": {
+			"meltingPoint": 1602,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-blistersteel"
+			}
+		},
+		"wire-gold": {
+			"meltingPoint": 1063,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-gold"
+			}
+		},
+		"wire-lead": {
+			"meltingPoint": 327,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-lead"
+			}
+		},
+		"wire-tin": {
+			"meltingPoint": 232,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-tin"
+			}
+		},
+		"wire-chromium": {
+			"meltingPoint": 1907,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-chromium"
+			}
+		},
+		"wire-platinum": {
+			"meltingPoint": 1770,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-platinum"
+			}
+		},
+		"wire-titanium": {
+			"meltingPoint": 1668,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-titanium"
+			}
+		},
+		"wire-zinc": {
+			"meltingPoint": 419,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-zinc"
+			}
+		},
+		"wire-silver": {
+			"meltingPoint": 961,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-silver"
+			}
+		},
+		"wire-bismuth": {
+			"meltingPoint": 271,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-bismuth"
+			}
+		},
+		"wire-molybdochalkos": {
+			"meltingPoint": 902,
+			"meltingDuration": 30,
+			"smeltedRatio": 1,
+			"smeltedStack": {
+				"type": "item",
+				"code": "game:ingot-molybdochalkos"
+			}
+		}
+	},
+	"guiTransform": {
+		"translation": {
+			"x": 2,
+			"y": 0,
+			"z": 0
+		},
+		"rotation": {
+			"x": 149,
+			"y": -36,
+			"z": 0
+		},
+		"origin": {
+			"x": 0.5,
+			"y": 0.1,
+			"z": 0.5
+		},
+		"scale": 1.5
+	},
+	"fpHandTransform": {
+		"translation": {
+			"x": 0,
+			"y": 0.1,
+			"z": 0
+		},
+		"rotation": {
+			"x": 65,
+			"y": 21,
+			"z": -6
+		},
+		"origin": {
+			"x": 0.5,
+			"y": 0.1,
+			"z": 0.5
+		},
+		"scale": 1.5
+	},
+	"tpHandTransform": {
+		"translation": {
+			"x": -0.77,
+			"y": -0.15,
+			"z": -0.64
+		},
+		"rotation": {
+			"x": 0,
+			"y": -71,
+			"z": 18
+		},
+		"origin": {
+			"x": 0.5,
+			"y": 0.1,
+			"z": 0.5
+		},
+		"scale": 0.75
+	},
+	"groundTransform": {
+		"translation": {
+			"x": 0,
+			"y": 0,
+			"z": 0
+		},
+		"rotation": {
+			"x": 0,
+			"y": 0,
+			"z": 0
+		},
+		"origin": {
+			"x": 0.5,
+			"y": 0,
+			"z": 0.5
+		},
+		"scale": 2.8
+	}
+}

@@ -1,0 +1,76 @@
+{
+	"code": "capacitor",
+	"blockmaterial": "stone",
+	"class": "BlockSideconfigInteractions",
+	"entityclass": "TFCapacitor",
+	"variantgroups": [
+		{
+			"code": "type",
+			"states": [ "low", "medium", "high" ]
+		},
+		{
+			"code": "north",
+			"states": [ "input", "output", "none" ]
+		},
+		{
+			"code": "east",
+			"states": [ "input", "output", "none" ]
+		},
+		{
+			"code": "south",
+			"states": [ "input", "output", "none" ]
+		},
+		{
+			"code": "west",
+			"states": [ "input", "output", "none" ]
+		},
+		{
+			"code": "up",
+			"states": [ "input", "output", "none" ]
+		},
+		{
+			"code": "down",
+			"states": [ "input", "output", "none" ]
+		}
+	],
+	"creativeinventory": {
+		"general": [ "*-input-input-input-input-input-input" ],
+		"temporalengineering": [ "*-input-input-input-input-input-input" ]
+	},
+	//"variantgroups": [
+	//	{
+	//		"code": "type",
+	//		"states": [ "low", "medium", "high" ]
+	//	}
+	//],
+	"resistance": 3.5,
+	"textures": {
+		"north": { "base": "block/capacitor/capacitor-{type}-{north}" },
+		"east": { "base": "block/capacitor/capacitor-{type}-{east}" },
+		"south": { "base": "block/capacitor/capacitor-{type}-{south}" },
+		"west": { "base": "block/capacitor/capacitor-{type}-{west}" },
+		"up": { "base": "block/capacitor/capacitor-{type}-{up}" },
+		"down": { "base": "block/capacitor/capacitor-{type}-{down}" }
+	},
+	"attributesByType": {
+		"*-low-*": {
+			"storage": 10000,
+			"input": 10,
+			"output": 10
+		},
+		"*-medium-*": {
+			"storage": 100000,
+			"input": 100,
+			"output": 100
+		},
+		"*-high-*": {
+			"storage": 1000000,
+			"input": 1000,
+			"output": 1000
+		}
+	},
+	"sounds": {
+		"place": "game:block/stone",
+		"break": "game:block/stone"
+	}
+}

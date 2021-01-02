@@ -1,0 +1,62 @@
+{
+  "code": "furnace",
+  "class": "BlockFurnace",
+  "entityClass": "BlockEntityFurnace",
+  //"entityBehaviors": [ { "name": "BEBehaviorWatermillRotor" } ],
+  "behaviors": [
+    { "name": "Container" }
+  ],
+  "attributes": {
+    "handbook": {
+      "include": true,
+      "extraSections": [
+        {
+          "title": "firepit-handbook-help-title",
+          "text": "firepit-handbook-help-text"
+        }
+      ]
+    }
+  },
+  "variantgroups": [
+    {
+      "code": "side",
+      "loadFromProperties": "abstract/horizontalorientation"
+    }
+  ],
+  "creativeinventory": {
+    "general": [ "*-north" ],
+    "temporalengineering": [ "*-north" ]
+  },
+  "blockmaterial": "stone",
+  //"textures": {
+  //  "wood": { "base": "game:block/wood/planks/generic" }
+  //},
+  //"shape": {
+  //  "base": "block/watermill",
+  //  "rotateX": 90
+  //},
+  "sidesolid": {
+    "all": false
+  },
+  "sideopaque": {
+    "all": false
+  },
+  //"drops": [
+  //  {
+  //    "type": "block",
+  //    "code": "windmillrotor-north"
+  //  }
+  //],
+  "resistance": 3.5,
+  "lightAbsorption": 0,
+  "sounds": {
+    "place": "game:block/stone",
+    "break": "game:block/stone"
+  },
+  //"sounds": {
+  //  "hit": "block/planks",
+  //  "break": "block/planks",
+  //  "place": "block/planks",
+  //  "walk": "walk/wood"
+  //}
+}

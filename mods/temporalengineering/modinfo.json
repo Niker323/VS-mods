@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "modid": "temporalengineering",
+  "name": "Temporal Engineering",
+  "authors": [ "Niker323" ],
+  "description": "To be added",
+  "version": "0.1.0",
+  "dependency": {
+    "game": "1.14.2"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "code": "watermill",
+  "class": "BlockWatermillRotor",
+  "entityClass": "Generic",
+  "entityBehaviors": [ { "name": "BEBehaviorWatermillRotor" } ],
+  //"behaviors": [ { "name": "HorizontalOrientable" } ],
+  //"attributes": {
+  //  "handbook": {
+  //    "groupBy": [ "windmillrotor-*" ]
+  //  }
+  //},
+  "variantgroups": [
+    {
+      "code": "side",
+      "loadFromProperties": "abstract/horizontalorientation"
+    }
+  ],
+  "creativeinventory": {
+    "general": [ "*-north" ],
+    "temporalengineering": [ "*-north" ]
+  },
+  "blockmaterial": "Wood",
+  "textures": {
+    "wood": { "base": "game:block/wood/planks/generic" }
+  },
+  "shape": {
+    "base": "block/watermill",
+    "rotateX": 90
+  },
+  "sidesolid": {
+    "all": false
+  },
+  "sideopaque": {
+    "all": false
+  },
+  //"drops": [
+  //  {
+  //    "type": "block",
+  //    "code": "windmillrotor-north"
+  //  }
+  //],
+  "resistance": 3.5,
+  "lightAbsorption": 0,
+  "guiTransform": {
+    "scale": 0.5
+  },
+  "fpHandTransform": {
+    "scale": 0.7
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0.14,
+      "z": 0
+    },
+    "rotation": {
+      "x": -90,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 1.5
+  },
+  "sounds": {
+    "hit": "game:block/planks",
+    "break": "game:block/planks",
+    "place": "game:block/planks",
+    "walk": "game:walk/wood"
+  }
+}

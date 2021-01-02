@@ -1,0 +1,59 @@
+{
+  "code": "tfforge",
+  "class": "BlockTFForge",
+  "entityClass": "BlockEntityTFForge",
+  //"entityBehaviors": [ { "name": "BEBehaviorTFEngine" } ],
+  //"behaviors": [ { "name": "HorizontalOrientable" } ],
+  //"attributes": {
+  //  "handbook": {
+  //    "groupBy": [ "windmillrotor-*" ]
+  //  }
+  //},
+  //"variantgroups": [
+  //  {
+  //    "code": "side",
+  //    "states": [ "north", "east", "south", "west", "up", "down" ]
+  //  }
+  //],
+  "blockmaterial": "Stone",
+  "renderpass": "OpaqueNoCull",
+  "creativeinventory": {
+    "general": [ "*" ],
+    "temporalengineering": [ "*" ]
+  },
+  "textures": {
+    "oak": { "base": "game:block/wood/debarked/oak" },
+    "copper": { "base": "game:block/metal/plate/copper" },
+    "iron": { "base": "game:block/metal/ingot/iron" },
+    "generic": { "base": "game:block/wood/planks/generic" }
+  },
+  "shape": {
+    "base": "block/tfforge"
+  },
+  "sidesolid": {
+    "all": false
+  },
+  "sideopaque": {
+    "all": false
+  },
+  //"drops": [
+  //  {
+  //    "type": "block",
+  //    "code": "windmillrotor-north"
+  //  }
+  //],
+  "replaceable": 500,
+  "resistance": 3.5,
+  "lightAbsorption": 0,
+  "sounds": {
+    "walk": "walk/stone",
+    "byTool": {
+      "Pickaxe": {
+        "hit": "block/rock-hit-pickaxe",
+        "break": "block/rock-break-pickaxe"
+      }
+    }
+  },
+  "heldTpIdleAnimation": "holdbothhandslarge",
+  "heldTpUseAnimation": "twohandplaceblock"
+}
