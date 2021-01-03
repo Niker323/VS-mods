@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\common\blocks\BlockSideconfigInteractions.cs" />
+    <Compile Include="src\common\blocks\Charger.cs" />
     <Compile Include="src\common\blocks\Engine.cs" />
     <Compile Include="src\common\blocks\Furnace.cs" />
     <Compile Include="src\common\blocks\MultiblockBase.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="src\common\energy\temoralflux\IEnergyProvider.cs" />
     <Compile Include="src\common\energy\temoralflux\IEnergyReceiver.cs" />
     <Compile Include="src\common\energy\temoralflux\IFluxStorage.cs" />
+    <Compile Include="src\common\energy\temoralflux\IFluxStorageItem.cs" />
     <Compile Include="src\common\IMPPowered.cs" />
     <Compile Include="src\common\items\TFChisel.cs" />
     <Compile Include="src\common\items\Wrench.cs" />

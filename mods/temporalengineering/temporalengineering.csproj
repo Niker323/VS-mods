@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\temporalengineering\blocktypes\capacitor.json" />
+    <None Include="assets\temporalengineering\blocktypes\charger.json" />
     <None Include="assets\temporalengineering\blocktypes\clay\mold\toolmold.json" />
     <None Include="assets\temporalengineering\blocktypes\energyduct.json" />
     <None Include="assets\temporalengineering\blocktypes\engine.json" />
