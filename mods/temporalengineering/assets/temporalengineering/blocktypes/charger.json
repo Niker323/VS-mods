@@ -6,7 +6,7 @@
   //"behaviors": [
   //  { "name": "Container" }
   //],
-  "behaviors": [ { "name": "HorizontalAttachable" } ],
+  "behaviors": [ { "name": "HorizontalOrientable" } ],
   "renderpass": "OpaqueNoCull",
   //"attributes": {
   //  "handbook": {
@@ -36,19 +36,19 @@
   //},
   "shapebytype": {
     "*-north": {
-      "base": "game:block/basic/invisible",
+      "base": "block/charger",
       "rotateY": 180
     },
     "*-east": {
-      "base": "game:block/basic/invisible",
+      "base": "block/charger",
       "rotateY": 90
     },
     "*-south": {
-      "base": "game:block/basic/invisible",
+      "base": "block/charger",
       "rotateY": 0
     },
     "*-west": {
-      "base": "game:block/basic/invisible",
+      "base": "block/charger",
       "rotateY": 270
     }
   },

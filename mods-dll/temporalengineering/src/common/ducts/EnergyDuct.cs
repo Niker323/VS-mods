@@ -5,7 +5,7 @@ using System.Diagnostics;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 
-public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage
+public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 {
     public EnergyDuctCore core;
     //public override void OnLoaded(ICoreAPI api)
@@ -21,13 +21,13 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage
 
         if (api.World.Side == EnumAppSide.Server)
         {
-            InitializeEnergyDuct();
+            InitializeEnergyPoint();
 
             RegisterGameTickListener(tick, 50);
         }
     }
 
-    public void InitializeEnergyDuct()
+    public void InitializeEnergyPoint()
     {
         foreach (BlockFacing face in BlockFacing.ALLFACES)
         {
@@ -62,8 +62,6 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage
             core = new EnergyDuctCore(getTransferLimit());
             core.ducts.Add(this);
         }
-
-        RegisterGameTickListener(tick, 50);
     }
 
     private void tick(float dt)
@@ -80,7 +78,7 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
         int eout = Math.Min(getTransferLimit(), core.storage.getEnergyStored());
-        core.storage.modifyEnergyStored(-EnergyCore.insertFlux((IFluxStorage)tileEntity, eout, false, side.Opposite));
+        core.storage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false));
     }
 
     public override void OnBlockRemoved()

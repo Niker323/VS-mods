@@ -88,6 +88,7 @@
     <Compile Include="src\common\IMPPowered.cs" />
     <Compile Include="src\common\items\TFChisel.cs" />
     <Compile Include="src\common\items\Wrench.cs" />
+    <Compile Include="src\common\wires\Connector.cs" />
     <Compile Include="src\TemporalEngineeringMod.cs" />
   </ItemGroup>
   <ItemGroup />

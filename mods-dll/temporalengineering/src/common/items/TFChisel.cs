@@ -43,13 +43,6 @@ class TFChisel : ItemChisel, IFluxStorageItem
         slot.MarkDirty();
     }
 
-    //public override int GetDurability(IItemStack itemstack)
-    //{
-    //    int durab = Math.Max(1, itemstack.Attributes.GetInt("energy", 0) / 20);
-    //    itemstack.Attributes.SetInt("durability", durab);
-    //    return durab;
-    //}
-
     public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
     {
         base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);

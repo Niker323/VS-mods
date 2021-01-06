@@ -98,23 +98,26 @@
     <None Include="assets\temporalengineering\recipes\grid\coil.json" />
     <None Include="assets\temporalengineering\recipes\grid\machinecasing.json" />
     <None Include="assets\temporalengineering\recipes\grid\watermill.json" />
+    <None Include="assets\temporalengineering\shapes\block\charger.json" />
     <None Include="assets\temporalengineering\shapes\block\clay\mold\wire.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct0.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct1.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct2_1.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct2_2.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct3_1.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct3_2.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct4_1.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct4_2.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct5.json" />
-    <None Include="assets\temporalengineering\shapes\block\duct6.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct0.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct1.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct2_1.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct2_2.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct3_1.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct3_2.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct4_1.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct4_2.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct5.json" />
+    <None Include="assets\temporalengineering\shapes\block\ducts\duct6.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel2.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel3.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel4.json" />
+    <None Include="assets\temporalengineering\shapes\block\tfforge.json" />
     <None Include="assets\temporalengineering\shapes\block\watermill.json" />
     <None Include="assets\temporalengineering\shapes\item\coil.json" />
+    <None Include="assets\temporalengineering\shapes\item\tfchisel.json" />
     <None Include="assets\temporalengineering\shapes\item\wire.json" />
   </ItemGroup>
   <ItemGroup>

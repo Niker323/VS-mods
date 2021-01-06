@@ -127,7 +127,7 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
         int eout = Math.Min(getMaxOutput(), energyStorage.getEnergyStored());
         //Debug.WriteLine(Pos);
         //Debug.WriteLine(tileEntity.GetType().FindInterfaces(typeof(IFluxStorage)));
-        energyStorage.modifyEnergyStored(-EnergyCore.insertFlux((IFluxStorage)tileEntity, eout, false, side.Opposite));
+        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false));
     }
 
     public int scaleStoredEnergyTo(int scale)

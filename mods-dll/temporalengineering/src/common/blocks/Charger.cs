@@ -56,7 +56,7 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
             energyStorage = new FluxStorage(10000, 100, 100);
         }
 
-        inventory.LateInitialize("toolrack-" + Pos.ToString(), api);
+        inventory.LateInitialize("charger-" + Pos.ToString(), api);
         inventory.ResolveBlocksOrItems();
 
         if (api is ICoreClientAPI)
@@ -73,6 +73,7 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
         {
             energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Item).receiveEnergy(inventory[0].Itemstack, energyStorage.getLimitExtract()));
         }
+        MarkDirty();
     }
 
     void loadToolMeshes()
@@ -86,70 +87,64 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
 
         ICoreClientAPI clientApi = (ICoreClientAPI)Api;
 
-        for (int i = 0; i < 1; i++)
+        //for (int i = 0; i < 1; i++)
+        //{
+        toolMeshes[0] = null;
+        IItemStack stack = inventory[0].Itemstack;
+        if (stack == null) return;
+
+        tmpItem = stack.Collectible;
+
+        if (stack.Class == EnumItemClass.Item)
         {
-            toolMeshes[0] = null;
-            IItemStack stack = inventory[0].Itemstack;
-            if (stack == null) continue;
-
-            tmpItem = stack.Collectible;
-
-            if (stack.Class == EnumItemClass.Item)
-            {
-                clientApi.Tesselator.TesselateItem(stack.Item, out toolMeshes[0], this);
-            }
-            else
-            {
-                clientApi.Tesselator.TesselateBlock(stack.Block, out toolMeshes[0]);
-            }
-
-
-            if (tmpItem.Attributes?["toolrackTransform"].Exists == true)
-            {
-                ModelTransform transform = tmpItem.Attributes["toolrackTransform"].AsObject<ModelTransform>();
-                transform.EnsureDefaultValues();
-
-                toolMeshes[0].ModelTransform(transform);
-            }
-
-
-            float zOff = i > 1 ? (-1.8f / 16f) : 0;
-
-            if (stack.Class == EnumItemClass.Item && stack.Item.Shape?.VoxelizeTexture == true)
-            {
-                toolMeshes[0].Scale(origin, 0.33f, 0.33f, 0.33f);
-                toolMeshes[0].Translate(
-                    (((i % 2) == 0) ? 0.23f : -0.3f),
-                    ((i > 1) ? 0.2f : -0.3f) + zOff,
-                    0.433f * ((facing.Axis == EnumAxis.X) ? -1 : 1)
-                );
-                toolMeshes[0].Rotate(origin, 0, facing.HorizontalAngleIndex * 90 * GameMath.DEG2RAD, 0);
-                toolMeshes[0].Rotate(origin, 180 * GameMath.DEG2RAD, 0, 0);
-            }
-            else
-            {
-
-                toolMeshes[0].Scale(origin, 0.6f, 0.6f, 0.6f);
-                float x = ((i > 1) ? -0.2f : 0.3f);
-                float z = ((i % 2 == 0) ? 0.23f : -0.2f) * (facing.Axis == EnumAxis.X ? 1f : -1f);
-
-                toolMeshes[0].Translate(x, 0.433f + zOff, z);
-                toolMeshes[0].Rotate(origin, 0, facing.HorizontalAngleIndex * 90 * GameMath.DEG2RAD, GameMath.PIHALF);
-                toolMeshes[0].Rotate(origin, 0, GameMath.PIHALF, 0);
-            }
-
-
+            clientApi.Tesselator.TesselateItem(stack.Item, out toolMeshes[0], this);
         }
+        else
+        {
+            clientApi.Tesselator.TesselateBlock(stack.Block, out toolMeshes[0]);
+        }
+
+
+        if (tmpItem.Attributes?["toolrackTransform"].Exists == true)
+        {
+            ModelTransform transform = tmpItem.Attributes["toolrackTransform"].AsObject<ModelTransform>();
+            transform.EnsureDefaultValues();
+
+            toolMeshes[0].ModelTransform(transform);
+        }
+
+
+        //float zOff = i > 1 ? (-1.8f / 16f) : 0;
+
+        if (stack.Class == EnumItemClass.Item && stack.Item.Shape?.VoxelizeTexture == true)
+        {
+            toolMeshes[0].Scale(origin, 0.33f, 0.33f, 0.33f);
+            //toolMeshes[0].Translate(
+            //    (((i % 2) == 0) ? 0.23f : -0.3f),
+            //    ((i > 1) ? 0.2f : -0.3f) + zOff,
+            //    0.433f * ((facing.Axis == EnumAxis.X) ? -1 : 1)
+            //);
+            toolMeshes[0].Rotate(origin, 0, facing.HorizontalAngleIndex * 90 * GameMath.DEG2RAD, 0);
+            toolMeshes[0].Rotate(origin, 180 * GameMath.DEG2RAD, 0, 0);
+        }
+        else
+        {
+
+            toolMeshes[0].Scale(origin, 0.3f, 0.3f, 0.3f);
+            //float x = ((i > 1) ? -0.2f : 0.3f);
+            //float z = ((i % 2 == 0) ? 0.23f : -0.2f) * (facing.Axis == EnumAxis.X ? 1f : -1f);
+
+            //toolMeshes[0].Translate(x, 0.433f + zOff, z);
+            toolMeshes[0].Rotate(origin, 0, facing.HorizontalAngleIndex * 90 * GameMath.DEG2RAD, GameMath.PIHALF);
+            toolMeshes[0].Rotate(origin, 0, GameMath.PIHALF, 0);
+        }
+        //}
     }
 
 
     internal bool OnPlayerInteract(IPlayer byPlayer, Vec3d hit)
     {
-        BlockFacing facing = getFacing();
-
-        IItemStack stack = inventory[0].Itemstack;
-
-        if (stack != null)
+        if (inventory[0].Itemstack != null)
         {
             return TakeFromSlot(byPlayer, 0);
         }
@@ -373,7 +368,7 @@ public class BlockTFCharger : Block
 
             foreach (CollectibleObject obj in api.World.Collectibles)
             {
-                if (obj.Tool == null && obj.Attributes?["rackable"].AsBool() != true) continue;
+                //if (obj.Tool == null && obj.Attributes?["rackable"].AsBool() != true) continue;
 
                 List<ItemStack> stacks = obj.GetHandBookStacks(capi);
                 if (stacks != null) rackableStacklist.AddRange(stacks);

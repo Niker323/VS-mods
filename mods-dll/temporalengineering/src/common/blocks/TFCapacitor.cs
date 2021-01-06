@@ -101,7 +101,7 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
         int eout = Math.Min(getMaxOutput(), energyStorage.getEnergyStored());
-        energyStorage.modifyEnergyStored(-EnergyCore.insertFlux((IFluxStorage)tileEntity, eout, false, side.Opposite));
+        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false));
     }
 
     public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)

@@ -5,14 +5,14 @@ using System.Collections.Generic;
 public class EnergyDuctCore
 {
     public FluxStorage storage;
-    public List<BlockEntityEnergyDuct> ducts = new List<BlockEntityEnergyDuct>();
+    public List<IEnergyPoint> ducts = new List<IEnergyPoint>();
 
     public EnergyDuctCore(int io)
     {
         storage = new FluxStorage(io, io, io);
     }
 
-    public void OnDuctRemoved(BlockEntityEnergyDuct duct)
+    public void OnDuctRemoved(IEnergyPoint duct)
     {
         ducts.Remove(duct);
         if (ducts.Count > 0)
@@ -25,7 +25,7 @@ public class EnergyDuctCore
             {
                 if (item.core == null)
                 {
-                    item.InitializeEnergyDuct();
+                    item.InitializeEnergyPoint();
                 }
             }
         }
