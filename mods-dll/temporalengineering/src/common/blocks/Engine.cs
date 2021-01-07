@@ -31,8 +31,12 @@ public class BlockTFEngine : BlockMPBase, IMPPowered
 
     public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
     {
-        bool ok = false;
-        foreach (BlockFacing face in BlockFacing.HORIZONTALS)
+        if (!CanPlaceBlock(world, byPlayer, blockSel, ref failureCode))
+        {
+            return false;
+        }
+
+        foreach (BlockFacing face in BlockFacing.ALLFACES)
         {
             BlockPos pos = blockSel.Position.AddCopy(face);
             IMechanicalPowerBlock block = world.BlockAccessor.GetBlock(pos) as IMechanicalPowerBlock;
@@ -50,29 +54,27 @@ public class BlockTFEngine : BlockMPBase, IMPPowered
                     WasPlaced(world, blockSel.Position, face);
 
                     powerOutFacing = face;
-                    ok = true;
-                    break;
+                    return true;
                 }
             }
         }
 
-        //if (!ok)
-        //{
-        //    if (blockSel.Face == BlockFacing.UP || blockSel.Face == BlockFacing.DOWN)
-        //    {
-        //        BlockFacing bestFacing = Block.SuggestedHVOrientation(byPlayer, blockSel)[0];
+        if (byPlayer != null && byPlayer.Entity != null)
+        {
+            Vec3f vec = new Vec3d().Ahead(1f, byPlayer.Entity.Pos.Pitch, byPlayer.Entity.Pos.Yaw).ToVec3f();
+            BlockFacing face = BlockFacing.FromNormal(vec);
+            Block toPlaceBlock = world.GetBlock(CodeWithParts(face.Opposite.Code));
+            world.BlockAccessor.SetBlock(toPlaceBlock.BlockId, blockSel.Position);
+            WasPlaced(world, blockSel.Position, null);
+            powerOutFacing = face;
+            return true;
+        }
 
-        //        Block orientedBlock = world.BlockAccessor.GetBlock(CodeWithParts(bestFacing.Code));
-        //        powerOutFacing = bestFacing.Opposite;
-        //        ok = orientedBlock.DoPlaceBlock(world, byPlayer, blockSel, itemstack);
-        //    }
-        //    else
-        //    {
-        //        Block orientedBlock = world.BlockAccessor.GetBlock(CodeWithParts(blockSel.Face.Opposite.Code));
-        //        powerOutFacing = blockSel.Face;
-        //        ok = orientedBlock.DoPlaceBlock(world, byPlayer, blockSel, itemstack);
-        //    }
-        //}
+        bool ok = base.TryPlaceBlock(world, byPlayer, itemstack, blockSel, ref failureCode);
+        if (ok)
+        {
+            WasPlaced(world, blockSel.Position, null);
+        }
         return ok;
     }
 
@@ -110,6 +112,11 @@ public class BlockTFEngine : BlockMPBase, IMPPowered
     //        }
     //    }
     //}
+
+    public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
+    {
+        return true;
+    }
 }
 
 public class BlockEntityTFEngine : BlockEntity, IFluxStorage
@@ -191,8 +198,9 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
 
 public class BEBehaviorTFEngine : BEBehaviorMPRotor
 {
+    float rotateY = 0f;
+    float rotateZ = 0f;
     public int speed = 0;
-    BlockFacing face;
 
     protected override float Resistance
     {
@@ -231,76 +239,74 @@ public class BEBehaviorTFEngine : BEBehaviorMPRotor
 
     }
 
-    public override void Initialize(ICoreAPI api, JsonObject properties)
-    {
-        base.Initialize(api, properties);
-        if (api.Side.IsServer())
-        {
-            face = BlockFacing.FromCode(Block.Variant["side"]);
-            //Blockentity.RegisterGameTickListener(CheckWater, 50);
-        }
-    }
-
-    //private void CheckWater(float dt)
-    //{
-    //    willSpeed = 0;
-    //    BlockPos block1pos = Position.AddCopy(face.GetCCW()).AddCopy(face.GetCCW());
-    //    Block block1 = Api.World.BlockAccessor.GetBlock(block1pos);
-    //    Block block2 = Api.World.BlockAccessor.GetBlock(block1pos.AddCopy(BlockFacing.DOWN));
-    //    Block block3 = Api.World.BlockAccessor.GetBlock(block1pos.AddCopy(BlockFacing.UP));
-    //    if (block1.Code.BeginsWith("game", "water-d"))
-    //    {
-    //        willSpeed++;
-    //    }
-    //    if (block2.Code.BeginsWith("game", "water-d"))
-    //    {
-    //        willSpeed++;
-    //    }
-    //    if (block3.Code.BeginsWith("game", "water-d"))
-    //    {
-    //        willSpeed++;
-    //    }
-    //    BlockPos block4pos = Position.AddCopy(BlockFacing.DOWN).AddCopy(BlockFacing.DOWN);
-    //    Block block4 = Api.World.BlockAccessor.GetBlock(block4pos);
-    //    Block block5 = Api.World.BlockAccessor.GetBlock(block4pos.AddCopy(face.GetCCW()));
-    //    Block block6 = Api.World.BlockAccessor.GetBlock(block4pos.AddCopy(face.GetCW()));
-    //    string waterpath = "water-" + face.GetCW().Code[0];
-    //    if (block4.Code.BeginsWith("game", waterpath))
-    //    {
-    //        willSpeed++;
-    //    }
-    //    if (block5.Code.BeginsWith("game", waterpath))
-    //    {
-    //        willSpeed++;
-    //    }
-    //    if (block6.Code.BeginsWith("game", waterpath))
-    //    {
-    //        willSpeed++;
-    //    }
-    //}
-
     protected override CompositeShape GetShape()
     {
         CompositeShape shape = Block.Shape.Clone();
-        shape.Base = new AssetLocation("temporalengineering:shapes/block/testmodel4.json");
-        shape.rotateX = 90;
+        shape.Base = new AssetLocation("temporalengineering:shapes/block/testmodel3.json");
         switch (BlockFacing.FromCode(Block.Variant["side"]).Index)
         {
             case 0:
-                shape.rotateZ = 0;
+                rotateY = 90;
                 break;
             case 1:
-                shape.rotateZ = 90;
+                rotateY = 0;
                 break;
             case 2:
-                shape.rotateZ = 180;
+                rotateY = 270;
                 break;
             case 3:
-                shape.rotateZ = 270;
+                rotateY = 180;
+                break;
+            case 4:
+                rotateZ = 90;
+                break;
+            case 5:
+                rotateZ = 270;
                 break;
             default:
                 break;
         }
+        shape.rotateY = rotateY;
+        shape.rotateZ = rotateZ;
         return shape;
+    }
+
+    public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tesselator)
+    {
+        ICoreClientAPI capi = Api as ICoreClientAPI;
+        Shape shape = capi.Assets.TryGet("temporalengineering:shapes/block/testmodel2.json").ToObject<Shape>();
+        switch (BlockFacing.FromCode(Block.Variant["side"]).Index)
+        {
+            case 0:
+                AxisSign = new int[] { 0, 0, -1 };
+                rotateY = 180;
+                break;
+            case 1:
+                AxisSign = new int[] { -1, 0, 0 };
+                rotateY = 90;
+                break;
+            case 2:
+                AxisSign = new int[] { 0, 0, -1 };
+                rotateY = 0;
+                break;
+            case 3:
+                AxisSign = new int[] { -1, 0, 0 };
+                rotateY = 270;
+                break;
+            case 4:
+                AxisSign = new int[] { 0, 1, 0 };
+                rotateZ = 270;
+                break;
+            case 5:
+                AxisSign = new int[] { 0, 1, 0 };
+                rotateZ = 90;
+                break;
+            default:
+                break;
+        }
+        MeshData mesh;
+        capi.Tesselator.TesselateShape(Block, shape, out mesh, new Vec3f(rotateZ, rotateY, 0));
+        mesher.AddMeshData(mesh);
+        return true;
     }
 }

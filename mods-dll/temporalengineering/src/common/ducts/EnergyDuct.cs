@@ -100,6 +100,16 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
         return 100;
     }
 
+    public EnergyDuctCore GetCore()
+    {
+        return core;
+    }
+
+    public void SetCore(EnergyDuctCore core)
+    {
+        this.core = core;
+    }
+
     public FluxStorage GetFluxStorage()
     {
         return core.storage;
@@ -206,6 +216,10 @@ public class BlockEnergyDuct : Block
             {
                 if (((IIOEnergySideConfig)block).getEnergySideConfig(side.Opposite) == IOEnergySideConfig.NONE) return false;
             }
+            if (block is BlockEntityConnector)
+            {
+                if (((BlockEntityConnector)block).powerOutFacing != side.Opposite) return false;
+            }
             return true;
         }
         else return false;
@@ -265,4 +279,9 @@ public class BlockEnergyDuct : Block
 
     //    return CodeWithVariant("side", newFacing);
     //}
+
+    public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
+    {
+        return block is BlockConnector;
+    }
 }

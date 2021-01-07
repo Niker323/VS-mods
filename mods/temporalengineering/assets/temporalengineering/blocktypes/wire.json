@@ -1,0 +1,13 @@
+{
+	"code": "wire",
+	//"creativeinventory": {
+	//	"general": [ "" ],
+	//},
+	"textures": {
+		"copper": { "base": "game:block/metal/ingot/copper" },
+		"wire": { "base": "block/wire" }
+	},
+	"shape": {
+	  "base": "block/wire"
+	}
+}

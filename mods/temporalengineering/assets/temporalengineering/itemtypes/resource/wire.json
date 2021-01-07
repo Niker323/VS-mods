@@ -1,5 +1,8 @@
 {
 	"code": "wire",
+	"classByType": {
+		"*-copper" :"ItemWire"
+	},
 	"maxstacksize": 64,
 	"attributes": {
 		//"reinforcementStrengthByType": {
@@ -19,7 +22,7 @@
 		//		"*-uranium": true
 		//	}
 		//},
-	  //"handbook": {
+		//"handbook": {
 		//	"groupBy": [ "wire-*" ]
 		//},
 		"displaycaseable": true,

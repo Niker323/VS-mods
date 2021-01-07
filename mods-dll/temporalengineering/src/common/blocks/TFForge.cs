@@ -107,6 +107,11 @@ public class BlockTFForge : Block
     {
         return interactions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
     }
+
+    public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
+    {
+        return blockFace != BlockFacing.UP;
+    }
 }
 
 public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage

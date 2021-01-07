@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cairo;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -99,6 +100,11 @@ public class BlockFurnace : Block
 
         return base.OnBlockInteractStart(world, byPlayer, blockSel);
     }
+
+    public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
+    {
+        return true;
+    }
 }
 
 public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, IHeatSource
@@ -114,7 +120,7 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
     // Current temperature of the ore (Degree Celsius * deg
     //public float oreTemperature = 20;
     // Maximum temperature that can be reached with the currently used fuel
-    public int maxTemperature;
+    public int maxTemperature = 1500;
     // For how long the ore has been cooking
     public float inputStackCookingTime;
 
@@ -474,7 +480,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
     public void igniteFuel()
     {
         IsBurning = true;
-        maxTemperature = 1500;
 
         energyStorage.modifyEnergyStored(-15);
     }
@@ -644,7 +649,7 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
     {
         dialogTree.SetFloat("furnaceTemperature", furnaceTemperature);
 
-        //dialogTree.SetInt("maxTemperature", maxTemperature);
+        dialogTree.SetInt("maxTemperature", maxTemperature);
         dialogTree.SetFloat("oreCookingTime", inputStackCookingTime);
 
         if (inputSlot.Itemstack != null)
@@ -1129,7 +1134,7 @@ public class GuiDialogBlockEntityFurnace : GuiDialogBlockEntity
             .AddShadedDialogBG(bgBounds)
             .AddDialogTitleBar(DialogTitle, OnTitleBarClose)
             .BeginChildElements(bgBounds)
-                //.AddDynamicCustomDraw(stoveBounds, OnBgDraw, "symbolDrawer")
+                .AddDynamicCustomDraw(stoveBounds, OnBgDraw, "symbolDrawer")
                 .AddDynamicText("", CairoFont.WhiteDetailText(), EnumTextOrientation.Left, ElementBounds.Fixed(0, 30, 210, 45), "outputText")
                 .AddIf(haveCookingContainer)
                     .AddItemSlotGrid(Inventory, SendInvPacket, 4, cookingSlotIds, cookingSlotsSlotBounds, "ingredientSlots")
@@ -1193,51 +1198,51 @@ public class GuiDialogBlockEntityFurnace : GuiDialogBlockEntity
         }
     }
 
-    //private void OnBgDraw(Context ctx, ImageSurface surface, ElementBounds currentBounds)
-    //{
-    //    double top = cookingSlotsSlotBounds.fixedHeight + cookingSlotsSlotBounds.fixedY;
+    private void OnBgDraw(Context ctx, ImageSurface surface, ElementBounds currentBounds)
+    {
+        double top = cookingSlotsSlotBounds.fixedHeight + cookingSlotsSlotBounds.fixedY;
 
-    //    // 1. Fire
-    //    ctx.Save();
-    //    Matrix m = ctx.Matrix;
-    //    m.Translate(GuiElement.scaled(5), GuiElement.scaled(53 + top));
-    //    m.Scale(GuiElement.scaled(0.25), GuiElement.scaled(0.25));
-    //    ctx.Matrix = m;
-    //    capi.Gui.Icons.DrawFlame(ctx);
+        // 1. Fire
+        ctx.Save();
+        Matrix m = ctx.Matrix;
+        m.Translate(GuiElement.scaled(5), GuiElement.scaled(53 + top));
+        m.Scale(GuiElement.scaled(0.25), GuiElement.scaled(0.25));
+        ctx.Matrix = m;
+        capi.Gui.Icons.DrawFlame(ctx);
 
-    //    double dy = 210 - 210 * (Attributes.GetFloat("fuelBurnTime", 0) / Attributes.GetFloat("maxFuelBurnTime", 1));
-    //    ctx.Rectangle(0, dy, 200, 210 - dy);
-    //    ctx.Clip();
-    //    LinearGradient gradient = new LinearGradient(0, GuiElement.scaled(250), 0, 0);
-    //    gradient.AddColorStop(0, new Color(1, 1, 0, 1));
-    //    gradient.AddColorStop(1, new Color(1, 0, 0, 1));
-    //    ctx.SetSource(gradient);
-    //    capi.Gui.Icons.DrawFlame(ctx, 0, false, false);
-    //    gradient.Dispose();
-    //    ctx.Restore();
-
-
-    //    // 2. Arrow Right
-    //    ctx.Save();
-    //    m = ctx.Matrix;
-    //    m.Translate(GuiElement.scaled(63), GuiElement.scaled(top + 2));
-    //    m.Scale(GuiElement.scaled(0.6), GuiElement.scaled(0.6));
-    //    ctx.Matrix = m;
-    //    capi.Gui.Icons.DrawArrowRight(ctx, 2);
-
-    //    double cookingRel = Attributes.GetFloat("oreCookingTime") / Attributes.GetFloat("maxOreCookingTime", 1);
+        double dy = 210 - 210 * (Attributes.GetFloat("furnaceTemperature", 0) / Attributes.GetInt("maxTemperature", 1));
+        ctx.Rectangle(0, dy, 200, 210 - dy);
+        ctx.Clip();
+        LinearGradient gradient = new LinearGradient(0, GuiElement.scaled(250), 0, 0);
+        gradient.AddColorStop(0, new Color(1, 1, 0, 1));
+        gradient.AddColorStop(1, new Color(1, 0, 0, 1));
+        ctx.SetSource(gradient);
+        capi.Gui.Icons.DrawFlame(ctx, 0, false, false);
+        gradient.Dispose();
+        ctx.Restore();
 
 
-    //    ctx.Rectangle(5, 0, 125 * cookingRel, 100);
-    //    ctx.Clip();
-    //    gradient = new LinearGradient(0, 0, 200, 0);
-    //    gradient.AddColorStop(0, new Color(0, 0.4, 0, 1));
-    //    gradient.AddColorStop(1, new Color(0.2, 0.6, 0.2, 1));
-    //    ctx.SetSource(gradient);
-    //    capi.Gui.Icons.DrawArrowRight(ctx, 0, false, false);
-    //    gradient.Dispose();
-    //    ctx.Restore();
-    //}
+        // 2. Arrow Right
+        ctx.Save();
+        m = ctx.Matrix;
+        m.Translate(GuiElement.scaled(63), GuiElement.scaled(top + 2));
+        m.Scale(GuiElement.scaled(0.6), GuiElement.scaled(0.6));
+        ctx.Matrix = m;
+        capi.Gui.Icons.DrawArrowRight(ctx, 2);
+
+        double cookingRel = Attributes.GetFloat("oreCookingTime") / Attributes.GetFloat("maxOreCookingTime", 1);
+
+
+        ctx.Rectangle(5, 0, 125 * cookingRel, 100);
+        ctx.Clip();
+        gradient = new LinearGradient(0, 0, 200, 0);
+        gradient.AddColorStop(0, new Color(0, 0.4, 0, 1));
+        gradient.AddColorStop(1, new Color(0.2, 0.6, 0.2, 1));
+        ctx.SetSource(gradient);
+        capi.Gui.Icons.DrawArrowRight(ctx, 0, false, false);
+        gradient.Dispose();
+        ctx.Restore();
+    }
 
 
 

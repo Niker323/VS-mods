@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="cairo-sharp">
+      <HintPath>..\..\..\Vintage Story v1.14.2\Lib\cairo-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -74,21 +77,22 @@
     <Compile Include="src\common\blocks\TFRotaryGenerator.cs" />
     <Compile Include="src\common\blocks\Watermill.cs" />
     <Compile Include="src\common\ducts\EnergyDuct.cs" />
-    <Compile Include="src\common\ducts\EnergyDuctCore.cs" />
-    <Compile Include="src\common\energy\EnergyCore.cs" />
+    <Compile Include="src\common\energy\temoralflux\EnergyDuctCore.cs" />
     <Compile Include="src\common\energy\IIOEnergySideConfig.cs" />
     <Compile Include="src\common\energy\IOEnergySideConfig.cs" />
     <Compile Include="src\common\energy\temoralflux\FluxStorage.cs" />
     <Compile Include="src\common\energy\temoralflux\IEnergyConnection.cs" />
-    <Compile Include="src\common\energy\temoralflux\IEnergyHandler.cs" />
-    <Compile Include="src\common\energy\temoralflux\IEnergyProvider.cs" />
-    <Compile Include="src\common\energy\temoralflux\IEnergyReceiver.cs" />
+    <Compile Include="src\common\energy\temoralflux\IEnergyPoint.cs" />
     <Compile Include="src\common\energy\temoralflux\IFluxStorage.cs" />
     <Compile Include="src\common\energy\temoralflux\IFluxStorageItem.cs" />
     <Compile Include="src\common\IMPPowered.cs" />
     <Compile Include="src\common\items\TFChisel.cs" />
+    <Compile Include="src\common\items\ItemWire.cs" />
     <Compile Include="src\common\items\Wrench.cs" />
     <Compile Include="src\common\wires\Connector.cs" />
+    <Compile Include="src\common\wires\IWirePoint.cs" />
+    <Compile Include="src\common\wires\WireClass.cs" />
+    <Compile Include="src\common\wires\WirePoint.cs" />
     <Compile Include="src\TemporalEngineeringMod.cs" />
   </ItemGroup>
   <ItemGroup />

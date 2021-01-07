@@ -4,37 +4,63 @@
   "entityClass": "BlockEntityFurnace",
   //"entityBehaviors": [ { "name": "BEBehaviorWatermillRotor" } ],
   "behaviors": [
-    { "name": "Container" }
+    { "name": "Container" },
+    { "name": "HorizontalOrientable" }
   ],
   "attributes": {
     "handbook": {
-      "include": true,
-      "extraSections": [
-        {
-          "title": "firepit-handbook-help-title",
-          "text": "firepit-handbook-help-text"
-        }
-      ]
+      "include": true
     }
   },
   "variantgroups": [
+    {
+      "code": "state",
+      "states": [ "unlit", "lit" ]
+    },
     {
       "code": "side",
       "loadFromProperties": "abstract/horizontalorientation"
     }
   ],
   "creativeinventory": {
-    "general": [ "*-north" ],
-    "temporalengineering": [ "*-north" ]
+    "general": [ "*-unlit-south" ],
+    "temporalengineering": [ "*-unlit-south" ]
   },
-  "blockmaterial": "stone",
-  //"textures": {
-  //  "wood": { "base": "game:block/wood/planks/generic" }
-  //},
-  //"shape": {
-  //  "base": "block/watermill",
-  //  "rotateX": 90
-  //},
+  "blockmaterial": "Stone",
+  "shapebytype": {
+    "*-lit-north": {
+      "base": "block/furnace-lit",
+      "rotateY": 0
+    },
+    "*-lit-east": {
+      "base": "block/furnace-lit",
+      "rotateY": 270
+    },
+    "*-lit-south": {
+      "base": "block/furnace-lit",
+      "rotateY": 180
+    },
+    "*-lit-west": {
+      "base": "block/furnace-lit",
+      "rotateY": 90
+    },
+    "*-unlit-north": {
+      "base": "block/furnace-unlit",
+      "rotateY": 0
+    },
+    "*-unlit-east": {
+      "base": "block/furnace-unlit",
+      "rotateY": 270
+    },
+    "*-unlit-south": {
+      "base": "block/furnace-unlit",
+      "rotateY": 180
+    },
+    "*-unlit-west": {
+      "base": "block/furnace-unlit",
+      "rotateY": 90
+    }
+  },
   "sidesolid": {
     "all": false
   },
@@ -49,14 +75,15 @@
   //],
   "resistance": 3.5,
   "lightAbsorption": 0,
+  //"lightHsvByType": {
+  //  "stove-unlit-*": [ 0, 0, 0 ],
+  //  "stove-lit-*": [ 7, 7, 11 ]
+  //},
   "sounds": {
+    "walk": "game:walk/stone",
     "place": "game:block/stone",
     "break": "game:block/stone"
   },
-  //"sounds": {
-  //  "hit": "block/planks",
-  //  "break": "block/planks",
-  //  "place": "block/planks",
-  //  "walk": "walk/wood"
-  //}
+  "heldTpIdleAnimation": "holdbothhandslarge",
+  "heldTpUseAnimation": "twohandplaceblock"
 }

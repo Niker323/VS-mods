@@ -22,6 +22,7 @@ namespace TemporalEngineering
             api.RegisterBlockClass("BlockTFEngine", typeof(BlockTFEngine));
             api.RegisterBlockClass("BlockTFForge", typeof(BlockTFForge));
             api.RegisterBlockClass("BlockCharger", typeof(BlockTFCharger));
+            api.RegisterBlockClass("BlockConnector", typeof(BlockConnector));
 
             api.RegisterBlockEntityClass("TFCapacitor", typeof(TFCapacitor));
             api.RegisterBlockEntityClass("TFRotaryGenerator", typeof(TFRotaryGenerator));
@@ -32,6 +33,7 @@ namespace TemporalEngineering
             api.RegisterBlockEntityClass("BlockEntityTFEngine", typeof(BlockEntityTFEngine));
             api.RegisterBlockEntityClass("BlockEntityTFForge", typeof(BlockEntityTFForge));
             api.RegisterBlockEntityClass("BlockEntityCharger", typeof(BlockEntityTFCharger));
+            api.RegisterBlockEntityClass("BlockEntityConnector", typeof(BlockEntityConnector));
 
             api.RegisterBlockEntityBehaviorClass("BEBehaviorTFRotaryGenerator", typeof(BEBehaviorTFRotaryGenerator));
             api.RegisterBlockEntityBehaviorClass("BEBehaviorWatermillRotor", typeof(BEBehaviorWatermillRotor));
@@ -39,6 +41,7 @@ namespace TemporalEngineering
 
             api.RegisterItemClass("Wrench", typeof(Wrench));
             api.RegisterItemClass("TFChisel", typeof(TFChisel));
+            api.RegisterItemClass("ItemWire", typeof(ItemWire));
         }
     }
 }

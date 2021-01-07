@@ -289,7 +289,6 @@ public class BlockTFRotaryGenerator : BlockMPBase
 
     public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
     {
-
         if (!CanPlaceBlock(world, byPlayer, blockSel, ref failureCode))
         {
             return false;
@@ -306,7 +305,7 @@ public class BlockTFRotaryGenerator : BlockMPBase
                     //Prevent rotor back-to-back placement
                     if (block is BlockTFRotaryGenerator) return false;
 
-                    Block toPlaceBlock = world.GetBlock(new AssetLocation("temporalengineering:" + FirstCodePart() + "-" + face.Opposite.Code));
+                    Block toPlaceBlock = world.GetBlock(CodeWithParts(face.Opposite.Code));
                     world.BlockAccessor.SetBlock(toPlaceBlock.BlockId, blockSel.Position);
 
                     block.DidConnectAt(world, pos, face.Opposite);
@@ -321,7 +320,7 @@ public class BlockTFRotaryGenerator : BlockMPBase
         {
             Vec3f vec = new Vec3d().Ahead(1f, byPlayer.Entity.Pos.Pitch, byPlayer.Entity.Pos.Yaw).ToVec3f();
             BlockFacing face = BlockFacing.FromNormal(vec);
-            Block toPlaceBlock = world.GetBlock(new AssetLocation("temporalengineering:" + FirstCodePart() + "-" + face.Code));
+            Block toPlaceBlock = world.GetBlock(CodeWithParts(face.Opposite.Code));
             world.BlockAccessor.SetBlock(toPlaceBlock.BlockId, blockSel.Position);
             WasPlaced(world, blockSel.Position, null);
             return true;
@@ -338,5 +337,10 @@ public class BlockTFRotaryGenerator : BlockMPBase
     public override void DidConnectAt(IWorldAccessor world, BlockPos pos, BlockFacing face)
     {
 
+    }
+
+    public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
+    {
+        return true;
     }
 }

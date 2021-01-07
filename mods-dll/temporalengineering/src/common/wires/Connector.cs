@@ -2,20 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Vintagestory.API;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 
 public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyPoint
 {
-    BlockFacing powerOutFacing;
+    public BlockFacing powerOutFacing;
     public EnergyDuctCore core;
 
     public override void Initialize(ICoreAPI api)
     {
         base.Initialize(api);
-        //Debug.WriteLine("Initialize");
-        //Debug.WriteLine(api.World.Side == EnumAppSide.Server);
-        powerOutFacing = BlockFacing.FromCode(Block.Variant["side"]).Opposite;
+
+        powerOutFacing = BlockFacing.FromCode(Block.Variant["side"]);
 
         if (api.World.Side == EnumAppSide.Server)
         {
@@ -27,10 +27,9 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
 
     public void InitializeEnergyPoint()
     {
-        foreach (BlockFacing face in BlockFacing.ALLFACES)
+        foreach (var kv in wiresList)
         {
-            BlockPos pos = Pos.AddCopy(face);
-            BlockEntityEnergyDuct block = Api.World.BlockAccessor.GetBlockEntity(pos) as BlockEntityEnergyDuct;
+            BlockEntityConnector block = Api.World.BlockAccessor.GetBlockEntity(kv.Key.GetBlockPos()) as BlockEntityConnector;
             if (block != null)
             {
                 if (core == null)
@@ -60,8 +59,6 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
             core = new EnergyDuctCore(getTransferLimit());
             core.ducts.Add(this);
         }
-
-        RegisterGameTickListener(tick, 50);
     }
 
     private void tick(float dt)
@@ -99,6 +96,16 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
         return 100;
     }
 
+    public EnergyDuctCore GetCore()
+    {
+        return core;
+    }
+
+    public void SetCore(EnergyDuctCore core)
+    {
+        this.core = core;
+    }
+
     public FluxStorage GetFluxStorage()
     {
         return core.storage;
@@ -106,76 +113,145 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
 
     public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
     {
-        return core.storage.receiveEnergy(Math.Min(maxReceive, getTransferLimit()), simulate);
+        if (from == powerOutFacing) return core.storage.receiveEnergy(Math.Min(maxReceive, getTransferLimit()), simulate);
+        else return 0;
     }
 }
 
 public class BlockConnector : Block
 {
-    BlockFacing powerOutFacing;
+    //public bool ShouldConnectAt(IWorldAccessor world, BlockPos ownPos, BlockFacing side)
+    //{
+    //    BlockEntity block = world.BlockAccessor.GetBlockEntity(ownPos.AddCopy(side));
+    //    if (block is IFluxStorage)
+    //    {
+    //        return true;
+    //    }
+    //    else return false;
+    //}
 
-    public override void OnLoaded(ICoreAPI api)
-    {
-        powerOutFacing = BlockFacing.FromCode(Variant["side"]).Opposite;
 
-        base.OnLoaded(api);
-    }
+
+
+    bool handleDrops = true;
+    string dropBlockFace = "down";
+    string dropBlock = null;
+
+    //public override void Initialize(JsonObject properties)
+    //{
+    //    base.Initialize(properties);
+
+    //    handleDrops = properties["handleDrops"].AsBool(true);
+
+    //    if (properties["dropBlockFace"].Exists)
+    //    {
+    //        dropBlockFace = properties["dropBlockFace"].AsString();
+    //    }
+    //    if (properties["dropBlock"].Exists)
+    //    {
+    //        dropBlock = properties["dropBlock"].AsString();
+    //    }
+    //}
 
     public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
     {
-        string orientations = BlockFacing.NORTH.Code;
-        foreach (BlockFacing face in BlockFacing.ALLFACES)
+        if (TryAttachTo(world, byPlayer, blockSel, itemstack, ref failureCode)) return true;
+
+        failureCode = "requirehorizontalattachable";
+
+        return false;
+    }
+
+    public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier)
+    {
+        if (handleDrops)
         {
-            if (ShouldConnectAt(world, blockSel.Position, face))
+            if (dropBlock != null)
             {
-                orientations = face.Code;
-                break;
+                return new ItemStack[] { new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation(dropBlock))) };
             }
+            return new ItemStack[] { new ItemStack(world.BlockAccessor.GetBlock(CodeWithParts(dropBlockFace))) };
+
+        }
+        return null;
+    }
+
+    public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
+    {
+
+        if (dropBlock != null)
+        {
+            return new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation(dropBlock)));
         }
 
-        //Debug.WriteLine(orientations);
-        Block block = world.BlockAccessor.GetBlock(CodeWithVariant("side", orientations));
+        return new ItemStack(world.BlockAccessor.GetBlock(CodeWithParts(dropBlockFace)));
+    }
 
-        if (block == null) block = this;
 
-        if (block.CanPlaceBlock(world, byPlayer, blockSel, ref failureCode))
+    public override void OnNeighbourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos)
+    {
+        if (!CanBlockStay(world, pos))
         {
-            world.BlockAccessor.SetBlock(block.BlockId, blockSel.Position);
+            world.BlockAccessor.BreakBlock(pos, null);
+        }
+    }
+
+
+    bool TryAttachTo(IWorldAccessor world, IPlayer player, BlockSelection blockSel, ItemStack itemstack, ref string failureCode)
+    {
+        BlockFacing oppositeFace = blockSel.Face.Opposite;
+
+        BlockPos attachingBlockPos = blockSel.Position.AddCopy(oppositeFace);
+        Block attachingBlock = world.BlockAccessor.GetBlock(world.BlockAccessor.GetBlockId(attachingBlockPos));
+        Block orientedBlock = world.BlockAccessor.GetBlock(CodeWithParts(oppositeFace.Code));
+
+        if (attachingBlock.CanAttachBlockAt(world.BlockAccessor, this, attachingBlockPos, blockSel.Face) && orientedBlock.CanPlaceBlock(world, player, blockSel, ref failureCode))
+        {
+            orientedBlock.DoPlaceBlock(world, player, blockSel, itemstack);
             return true;
         }
 
         return false;
     }
 
-    public override void OnNeighbourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos)
+    bool CanBlockStay(IWorldAccessor world, BlockPos pos)
     {
-        if (neibpos == pos.AddCopy(powerOutFacing))
-        {
-            Block block = world.BlockAccessor.GetBlock(neibpos);
-            if (block == null)
-            {
-                //destroy
-                return;
-            }
-        }
-        base.OnNeighbourBlockChange(world, pos, neibpos);
+        string[] parts = Code.Path.Split('-');
+        BlockFacing facing = BlockFacing.FromCode(parts[parts.Length - 1]);
+        int blockId = world.BlockAccessor.GetBlockId(pos.AddCopy(facing));
+
+        Block attachingblock = world.BlockAccessor.GetBlock(blockId);
+
+        return attachingblock.CanAttachBlockAt(world.BlockAccessor, this, pos.AddCopy(facing), facing.Opposite);
     }
 
-    //public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
+
+    public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
+    {
+        return false;
+    }
+
+
+    //public override AssetLocation GetRotatedBlockCode(int angle, ref EnumHandling handled)
     //{
-    //    Block block = world.BlockAccessor.GetBlock(CodeWithVariants(new string[] { "side" }, new string[] { "ew" }));
-    //    return new ItemStack(block);
+    //    handled = EnumHandling.PreventDefault;
+
+    //    BlockFacing beforeFacing = BlockFacing.FromCode(LastCodePart());
+    //    int rotatedIndex = GameMath.Mod(beforeFacing.HorizontalAngleIndex - angle / 90, 4);
+    //    BlockFacing nowFacing = BlockFacing.HORIZONTALS_ANGLEORDER[rotatedIndex];
+
+    //    return CodeWithParts(nowFacing.Code);
     //}
 
+    //public override AssetLocation GetHorizontallyFlippedBlockCode(EnumAxis axis, ref EnumHandling handling)
+    //{
+    //    handling = EnumHandling.PreventDefault;
 
-
-    public bool ShouldConnectAt(IWorldAccessor world, BlockPos ownPos, BlockFacing side)
-    {
-        BlockEntity block = world.BlockAccessor.GetBlockEntity(ownPos.AddCopy(side));
-        if (block is IFluxStorage)
-        {
-            return true;
-        }
-        else return false;
-    }
+    //    BlockFacing facing = BlockFacing.FromCode(LastCodePart());
+    //    if (facing.Axis == axis)
+    //    {
+    //        return CodeWithParts(facing.Opposite.Code);
+    //    }
+    //    return Code;
+    //}
 }

@@ -17,13 +17,13 @@ public class EnergyDuctCore
         ducts.Remove(duct);
         if (ducts.Count > 0)
         {
-            foreach (BlockEntityEnergyDuct item in ducts)
+            foreach (IEnergyPoint item in ducts)
             {
-                item.core = null;
+                item.SetCore(null);
             }
-            foreach (BlockEntityEnergyDuct item in ducts)
+            foreach (IEnergyPoint item in ducts)
             {
-                if (item.core == null)
+                if (item.GetCore() == null)
                 {
                     item.InitializeEnergyPoint();
                 }
@@ -34,9 +34,9 @@ public class EnergyDuctCore
     public EnergyDuctCore CombineCores(EnergyDuctCore core)
     {
         storage.setEnergy(Math.Min(storage.getEnergyStored() + core.storage.getEnergyStored(), storage.getMaxEnergyStored()));
-        foreach (BlockEntityEnergyDuct item in core.ducts)
+        foreach (IEnergyPoint item in core.ducts)
         {
-            item.core = this;
+            item.SetCore(this);
         }
         ducts.AddRange(core.ducts);
         return this;

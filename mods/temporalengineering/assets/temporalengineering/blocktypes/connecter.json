@@ -1,0 +1,142 @@
+{
+	"code": "connecter",
+	"blockmaterial": "stone",
+	"class": "BlockConnector",
+	"entityclass": "BlockEntityConnector",
+	"renderpass": "OpaqueNoCull",
+	"creativeinventory": {
+		"general": [ "*-down" ],
+		"temporalengineering": [ "*-down" ]
+	},
+	"variantgroups": [
+		{
+			"code": "side",
+			"states": [ "north", "east", "south", "west", "up", "down" ]
+		}
+	],
+	"textures": {
+		"copper": { "base": "game:block/metal/ingot/copper" },
+		"ceramic": { "base": "game:block/clay/ceramic" }
+	},
+	//"drops": [
+	//	{
+	//		"type": "block",
+	//		"code": "energyduct-ew"
+	//	}
+	//],
+	"shapeByType": {
+		"*-north": {
+			"base": "block/connector",
+			"rotateX": 90
+		},
+		"*-east": {
+			"base": "block/connector",
+			"rotateZ": 90,
+			"rotateX": 90
+		},
+		"*-south": {
+			"base": "block/connector",
+			"rotateZ": 180,
+			"rotateX": 90
+		},
+		"*-west": {
+			"base": "block/connector",
+			"rotateZ": 270,
+			"rotateX": 90
+		},
+		"*-up": {
+			"base": "block/connector",
+			"rotateX": 180
+		},
+		"*-down": {
+			"base": "block/connector"
+		}
+	},
+	"collisionSelectionBoxesByType": {
+		"*-north": [
+			{
+				"x1": 0.3125,
+				"y1": 0,
+				"z1": 0.3125,
+				"x2": 0.6875,
+				"y2": 0.5625,
+				"z2": 0.6875,
+				"rotateX": 90
+			}
+		],
+		"*-east": [
+			{
+				"x1": 0.3125,
+				"y1": 0,
+				"z1": 0.3125,
+				"x2": 0.6875,
+				"y2": 0.5625,
+				"z2": 0.6875,
+				"rotateZ": 90,
+				"rotateX": 90
+			}
+		],
+		"*-south": [
+			{
+				"x1": 0.3125,
+				"y1": 0,
+				"z1": 0.3125,
+				"x2": 0.6875,
+				"y2": 0.5625,
+				"z2": 0.6875,
+				"rotateZ": 180,
+				"rotateX": 90
+			}
+		],
+		"*-west": [
+			{
+				"x1": 0.3125,
+				"y1": 0,
+				"z1": 0.3125,
+				"x2": 0.6875,
+				"y2": 0.5625,
+				"z2": 0.6875,
+				"rotateZ": 270,
+				"rotateX": 90
+			}
+		],
+		"*-up": [
+			{
+				"x1": 0.3125,
+				"y1": 0,
+				"z1": 0.3125,
+				"x2": 0.6875,
+				"y2": 0.5625,
+				"z2": 0.6875,
+				"rotateX": 180
+			}
+		],
+		"*-down": [
+			{
+				"x1": 0.3125,
+				"y1": 0,
+				"z1": 0.3125,
+				"x2": 0.6875,
+				"y2": 0.5625,
+				"z2": 0.6875
+			}
+		]
+	},
+	"resistance": 3.5,
+	"lightAbsorption": 0,
+	"attributesByType": {
+		"*": {
+			"transfer": 1000
+		}
+	},
+	"sounds": {
+		"place": "game:block/stone",
+		"break": "game:block/stone"
+	},
+	"sidesolid": {
+		"all": false
+	},
+	"sideopaque": {
+		"all": false
+	}
+}
