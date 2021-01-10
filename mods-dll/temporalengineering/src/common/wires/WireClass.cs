@@ -12,13 +12,17 @@ public class WireClass
 
     public WireClass(ICoreAPI api, BlockEntity block1, BlockEntity block2)
     {
+        this.block1 = block1;
+        this.block2 = block2;
         if (api is ICoreClientAPI)
         {
             this.api = (ICoreClientAPI)api;
-            this.block1 = block1;
-            this.block2 = block2;
             loadMesh();
         }
+        ((IWirePoint)block1).AddWire(block2.Pos, this);
+        ((IWirePoint)block2).AddWire(block1.Pos, this);
+        if (block1 is IEnergyPoint) ((IEnergyPoint)block1).InitializeEnergyPoint(api);
+        if (block2 is IEnergyPoint) ((IEnergyPoint)block2).InitializeEnergyPoint(api);
     }
 
     void loadMesh()
@@ -39,8 +43,8 @@ public class WireClass
 
     public void OnPointRemoved(BlockEntity block)
     {
-        if (block == block1) ((IWirePoint)block2)?.RemoveWire((IWirePoint)block1);
-        else ((IWirePoint)block1)?.RemoveWire((IWirePoint)block2);
+        if (block == block1) ((IWirePoint)block2)?.RemoveWire(block1.Pos);
+        else ((IWirePoint)block1)?.RemoveWire(block2.Pos);
         api = null;
     }
 

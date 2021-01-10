@@ -171,16 +171,19 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
         if (api is ICoreClientAPI)
         {
             ICoreClientAPI capi = (ICoreClientAPI)api;
-            capi.Event.RegisterRenderer(renderer = new TFForgeContentsRenderer(Pos, capi), EnumRenderStage.Opaque, "forge");
+            capi.Event.RegisterRenderer(renderer = new TFForgeContentsRenderer(Pos, capi), EnumRenderStage.Opaque, "tfforge");
             renderer.SetContents(contents, burning, true);
 
-            RegisterGameTickListener(OnClientTick, 50);
+            RegisterGameTickListener(OnClientTick, 500);
         }
 
 
         wsys = api.ModLoader.GetModSystem<WeatherSystemBase>();
 
-        RegisterGameTickListener(OnCommonTick, 50);
+        if (api.Side.IsServer())
+        {
+            RegisterGameTickListener(OnCommonTick, 50);
+        }
     }
 
     public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
@@ -191,6 +194,11 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
     public FluxStorage GetFluxStorage()
     {
         return energyStorage;
+    }
+
+    public bool CanWireConnect(BlockFacing side)
+    {
+        return side != BlockFacing.UP;
     }
 
     public void ToggleAmbientSounds(bool on)
@@ -250,14 +258,22 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
     Vec3d tmpPos = new Vec3d();
     private void OnCommonTick(float dt)
     {
-        if (energyStorage.getEnergyStored() >= 100)
+        if (energyStorage.getEnergyStored() >= 90)
         {
-            energyStorage.modifyEnergyStored(-100);
-            burning = true;
+            energyStorage.modifyEnergyStored(-90);
+            if (burning == false)
+            {
+                burning = true;
+                MarkDirty(true);
+            }
         }
         else
         {
-            burning = false;
+            if (burning == true)
+            {
+                burning = false;
+                MarkDirty(true);
+            }
         }
 
         if (burning)
@@ -468,14 +484,11 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
         burning = tree.GetInt("burning") > 0;
         lastTickTotalHours = tree.GetDouble("lastTickTotalHours");
 
-        //Debug.WriteLine("FromTreeAttributes");
         if (Api != null)
         {
-            //Debug.WriteLine(Api.Side.IsServer());
             if (contents != null)
             {
                 contents.ResolveBlockOrItem(Api.World);
-                //Debug.WriteLine("ResolveBlockOrItem");
             }
         }
         if (renderer != null)
@@ -569,15 +582,14 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
     MeshRef workItemMeshRef;
 
-    MeshRef emberQuadRef;
-    MeshRef coalQuadRef;
+    //MeshRef emberQuadRef;
+    MeshRef heQuadRef;
 
 
     ItemStack stack;
     bool burning;
 
-    TextureAtlasPosition coaltexpos;
-    TextureAtlasPosition embertexpos;
+    TextureAtlasPosition hetexpos;
 
     int textureId;
 
@@ -617,30 +629,21 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
         this.pos = pos;
         this.capi = capi;
 
-        Block block = capi.World.GetBlock(new AssetLocation("forge"));
+        Block block = capi.World.GetBlock(new AssetLocation("temporalengineering:tfforge"));
 
-        coaltexpos = capi.BlockTextureAtlas.GetPosition(block, "coal");
-        embertexpos = capi.BlockTextureAtlas.GetPosition(block, "ember");
+        hetexpos = capi.BlockTextureAtlas.GetPosition(block, "he");
 
-        MeshData emberMesh = QuadMeshUtil.GetCustomQuadHorizontal(3 / 16f, 0, 3 / 16f, 10 / 16f, 10 / 16f, 255, 255, 255, 255);
+        MeshData heMesh;
+        Shape ovshape = capi.Assets.TryGet(new AssetLocation("temporalengineering:shapes/block/heating_element.json")).ToObject<Shape>();
+        capi.Tesselator.TesselateShape(block, ovshape, out heMesh);
 
-        for (int i = 0; i < emberMesh.Uv.Length; i += 2)
+        for (int i = 0; i < heMesh.Uv.Length; i += 2)
         {
-            emberMesh.Uv[i + 0] = embertexpos.x1 + emberMesh.Uv[i + 0] * 32f / AtlasSize.Width;
-            emberMesh.Uv[i + 1] = embertexpos.y1 + emberMesh.Uv[i + 1] * 32f / AtlasSize.Height;
-        }
-        emberMesh.Flags = new int[] { 128, 128, 128, 128 };
-
-        MeshData coalMesh = QuadMeshUtil.GetCustomQuadHorizontal(3 / 16f, 0, 3 / 16f, 10 / 16f, 10 / 16f, 255, 255, 255, 255);
-
-        for (int i = 0; i < coalMesh.Uv.Length; i += 2)
-        {
-            coalMesh.Uv[i + 0] = coaltexpos.x1 + coalMesh.Uv[i + 0] * 32f / AtlasSize.Width;
-            coalMesh.Uv[i + 1] = coaltexpos.y1 + coalMesh.Uv[i + 1] * 32f / AtlasSize.Height;
+            heMesh.Uv[i + 0] = hetexpos.x1 + heMesh.Uv[i + 0] * 32f / AtlasSize.Width;
+            heMesh.Uv[i + 1] = hetexpos.y1 + heMesh.Uv[i + 1] * 32f / AtlasSize.Height;
         }
 
-        emberQuadRef = capi.Render.UploadMesh(emberMesh);
-        coalQuadRef = capi.Render.UploadMesh(coalMesh);
+        heQuadRef = capi.Render.UploadMesh(heMesh);
     }
 
     public void SetContents(ItemStack stack, bool burning, bool regen)
@@ -718,7 +721,7 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
     public void OnRenderFrame(float deltaTime, EnumRenderStage stage)
     {
-        if (stack == null) return;
+        //if (stack == null) return;
 
         IRenderAPI rpi = capi.Render;
         IClientWorldAccessor worldAccess = capi.World;
@@ -737,12 +740,13 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
         prog.ExtraGodray = 0;
         prog.OverlayOpacity = 0;
 
+        Vec4f lightrgbs = capi.World.BlockAccessor.GetLightRGBs(pos.X, pos.Y, pos.Z);
 
         if (stack != null && workItemMeshRef != null)
         {
             int temp = (int)stack.Collectible.GetTemperature(capi.World, stack);
 
-            Vec4f lightrgbs = capi.World.BlockAccessor.GetLightRGBs(pos.X, pos.Y, pos.Z);
+            //Vec4f lightrgbs = capi.World.BlockAccessor.GetLightRGBs(pos.X, pos.Y, pos.Z);
             float[] glowColor = ColorUtil.GetIncandescenceColorAsColor4f(temp);
             int extraGlow = GameMath.Clamp((temp - 550) / 2, 0, 255);
 
@@ -761,34 +765,32 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
         //if (fuelLevel > 0)
         //{
-        //    Vec4f lightrgbs = capi.World.BlockAccessor.GetLightRGBs(pos.X, pos.Y, pos.Z);
 
-        //    if (burning)
-        //    {
-        //        float[] glowColor = ColorUtil.GetIncandescenceColorAsColor4f(1200);
-        //        prog.RgbaGlowIn = new Vec4f(glowColor[0], glowColor[1], glowColor[2], 1);
-        //    }
-        //    else
-        //    {
-        //        prog.RgbaGlowIn = new Vec4f(0, 0, 0, 0);
-        //    }
+        if (burning)
+        {
+            float[] glowColor = ColorUtil.GetIncandescenceColorAsColor4f(1200);
+            prog.RgbaGlowIn = new Vec4f(glowColor[0], glowColor[1], glowColor[2], 1);
+        }
+        else
+        {
+            prog.RgbaGlowIn = new Vec4f(0, 0, 0, 0);
+        }
 
-        //    prog.NormalShaded = 0;
-        //    prog.RgbaLightIn = lightrgbs;
+        prog.NormalShaded = 1;
+        prog.RgbaLightIn = lightrgbs;
 
-        //    prog.ExtraGlow = burning ? 255 : 0;
+        prog.ExtraGlow = burning ? 255 : 0;
 
-        //    // The coal or embers
-        //    rpi.BindTexture2d(burning ? embertexpos.atlasTextureId : coaltexpos.atlasTextureId);
+        // The coal or embers
+        rpi.BindTexture2d(hetexpos.atlasTextureId);//rpi.BindTexture2d(burning ? embertexpos.atlasTextureId : coaltexpos.atlasTextureId);
 
-        //    prog.ModelMatrix = ModelMat.Identity().Translate(pos.X - camPos.X, pos.Y - camPos.Y + 10 / 16f + fuelLevel * 0.65f, pos.Z - camPos.Z).Values;
-        //    prog.ViewMatrix = rpi.CameraMatrixOriginf;
-        //    prog.ProjectionMatrix = rpi.CurrentProjectionMatrix;
+        prog.ModelMatrix = ModelMat.Identity().Translate(pos.X - camPos.X, pos.Y - camPos.Y, pos.Z - camPos.Z).Values;//prog.ModelMatrix = ModelMat.Identity().Translate(pos.X - camPos.X, pos.Y - camPos.Y + 10 / 16f + fuelLevel * 0.65f, pos.Z - camPos.Z).Values;
+        prog.ViewMatrix = rpi.CameraMatrixOriginf;
+        prog.ProjectionMatrix = rpi.CurrentProjectionMatrix;
 
-        //    rpi.RenderMesh(burning ? emberQuadRef : coalQuadRef);
+        rpi.RenderMesh(heQuadRef);//rpi.RenderMesh(burning ? emberQuadRef : coalQuadRef);
 
         //}
-
 
         prog.Stop();
     }
@@ -798,8 +800,8 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
     public void Dispose()
     {
         capi.Event.UnregisterRenderer(this, EnumRenderStage.Opaque);
-        if (emberQuadRef != null) emberQuadRef.Dispose();
-        if (coalQuadRef != null) coalQuadRef.Dispose();
+        //if (emberQuadRef != null) emberQuadRef.Dispose();
+        if (heQuadRef != null) heQuadRef.Dispose();
         if (workItemMeshRef != null) workItemMeshRef.Dispose();
     }
 }

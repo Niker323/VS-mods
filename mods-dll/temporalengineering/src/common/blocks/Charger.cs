@@ -326,6 +326,11 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
         return energyStorage.receiveEnergy(maxReceive, simulate);
     }
 
+    public bool CanWireConnect(BlockFacing side)
+    {
+        return side == BlockFacing.DOWN;
+    }
+
 }
 
 public class ToolTextures

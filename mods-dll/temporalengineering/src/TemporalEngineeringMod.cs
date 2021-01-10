@@ -39,6 +39,8 @@ namespace TemporalEngineering
             api.RegisterBlockEntityBehaviorClass("BEBehaviorWatermillRotor", typeof(BEBehaviorWatermillRotor));
             api.RegisterBlockEntityBehaviorClass("BEBehaviorTFEngine", typeof(BEBehaviorTFEngine));
 
+            api.RegisterBlockBehaviorClass("OmniOrientable", typeof(BlockBehaviorOmniOrientable));
+
             api.RegisterItemClass("Wrench", typeof(Wrench));
             api.RegisterItemClass("TFChisel", typeof(TFChisel));
             api.RegisterItemClass("ItemWire", typeof(ItemWire));

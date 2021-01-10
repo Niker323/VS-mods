@@ -5,7 +5,12 @@
   //"entityBehaviors": [ { "name": "BEBehaviorWatermillRotor" } ],
   "behaviors": [
     { "name": "Container" },
-    { "name": "HorizontalOrientable" }
+    {
+      "name": "HorizontalOrientable",
+      "properties": {
+        "dropBlockFace": "south"
+      }
+    }
   ],
   "attributes": {
     "handbook": {
@@ -75,10 +80,10 @@
   //],
   "resistance": 3.5,
   "lightAbsorption": 0,
-  //"lightHsvByType": {
-  //  "stove-unlit-*": [ 0, 0, 0 ],
-  //  "stove-lit-*": [ 7, 7, 11 ]
-  //},
+  "lightHsvByType": {
+    "*-unlit-*": [ 0, 0, 0 ],
+    "*-lit-*": [ 7, 7, 11 ]
+  },
   "sounds": {
     "walk": "game:walk/stone",
     "place": "game:block/stone",

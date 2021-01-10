@@ -10,29 +10,14 @@ using Vintagestory.API.MathTools;
 public class BlockEntityWirePoint : BlockEntity, IWirePoint
 {
     List<BlockPos> positions = new List<BlockPos>();
-    public Dictionary<IWirePoint, WireClass> wiresList = new Dictionary<IWirePoint, WireClass>(0);
+    public Dictionary<BlockPos, WireClass> wiresList = new Dictionary<BlockPos, WireClass>(0);
 
     public override void Initialize(ICoreAPI api)
     {
         base.Initialize(api);
+        Api = api;
 
-        wiresList.Clear();
-        foreach (BlockPos newPos in positions)
-        {
-            BlockEntityWirePoint block = api.World.BlockAccessor.GetBlockEntity(newPos) as BlockEntityWirePoint;
-            if (block != null && !wiresList.ContainsKey(block))
-            {
-                WireClass wireClass;
-                if (block.wiresList.TryGetValue(this, out wireClass))
-                {
-                    wiresList.Add(block, wireClass);
-                }
-                else
-                {
-                    wiresList.Add(block, new WireClass(api, this, block));
-                }
-            }
-        }
+        UpdateWiresList();
     }
 
     public override void OnBlockRemoved()
@@ -43,6 +28,7 @@ public class BlockEntityWirePoint : BlockEntity, IWirePoint
         {
             kv.Value.OnPointRemoved(this);
         }
+        wiresList.Clear();
     }
 
     public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldForResolving)
@@ -64,6 +50,31 @@ public class BlockEntityWirePoint : BlockEntity, IWirePoint
             }
             id++;
         }
+        UpdateWiresList();
+    }
+
+    public void UpdateWiresList()
+    {
+        if (Api != null)
+        {
+            wiresList.Clear();
+            foreach (BlockPos newPos in positions)
+            {
+                BlockEntityWirePoint block = Api.World.BlockAccessor.GetBlockEntity(newPos) as BlockEntityWirePoint;
+                if (block != null && !wiresList.ContainsKey(block.Pos))
+                {
+                    WireClass wireClass;
+                    if (block.wiresList.TryGetValue(Pos, out wireClass))
+                    {
+                        AddWire(block.Pos, wireClass);
+                    }
+                    else
+                    {
+                        new WireClass(Api, this, block);
+                    }
+                }
+            }
+        }
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -73,9 +84,9 @@ public class BlockEntityWirePoint : BlockEntity, IWirePoint
         int id = 1;
         foreach (var kv in wiresList)
         {
-            tree.SetInt("wire-" + id + "-X", kv.Key.GetBlockPos().X);
-            tree.SetInt("wire-" + id + "-Y", kv.Key.GetBlockPos().Y);
-            tree.SetInt("wire-" + id + "-Z", kv.Key.GetBlockPos().Z);
+            tree.SetInt("wire-" + id + "-X", kv.Key.X);
+            tree.SetInt("wire-" + id + "-Y", kv.Key.Y);
+            tree.SetInt("wire-" + id + "-Z", kv.Key.Z);
             id++;
         }
     }
@@ -96,18 +107,31 @@ public class BlockEntityWirePoint : BlockEntity, IWirePoint
         return true;
     }
 
-    public void AddWire(IWirePoint point, WireClass wire)
+    public void AddWire(BlockPos point, WireClass wire)
     {
         if (!wiresList.ContainsKey(point)) wiresList.Add(point, wire);
+        else if (wiresList[point] != wire) wiresList[point] = wire;
         MarkDirty(true);
     }
 
-    public void RemoveWire(IWirePoint point)
+    public void RemoveWire(BlockPos point)
     {
-        if (wiresList.ContainsKey(point)) wiresList.Remove(point);
+        List<BlockPos> deleteList = new List<BlockPos>();
+        foreach (var kv in wiresList)
+        {
+            if (kv.Key == point)
+            {
+                deleteList.Add(kv.Key);
+            }
+        }
+        foreach (var key in deleteList)
+        {
+            wiresList.Remove(key);
+        }
+        MarkDirty(true);
     }
 
-    public Dictionary<IWirePoint, WireClass> GetWiresList()
+    public Dictionary<BlockPos, WireClass> GetWiresList()
     {
         return wiresList;
     }

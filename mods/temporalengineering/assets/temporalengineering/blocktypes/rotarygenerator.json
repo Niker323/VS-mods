@@ -19,7 +19,8 @@
 		"oak": { "base": "game:block/wood/debarked/oak" },
 		"copper": { "base": "game:block/metal/plate/copper" },
 		"iron": { "base": "game:block/metal/ingot/iron" },
-		"generic": { "base": "game:block/wood/planks/generic" }
+		"generic": { "base": "game:block/wood/planks/generic" },
+		"copper_coil": { "base": "block/copper_coil" }
 	},
 	"shape": {
 		"base": "block/testmodel4",

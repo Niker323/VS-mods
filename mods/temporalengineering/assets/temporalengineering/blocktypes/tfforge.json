@@ -22,14 +22,23 @@
     "temporalengineering": [ "*" ]
   },
   "textures": {
-    "oak": { "base": "game:block/wood/debarked/oak" },
-    "copper": { "base": "game:block/metal/plate/copper" },
-    "iron": { "base": "game:block/metal/ingot/iron" },
-    "generic": { "base": "game:block/wood/planks/generic" }
+    "coal-dust": { "base": "block/tfforge/coal-dust" },
+    "forge": { "base": "block/tfforge/forge" },
+    "he": { "base": "game:block/metal/ingot/iron" }
   },
   "shape": {
     "base": "block/tfforge"
   },
+  "collisionSelectionBoxes": [
+    {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0,
+      "x2": 1,
+      "y2": 0.875,
+      "z2": 1
+    }
+  ],
   "sidesolid": {
     "all": false
   },

@@ -8,6 +8,7 @@ using Vintagestory.API.MathTools;
 public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 {
     public EnergyDuctCore core;
+    List<BlockFacing> skipList = new List<BlockFacing>();
     //public override void OnLoaded(ICoreAPI api)
     //{
     //    base.OnLoaded(api);
@@ -21,53 +22,57 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 
         if (api.World.Side == EnumAppSide.Server)
         {
-            InitializeEnergyPoint();
+            InitializeEnergyPoint(api);
 
             RegisterGameTickListener(tick, 50);
         }
     }
 
-    public void InitializeEnergyPoint()
+    public void InitializeEnergyPoint(ICoreAPI api)
     {
-        foreach (BlockFacing face in BlockFacing.ALLFACES)
+        if (api.World.Side == EnumAppSide.Server)
         {
-            BlockPos pos = Pos.AddCopy(face);
-            BlockEntityEnergyDuct block = Api.World.BlockAccessor.GetBlockEntity(pos) as BlockEntityEnergyDuct;
-            if (block != null)
+            foreach (BlockFacing face in BlockFacing.ALLFACES)
             {
-                if (core == null)
+                BlockPos pos = Pos.AddCopy(face);
+                BlockEntityEnergyDuct block = api.World.BlockAccessor.GetBlockEntity(pos) as BlockEntityEnergyDuct;
+                if (block != null)
                 {
-                    if (block.core == null)
+                    if (core == null)
                     {
-                        core = new EnergyDuctCore(getTransferLimit());
-                        core.ducts.Add(this);
+                        if (block.core == null)
+                        {
+                            core = new EnergyDuctCore(getTransferLimit());
+                            core.ducts.Add(this);
+                        }
+                        else
+                        {
+                            core = block.core;
+                            core.ducts.Add(this);
+                        }
                     }
                     else
                     {
-                        core = block.core;
-                        core.ducts.Add(this);
-                    }
-                }
-                else
-                {
-                    if (core != block.core && block.core != null)
-                    {
-                        core = core.CombineCores(block.core);
+                        if (core != block.core && block.core != null)
+                        {
+                            core = core.CombineCores(block.core);
+                        }
                     }
                 }
             }
-        }
-        if (core == null)
-        {
-            core = new EnergyDuctCore(getTransferLimit());
-            core.ducts.Add(this);
+            if (core == null)
+            {
+                core = new EnergyDuctCore(getTransferLimit());
+                core.ducts.Add(this);
+            }
         }
     }
 
     private void tick(float dt)
     {
         foreach (BlockFacing f in BlockFacing.ALLFACES)
-            transferEnergy(f);
+            if (!skipList.Contains(f)) transferEnergy(f);
+        skipList.Clear();
         //MarkDirty();
     }
 
@@ -77,8 +82,14 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
         BlockEntity tileEntity = Api.World.BlockAccessor.GetBlockEntity(outPos);
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
+        if (tileEntity is IEnergyPoint && ((IEnergyPoint)tileEntity).GetCore() == GetCore()) return;
         int eout = Math.Min(getTransferLimit(), core.storage.getEnergyStored());
-        core.storage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false));
+        eout = ((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false);
+        if (tileEntity is IEnergyPoint && eout > 0)
+        {
+            ((IEnergyPoint)tileEntity).AddSkipSide(side.Opposite);
+        }
+        core.storage.modifyEnergyStored(-eout);
     }
 
     public override void OnBlockRemoved()
@@ -87,7 +98,7 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 
         if (Api.World.Side == EnumAppSide.Server)
         {
-            core.OnDuctRemoved(this);
+            core.OnDuctRemoved(this, Api);
         }
     }
 
@@ -98,6 +109,11 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
             return Block.Attributes["transfer"].AsInt();
         }
         return 100;
+    }
+
+    public void AddSkipSide(BlockFacing face)
+    {
+        skipList.Add(face);
     }
 
     public EnergyDuctCore GetCore()
@@ -118,6 +134,11 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
     public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
     {
         return core.storage.receiveEnergy(Math.Min(maxReceive, getTransferLimit()), simulate);
+    }
+
+    public bool CanWireConnect(BlockFacing side)
+    {
+        return true;
     }
 }
 
@@ -212,15 +233,7 @@ public class BlockEnergyDuct : Block
         BlockEntity block = world.BlockAccessor.GetBlockEntity(ownPos.AddCopy(side));
         if (block is IFluxStorage)
         {
-            if (block is IIOEnergySideConfig)
-            {
-                if (((IIOEnergySideConfig)block).getEnergySideConfig(side.Opposite) == IOEnergySideConfig.NONE) return false;
-            }
-            if (block is BlockEntityConnector)
-            {
-                if (((BlockEntityConnector)block).powerOutFacing != side.Opposite) return false;
-            }
-            return true;
+            return ((IFluxStorage)block).CanWireConnect(side.Opposite);
         }
         else return false;
     }

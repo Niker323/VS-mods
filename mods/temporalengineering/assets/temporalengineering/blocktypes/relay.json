@@ -3,11 +3,23 @@
 	"blockmaterial": "stone",
 	"class": "BlockTFRelay",
 	"entityclass": "BETFRelay",
+	"behaviors": [
+		{
+			"name": "OmniOrientable"
+			//"properties": {
+			//	"dropBlockFace": "south"
+			//}
+		}
+	],
 	"variantgroups": [
-		//{
-		//	"code": "type",
-		//	"states": [ "low", "medium", "high" ]
-		//},
+		{
+			"code": "state",
+			"states": [ "off", "on" ]
+		},
+		{
+			"code": "side",
+			"states": [ "north", "east", "south", "west", "up", "down" ]
+		},
 		{
 			"code": "north",
 			"states": [ "input", "output", "none" ]
@@ -34,18 +46,65 @@
 		}
 	],
 	"creativeinventory": {
-		"general": [ "*-input-input-input-input-input-input" ],
-		"temporalengineering": [ "*-input-input-input-input-input-input" ]
+		"general": [ "*-off-north-input-input-input-input-input-input" ],
+		"temporalengineering": [ "*-off-north-input-input-input-input-input-input" ]
 	},
-	"resistance": 3.5
-	//"textures": {
-	//	"north": { "base": "block/capacitor/capacitor-{type}-{north}" },
-	//	"east": { "base": "block/capacitor/capacitor-{type}-{east}" },
-	//	"south": { "base": "block/capacitor/capacitor-{type}-{south}" },
-	//	"west": { "base": "block/capacitor/capacitor-{type}-{west}" },
-	//	"up": { "base": "block/capacitor/capacitor-{type}-{up}" },
-	//	"down": { "base": "block/capacitor/capacitor-{type}-{down}" }
-	//},
+	"resistance": 3.5,
+	"shapeByType": {
+		"*-north-*": {
+			"base": "block/relay/relay-{state}-{side}"
+			//"rotateY": 180
+		},
+		"*-east-*": {
+			"base": "block/relay/relay-{state}-{side}"
+			//"rotateY": 90
+		},
+		"*-south-*": {
+			"base": "block/relay/relay-{state}-{side}"
+		},
+		"*-west-*": {
+			"base": "block/relay/relay-{state}-{side}"
+			//"rotateY": 270
+		},
+		"*-up-*": {
+			"base": "block/relay/relay-{state}-{side}"
+			//"rotateX": 270
+		},
+		"*-down-*": {
+			"base": "block/relay/relay-{state}-{side}"
+			//"rotateX": 90
+		}
+	},
+	"textures": {
+		"ebony": { "base": "game:block/wood/debarked/ebony" },
+		"iron": { "base": "game:block/metal/sheet/iron1" },
+		"copper": { "base": "game:block/metal/ingot/copper" },
+		"wood": { "base": "game:block/wood/displaycase/wood" },
+		"north_side": {
+			"base": "game:block/wood/displaycase/wood",
+			"overlays": [ "block/energy/sides/{north}" ]
+		},
+		"east_side": {
+			"base": "game:block/wood/displaycase/wood",
+			"overlays": [ "block/energy/sides/{east}" ]
+		},
+		"south_side": {
+			"base": "game:block/wood/displaycase/wood",
+			"overlays": [ "block/energy/sides/{south}" ]
+		},
+		"west_side": {
+			"base": "game:block/wood/displaycase/wood",
+			"overlays": [ "block/energy/sides/{west}" ]
+		},
+		"up_side": {
+			"base": "game:block/wood/displaycase/wood",
+			"overlays": [ "block/energy/sides/{up}" ]
+		},
+		"down_side": {
+			"base": "game:block/wood/displaycase/wood",
+			"overlays": [ "block/energy/sides/{down}" ]
+		}
+	},
 	//"attributesByType": {
 	//	"*-low-*": {
 	//		"storage": 10000,
@@ -63,9 +122,9 @@
 	//		"output": 1000
 	//	}
 	//}
-	//"sounds": {
-	//	"place": "game:block/stone",
-	//	"break": "game:block/stone"
-	//}
-
+	"sounds": {
+		"walk": "game:walk/stone",
+		"place": "game:block/stone",
+		"break": "game:block/stone"
+	}
 }

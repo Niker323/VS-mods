@@ -151,6 +151,11 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
         return energyStorage;
     }
 
+    public bool CanWireConnect(BlockFacing side)
+    {
+        return true;
+    }
+
     private void OnTick(float dt)
     {
         // Only tick on the server and merely sync to client

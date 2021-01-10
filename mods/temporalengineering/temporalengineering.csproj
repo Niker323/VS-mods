@@ -62,17 +62,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high-input.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high-none.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high-output.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low-input.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low-none.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low-output.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium-input.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium-none.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium-output.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium.png" />
     <Content Include="assets\temporalengineering\textures\block\copper_coil.png" />
+    <Content Include="assets\temporalengineering\textures\block\energy\sides\input.png" />
+    <Content Include="assets\temporalengineering\textures\block\energy\sides\none.png" />
+    <Content Include="assets\temporalengineering\textures\block\energy\sides\output.png" />
+    <Content Include="assets\temporalengineering\textures\block\furnace\back.png" />
+    <Content Include="assets\temporalengineering\textures\block\furnace\down.png" />
+    <Content Include="assets\temporalengineering\textures\block\furnace\fire1.png" />
+    <Content Include="assets\temporalengineering\textures\block\furnace\front-lit.png" />
+    <Content Include="assets\temporalengineering\textures\block\furnace\front-unlit.png" />
+    <Content Include="assets\temporalengineering\textures\block\furnace\side.png" />
+    <Content Include="assets\temporalengineering\textures\block\furnace\up.png" />
     <Content Include="assets\temporalengineering\textures\block\moving.png" />
+    <Content Include="assets\temporalengineering\textures\block\tfforge\coal-dust.png" />
+    <Content Include="assets\temporalengineering\textures\block\tfforge\forge.png" />
     <Content Include="assets\temporalengineering\textures\block\trampoline.png" />
     <Content Include="assets\temporalengineering\textures\block\wire.png" />
     <Content Include="assets\temporalengineering\textures\item\wranch.png" />
@@ -92,7 +98,7 @@
     <None Include="assets\temporalengineering\blocktypes\tfforge.json" />
     <None Include="assets\temporalengineering\blocktypes\watermill.json" />
     <None Include="assets\temporalengineering\blocktypes\wire.json" />
-    <None Include="assets\temporalengineering\itemtypes\machinecasing.json" />
+    <None Include="assets\temporalengineering\itemtypes\machinecasing.json.d" />
     <None Include="assets\temporalengineering\itemtypes\resource\coil.json" />
     <None Include="assets\temporalengineering\itemtypes\resource\wire.json" />
     <None Include="assets\temporalengineering\itemtypes\tool\tfchisel.json" />
@@ -100,7 +106,7 @@
     <None Include="assets\temporalengineering\lang\en.json" />
     <None Include="assets\temporalengineering\recipes\clayforming\wiremold.json" />
     <None Include="assets\temporalengineering\recipes\grid\coil.json" />
-    <None Include="assets\temporalengineering\recipes\grid\machinecasing.json" />
+    <None Include="assets\temporalengineering\recipes\grid\machinecasing.json.d" />
     <None Include="assets\temporalengineering\recipes\grid\watermill.json" />
     <None Include="assets\temporalengineering\shapes\block\charger.json" />
     <None Include="assets\temporalengineering\shapes\block\clay\mold\wire.json" />
@@ -115,11 +121,17 @@
     <None Include="assets\temporalengineering\shapes\block\ducts\duct4_2.json" />
     <None Include="assets\temporalengineering\shapes\block\ducts\duct5.json" />
     <None Include="assets\temporalengineering\shapes\block\ducts\duct6.json" />
+    <None Include="assets\temporalengineering\shapes\block\furnace-lit.json" />
+    <None Include="assets\temporalengineering\shapes\block\furnace-unlit.json" />
+    <None Include="assets\temporalengineering\shapes\block\heating_element.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay_off.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay_on.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel2.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel3.json" />
     <None Include="assets\temporalengineering\shapes\block\testmodel4.json" />
     <None Include="assets\temporalengineering\shapes\block\tfforge.json" />
+    <None Include="assets\temporalengineering\shapes\block\tfforge_he.json" />
     <None Include="assets\temporalengineering\shapes\block\watermill.json" />
     <None Include="assets\temporalengineering\shapes\block\wire.json" />
     <None Include="assets\temporalengineering\shapes\item\coil.json" />

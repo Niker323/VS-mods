@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using Vintagestory.API.Common;
 
 public class EnergyDuctCore
 {
@@ -12,7 +13,7 @@ public class EnergyDuctCore
         storage = new FluxStorage(io, io, io);
     }
 
-    public void OnDuctRemoved(IEnergyPoint duct)
+    public void OnDuctRemoved(IEnergyPoint duct, ICoreAPI api)
     {
         ducts.Remove(duct);
         if (ducts.Count > 0)
@@ -25,7 +26,7 @@ public class EnergyDuctCore
             {
                 if (item.GetCore() == null)
                 {
-                    item.InitializeEnergyPoint();
+                    item.InitializeEnergyPoint(api);
                 }
             }
         }

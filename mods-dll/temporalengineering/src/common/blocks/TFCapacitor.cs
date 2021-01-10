@@ -113,6 +113,11 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
         return 0;
     }
 
+    public bool CanWireConnect(BlockFacing side)
+    {
+        return sideConfig[side] != IOEnergySideConfig.NONE;
+    }
+
     public IOEnergySideConfig getEnergySideConfig(BlockFacing side)
     {
         return sideConfig[side];

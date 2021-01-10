@@ -3,8 +3,8 @@ using Vintagestory.API.MathTools;
 
 public interface IWirePoint
 {
-    Dictionary<IWirePoint, WireClass> GetWiresList();
+    Dictionary<BlockPos, WireClass> GetWiresList();
     BlockPos GetBlockPos();
-    void AddWire(IWirePoint point, WireClass wire);
-    void RemoveWire(IWirePoint point);
+    void AddWire(BlockPos point, WireClass wire);
+    void RemoveWire(BlockPos point);
 }

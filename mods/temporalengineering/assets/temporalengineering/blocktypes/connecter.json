@@ -126,17 +126,18 @@
 	"lightAbsorption": 0,
 	"attributesByType": {
 		"*": {
-			"transfer": 1000
+			"transfer": 100
 		}
-	},
-	"sounds": {
-		"place": "game:block/stone",
-		"break": "game:block/stone"
 	},
 	"sidesolid": {
 		"all": false
 	},
 	"sideopaque": {
 		"all": false
-	}
+	},
+	//"sounds": {
+	//	"walk": "game:walk/stone",
+	//	"place": "game:block/stone",
+	//	"break": "game:block/stone"
+	//}
 }

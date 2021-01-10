@@ -22,11 +22,11 @@ class ItemWire : Item
                 {
                     if (memory != block)
                     {
-                        WireClass newWire = new WireClass(api, memory, block);
-                        ((IWirePoint)memory).AddWire((IWirePoint)block, newWire);
-                        ((IWirePoint)block).AddWire((IWirePoint)memory, newWire);
-                        if (memory is IEnergyPoint) ((IEnergyPoint)memory).InitializeEnergyPoint();
-                        if (block is IEnergyPoint) ((IEnergyPoint)block).InitializeEnergyPoint();
+                        new WireClass(api, memory, block);//WireClass newWire = 
+                        //((IWirePoint)memory).AddWire((IWirePoint)block, newWire);
+                        //((IWirePoint)block).AddWire((IWirePoint)memory, newWire);
+                        //if (memory is IEnergyPoint) ((IEnergyPoint)memory).InitializeEnergyPoint();
+                        //if (block is IEnergyPoint) ((IEnergyPoint)block).InitializeEnergyPoint();
                         memory = null;
                     }
                     else

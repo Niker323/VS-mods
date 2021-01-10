@@ -13,8 +13,7 @@ class Wrench : Item
             if (block is IIOEnergySideConfig)
             {
                 IIOEnergySideConfig iiosc = (IIOEnergySideConfig)block;
-                iiosc.toggleSide(blockSel.Face);
-                api.World.BlockAccessor.TriggerNeighbourBlockUpdate(blockSel.Position);
+                if (iiosc.toggleSide(blockSel.Face)) api.World.BlockAccessor.TriggerNeighbourBlockUpdate(blockSel.Position);
             }
         }
     }

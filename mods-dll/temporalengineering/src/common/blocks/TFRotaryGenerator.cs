@@ -176,6 +176,11 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
     {
         return energyStorage;
     }
+
+    public bool CanWireConnect(BlockFacing side)
+    {
+        return true;
+    }
 }
 
 public class BEBehaviorTFRotaryGenerator : BEBehaviorMPBase//BEBehaviorMPRotor

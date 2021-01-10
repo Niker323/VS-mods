@@ -66,7 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\common\blocks\BlockSideconfigInteractions.cs" />
+    <Compile Include="src\common\BlockSideconfigInteractions.cs" />
     <Compile Include="src\common\blocks\Charger.cs" />
     <Compile Include="src\common\blocks\Engine.cs" />
     <Compile Include="src\common\blocks\Furnace.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="src\common\items\TFChisel.cs" />
     <Compile Include="src\common\items\ItemWire.cs" />
     <Compile Include="src\common\items\Wrench.cs" />
+    <Compile Include="src\common\OmniOrientable.cs" />
     <Compile Include="src\common\wires\Connector.cs" />
     <Compile Include="src\common\wires\IWirePoint.cs" />
     <Compile Include="src\common\wires\WireClass.cs" />

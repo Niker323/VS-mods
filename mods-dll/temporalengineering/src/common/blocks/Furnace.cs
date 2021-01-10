@@ -155,7 +155,7 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
 
     public override string InventoryClassName
     {
-        get { return "stove"; }
+        get { return "furnace"; }
     }
 
     public virtual string DialogTitle
@@ -215,6 +215,11 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         return energyStorage;
     }
 
+    public bool CanWireConnect(BlockFacing side)
+    {
+        return true;
+    }
+
     private void OnSlotModifid(int slotid)
     {
         Block = Api.World.BlockAccessor.GetBlock(Pos);
@@ -256,8 +261,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
             furnaceTemperature = changeTemperature(furnaceTemperature, maxTemperature, dt);
         }
 
-        IsBurning = false;
-
         // Ore follows furnace temperature
         if (canHeatInput())
         {
@@ -283,7 +286,25 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         // Furnace is not burning and can burn: Ignite the fuel
         if (energyStorage.getEnergyStored() >= 15)
         {
-            igniteFuel();
+            energyStorage.modifyEnergyStored(-15);
+
+            if (!IsBurning)
+            {
+                IsBurning = true;
+
+                Api.World.BlockAccessor.ExchangeBlock(Api.World.GetBlock(Block.CodeWithVariant("state", "lit")).BlockId, Pos);
+                MarkDirty(true);
+            }
+        }
+        else
+        {
+            if (IsBurning)
+            {
+                IsBurning = false;
+
+                Api.World.BlockAccessor.ExchangeBlock(Api.World.GetBlock(Block.CodeWithVariant("state", "unlit")).BlockId, Pos);
+                MarkDirty(true);
+            }
         }
 
 
@@ -475,13 +496,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         {
             stack.Collectible.SetTemperature(Api.World, stack, value);
         }
-    }
-
-    public void igniteFuel()
-    {
-        IsBurning = true;
-
-        energyStorage.modifyEnergyStored(-15);
     }
 
 
