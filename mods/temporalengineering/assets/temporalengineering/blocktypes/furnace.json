@@ -2,7 +2,6 @@
   "code": "furnace",
   "class": "BlockFurnace",
   "entityClass": "BlockEntityFurnace",
-  //"entityBehaviors": [ { "name": "BEBehaviorWatermillRotor" } ],
   "behaviors": [
     { "name": "Container" },
     {
@@ -72,12 +71,6 @@
   "sideopaque": {
     "all": false
   },
-  //"drops": [
-  //  {
-  //    "type": "block",
-  //    "code": "windmillrotor-north"
-  //  }
-  //],
   "resistance": 3.5,
   "lightAbsorption": 0,
   "lightHsvByType": {
@@ -85,9 +78,7 @@
     "*-lit-*": [ 7, 7, 11 ]
   },
   "sounds": {
-    "walk": "game:walk/stone",
-    "place": "game:block/stone",
-    "break": "game:block/stone"
+    "walk": "game:walk/stone"
   },
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldTpUseAnimation": "twohandplaceblock"

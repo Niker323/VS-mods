@@ -45,6 +45,12 @@
 			"states": [ "input", "output", "none" ]
 		}
 	],
+	//"drops": [
+	//	{
+	//		"type": "block",
+	//		"code": "relay-off-north-input-input-input-input-input-input"
+	//	}
+	//],
 	"creativeinventory": {
 		"general": [ "*-off-north-input-input-input-input-input-input" ],
 		"temporalengineering": [ "*-off-north-input-input-input-input-input-input" ]
@@ -53,26 +59,21 @@
 	"shapeByType": {
 		"*-north-*": {
 			"base": "block/relay/relay-{state}-{side}"
-			//"rotateY": 180
 		},
 		"*-east-*": {
 			"base": "block/relay/relay-{state}-{side}"
-			//"rotateY": 90
 		},
 		"*-south-*": {
 			"base": "block/relay/relay-{state}-{side}"
 		},
 		"*-west-*": {
 			"base": "block/relay/relay-{state}-{side}"
-			//"rotateY": 270
 		},
 		"*-up-*": {
 			"base": "block/relay/relay-{state}-{side}"
-			//"rotateX": 270
 		},
 		"*-down-*": {
 			"base": "block/relay/relay-{state}-{side}"
-			//"rotateX": 90
 		}
 	},
 	"textures": {

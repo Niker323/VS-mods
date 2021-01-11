@@ -14,103 +14,30 @@ using Vintagestory.GameContent;
 
 public class BlockFurnace : Block
 {
-    //public bool IsExtinct;
-
-    //Vec3f[] basePos;
-
     public override void OnLoaded(ICoreAPI api)
     {
         base.OnLoaded(api);
-    }
-
-
-    public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
-    {
-        ItemStack stack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-
-        BlockEntityFirepit bef = world.BlockAccessor.GetBlockEntity(blockSel.Position) as BlockEntityFirepit;
-
-        if (bef != null && stack != null && stack.Block != null && stack.Block.HasBehavior<BlockBehaviorCanIgnite>())
-        {
-            return false;
-        }
-
-        if (bef != null && stack != null && byPlayer.Entity.Controls.Sneak)
-        {
-            if (stack.Collectible.CombustibleProps != null && stack.Collectible.CombustibleProps.MeltingPoint > 0)
-            {
-                ItemStackMoveOperation op = new ItemStackMoveOperation(world, EnumMouseButton.Button1, 0, EnumMergePriority.DirectMerge, 1);
-                byPlayer.InventoryManager.ActiveHotbarSlot.TryPutInto(bef.inputSlot, ref op);
-                if (op.MovedQuantity > 0)
-                {
-                    (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemInteract);
-                    return true;
-                }
-            }
-
-            //if (stack.Collectible.CombustibleProps != null && stack.Collectible.CombustibleProps.BurnTemperature > 0)
-            //{
-            //    ItemStackMoveOperation op = new ItemStackMoveOperation(world, EnumMouseButton.Button1, 0, EnumMergePriority.DirectMerge, 1);
-            //    byPlayer.InventoryManager.ActiveHotbarSlot.TryPutInto(bef.fuelSlot, ref op);
-            //    if (op.MovedQuantity > 0)
-            //    {
-            //        (byPlayer as IClientPlayer).TriggerFpAnimation(EnumHandInteract.HeldItemInteract);
-            //        return true;
-            //    }
-            //}
-        }
-
-        //if (stack.Collectible.Attributes.IsTrue("mealContainer") == true)
-        //{
-        //    ItemSlot potSlot = null;
-        //    if (bef.inputStack.Collectible is BlockCookedContainer)
-        //    {
-        //        potSlot = bef.inputSlot;
-        //    }
-        //    if (bef.outputStack.Collectible is BlockCookedContainer)
-        //    {
-        //        potSlot = bef.outputSlot;
-        //    }
-
-        //    if (potSlot != null)
-        //    {
-        //        BlockCookedContainer blockPot = potSlot.Itemstack.Collectible as BlockCookedContainer;
-        //        ItemSlot targetSlot = byPlayer.InventoryManager.ActiveHotbarSlot;
-        //        if (byPlayer.InventoryManager.ActiveHotbarSlot.StackSize > 1)
-        //        {
-        //            targetSlot = new DummySlot(targetSlot.TakeOut(1));
-        //            byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
-        //            blockPot.ServeIntoBowlStack(targetSlot, potSlot, world);
-        //            if (!byPlayer.InventoryManager.TryGiveItemstack(targetSlot.Itemstack, true))
-        //            {
-        //                world.SpawnItemEntity(targetSlot.Itemstack, byPlayer.Entity.ServerPos.XYZ);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            blockPot.ServeIntoBowlStack(targetSlot, potSlot, world);
-        //        }
-
-        //    }
-
-        //    return true;
-        //}
-
-
-
-        return base.OnBlockInteractStart(world, byPlayer, blockSel);
     }
 
     public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
     {
         return true;
     }
+
+    public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+    {
+        return new ItemStack[] { new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:furnace-unlit-south"))) };
+    }
+
+    public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
+    {
+        return new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:furnace-unlit-south")));
+    }
 }
 
-public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, IHeatSource
+public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage, IHeatSource
 {
     internal InventorySmelting inventory;
-
 
     // Temperature before the half second tick
     public float prevFurnaceTemperature = 20;
@@ -124,12 +51,8 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
     // For how long the ore has been cooking
     public float inputStackCookingTime;
 
-
     GuiDialogBlockEntityFurnace clientDialog;
     bool clientSidePrevBurning;
-
-    //FirepitContentsRenderer renderer;
-
 
     public FluxStorage energyStorage;
 
@@ -194,15 +117,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
 
         RegisterGameTickListener(OnBurnTick, 50);
         RegisterGameTickListener(On500msTick, 500);
-
-        //if (api is ICoreClientAPI)
-        //{
-        //    renderer = new FirepitContentsRenderer(api as ICoreClientAPI, Pos);
-
-        //    (api as ICoreClientAPI).Event.RegisterRenderer(renderer, EnumRenderStage.Opaque, "firepit");
-
-        //    UpdateRenderer();
-        //}
     }
 
     public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
@@ -224,7 +138,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
     {
         Block = Api.World.BlockAccessor.GetBlock(Pos);
 
-        //UpdateRenderer();
         MarkDirty(Api.Side == EnumAppSide.Server); // Save useless triple-remesh by only letting the server decide when to redraw
 
         if (Api is ICoreClientAPI && clientDialog != null)
@@ -283,7 +196,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
             smeltItems();
         }
 
-        // Furnace is not burning and can burn: Ignite the fuel
         if (energyStorage.getEnergyStored() >= 15)
         {
             energyStorage.modifyEnergyStored(-15);
@@ -424,10 +336,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
     }
 
 
-
-
-
-
     public float InputStackTemp
     {
         get
@@ -498,18 +406,10 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         }
     }
 
-
-    //public void setBlockState(string state)
-    //{
-    //    AssetLocation loc = Block.CodeWithVariant("burnstate", state);
-    //    Block block = Api.World.GetBlock(loc);
-    //    if (block == null) return;
-
-    //    Api.World.BlockAccessor.ExchangeBlock(block.Id, Pos);
-    //    this.Block = block;
-    //}
-
-
+    public float GetHeatStrength(IWorldAccessor world, BlockPos heatSourcePos, BlockPos heatReceiverPos)
+    {
+        return IsBurning ? 5 : 0;
+    }
 
     public bool canHeatInput()
     {
@@ -590,22 +490,18 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
 
 
         furnaceTemperature = tree.GetFloat("furnaceTemperature");
-        //maxTemperature = tree.GetInt("maxTemperature");
         inputStackCookingTime = tree.GetFloat("oreCookingTime");
 
         if (Api != null)
         {
             if (Api.Side == EnumAppSide.Client)
             {
-                //UpdateRenderer();
-
                 if (clientDialog != null) SetDialogValues(clientDialog.Attributes);
             }
 
 
             if (Api.Side == EnumAppSide.Client && clientSidePrevBurning != IsBurning)
             {
-                //ToggleAmbientSounds(IsBurning);
                 clientSidePrevBurning = IsBurning;
                 MarkDirty(true);
             }
@@ -617,47 +513,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         }
         energyStorage.setEnergy(tree.GetInt("energy", 0));
     }
-
-
-    //void UpdateRenderer()
-    //{
-    //    if (renderer == null) return;
-
-    //    ItemStack contentStack = inputStack == null ? outputStack : inputStack;
-
-    //    bool useOldRenderer =
-    //        renderer.ContentStack != null &&
-    //        renderer.contentStackRenderer != null &&
-    //        contentStack.Collectible is IInFirepitRendererSupplier &&
-    //        renderer.ContentStack.Equals(Api.World, contentStack, GlobalConstants.IgnoredStackAttributes)
-    //    ;
-
-    //    if (useOldRenderer) return; // Otherwise the cooking sounds restarts all the time
-
-    //    //renderer.contentStackRenderer.Dispose();
-    //    //renderer.contentStackRenderer = null;
-
-    //    //if (contentStack?.Collectible is IInFirepitRendererSupplier)
-    //    //{
-    //    //    IInFirepitRenderer childrenderer = (contentStack?.Collectible as IInFirepitRendererSupplier).GetRendererWhenInFirepit(contentStack, this, contentStack == outputStack);
-    //    //    if (childrenderer != null)
-    //    //    {
-    //    //        renderer.SetChildRenderer(contentStack, childrenderer);
-    //    //        return;
-    //    //    }
-    //    //}
-
-    //    //InFirePitProps props = GetRenderProps(contentStack);
-    //    //if (contentStack.Collectible != null && !(contentStack.Collectible is IInFirepitMeshSupplier) && props != null)
-    //    //{
-    //    //    renderer.SetContents(contentStack, props.Transform);
-    //    //}
-    //    //else
-    //    //{
-    //        renderer.SetContents(null, null);
-    //    //}
-    //}
-
 
     void SetDialogValues(ITreeAttribute dialogTree)
     {
@@ -683,9 +538,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         dialogTree.SetInt("quantityCookingSlots", inventory.CookingSlots.Length);
     }
 
-
-
-
     public override void ToTreeAttributes(ITreeAttribute tree)
     {
         base.ToTreeAttributes(tree);
@@ -694,7 +546,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         tree["inventory"] = invtree;
 
         tree.SetFloat("furnaceTemperature", furnaceTemperature);
-        //tree.SetInt("maxTemperature", maxTemperature);
         tree.SetFloat("oreCookingTime", inputStackCookingTime);
 
         if (energyStorage != null)
@@ -703,15 +554,9 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
         }
     }
 
-
-
-
     public override void OnBlockRemoved()
     {
         base.OnBlockRemoved();
-
-        //renderer.Dispose();
-        //renderer = null;
 
         if (clientDialog != null)
         {
@@ -783,7 +628,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
                     clientDialog.TryOpen();
 
                 }
-
             }
         }
 
@@ -905,127 +749,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage//, 
             }
         }
     }
-
-    //public EnumFirepitModel CurrentModel { get; private set; }
-
-    //public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tesselator)
-    //{
-    //    if (Block == null || Block.Code.Path.Contains("construct")) return false;
-
-
-    //    ItemStack contentStack = inputStack == null ? outputStack : inputStack;
-    //    MeshData contentmesh = getContentMesh(contentStack, tesselator);
-    //    if (contentmesh != null)
-    //    {
-    //        mesher.AddMeshData(contentmesh);
-    //    }
-
-    //    //mesher.AddMeshData(getOrCreateMesh(burnState, contentState));
-
-    //    return true;
-    //}
-
-    //private MeshData getContentMesh(ItemStack contentStack, ITesselatorAPI tesselator)
-    //{
-    //    CurrentModel = EnumFirepitModel.Normal;
-
-    //    if (contentStack == null) return null;
-
-    //    if (contentStack.Collectible is IInFirepitMeshSupplier)
-    //    {
-    //        EnumFirepitModel model = EnumFirepitModel.Normal;
-    //        MeshData mesh = (contentStack.Collectible as IInFirepitMeshSupplier).GetMeshWhenInFirepit(contentStack, Api.World, Pos, ref model);
-    //        this.CurrentModel = model;
-
-    //        if (mesh != null)
-    //        {
-    //            return mesh;
-    //        }
-
-    //    }
-
-    //    //if (contentStack.Collectible is IInFirepitRendererSupplier)
-    //    //{
-    //    //    EnumFirepitModel model = (contentStack.Collectible as IInFirepitRendererSupplier).GetDesiredFirepitModel(contentStack, this, contentStack == outputStack);
-    //    //    this.CurrentModel = model;
-    //    //    return null;
-    //    //}
-
-    //    //InFirePitProps renderProps = GetRenderProps(contentStack);
-
-    //    //if (renderProps != null)
-    //    //{
-    //    //    this.CurrentModel = renderProps.UseFirepitModel;
-
-    //    //    if (contentStack.Class != EnumItemClass.Item)
-    //    //    {
-    //    //        MeshData ingredientMesh;
-    //    //        tesselator.TesselateBlock(contentStack.Block, out ingredientMesh);
-
-    //    //        ingredientMesh.ModelTransform(renderProps.Transform);
-
-    //    //        // Lower by 1 voxel if extinct
-    //    //        if (!IsBurning && renderProps.UseFirepitModel != EnumFirepitModel.Spit) ingredientMesh.Translate(0, -1 / 16f, 0);
-
-    //    //        return ingredientMesh;
-    //    //    }
-
-    //    //    return null;
-    //    //}
-    //    //else
-    //    //{
-    //    //    if (renderer.RequireSpit)
-    //    //    {
-    //    //        this.CurrentModel = EnumFirepitModel.Spit;
-    //    //    }
-    //    return null; // Mesh drawing is handled by the FirepitContentsRenderer
-    //    //}
-
-    //}
-
-    //public override void OnBlockUnloaded()
-    //{
-    //    base.OnBlockUnloaded();
-
-    //    renderer.Dispose();
-    //}
-
-    //InFirePitProps GetRenderProps(ItemStack contentStack)
-    //{
-    //    if (contentStack.ItemAttributes.KeyExists("inFirePitProps") == true)
-    //    {
-    //        InFirePitProps props = contentStack.ItemAttributes["inFirePitProps"].AsObject<InFirePitProps>();
-    //        props.Transform.EnsureDefaultValues();
-    //        return props;
-    //    }
-    //    return null;
-    //}
-
-
-    //public MeshData getOrCreateMesh(string burnstate, string contentstate)
-    //{
-    //    Dictionary<string, MeshData> Meshes = ObjectCacheUtil.GetOrCreate(Api, "firepit-meshes", () => new Dictionary<string, MeshData>());
-
-    //    string key = burnstate + "-" + contentstate;
-    //    MeshData meshdata;
-    //    if (!Meshes.TryGetValue(key, out meshdata))
-    //    {
-    //        Block block = Api.World.BlockAccessor.GetBlock(Pos);
-    //        if (block.BlockId == 0) return null;
-
-    //        MeshData[] meshes = new MeshData[17];
-    //        ITesselatorAPI mesher = ((ICoreClientAPI)Api).Tesselator;
-
-    //        mesher.TesselateShape(block, Api.Assets.TryGet("shapes/block/wood/firepit/" + key + ".json").ToObject<Shape>(), out meshdata);
-    //    }
-
-    //    return meshdata;
-    //}
-
-    //public float GetHeatStrength(IWorldAccessor world, BlockPos heatSourcePos, BlockPos heatReceiverPos)
-    //{
-    //    return IsBurning ? 10 : 0;
-    //}
 }
 
 public class GuiDialogBlockEntityFurnace : GuiDialogBlockEntity

@@ -204,4 +204,14 @@ public class BlockTFRelay : BlockSideconfigInteractions
     {
         return blockFace != face;
     }
+
+    public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+    {
+        return new ItemStack[] { new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:relay-off-north-input-input-input-input-input-input"))) };
+    }
+
+    public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
+    {
+        return new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:relay-off-north-input-input-input-input-input-input")));
+    }
 }
