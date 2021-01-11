@@ -32,9 +32,9 @@ public class BETFRelay : BlockEntity, IFluxStorage, IIOEnergySideConfig
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(getTransferLimit(), getTransferLimit(), getTransferLimit());
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "transfer", 10000), MyMiniLib.GetAttributeInt(Block, "transfer", 10000), MyMiniLib.GetAttributeInt(Block, "transfer", 10000));
         }
-        energyStorage.setEnergy(tree.GetInt("energy", 0));
+        energyStorage.setEnergy(tree.GetFloat("energy"));
         state = tree.GetBool("state", false);
     }
 
@@ -44,7 +44,7 @@ public class BETFRelay : BlockEntity, IFluxStorage, IIOEnergySideConfig
 
         if (energyStorage != null)
         {
-            tree.SetInt("energy", energyStorage.getEnergyStored());
+            tree.SetFloat("energy", energyStorage.getEnergyStored());
         }
         tree.SetBool("state", state);
     }
@@ -54,17 +54,15 @@ public class BETFRelay : BlockEntity, IFluxStorage, IIOEnergySideConfig
         base.Initialize(api);
         Api = api;
         face = BlockFacing.FromCode(Block.Variant["side"]);
-        //Debug.WriteLine("Initialize");
-        //Debug.WriteLine(api is ICoreServerAPI);
 
         if (api.World.Side == EnumAppSide.Server)
         {
-            RegisterGameTickListener(tick, 50);
+            RegisterGameTickListener(tick, 250);
         }
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(getTransferLimit(), getTransferLimit(), getTransferLimit());
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "transfer", 10000), MyMiniLib.GetAttributeInt(Block, "transfer", 10000), MyMiniLib.GetAttributeInt(Block, "transfer", 10000));
         }
         if (sideConfig.Count == 0)
         {
@@ -97,27 +95,27 @@ public class BETFRelay : BlockEntity, IFluxStorage, IIOEnergySideConfig
         if (state)
         {
             foreach (BlockFacing f in BlockFacing.ALLFACES)
-                transferEnergy(f);
+                transferEnergy(f, dt);
             MarkDirty();
         }
     }
 
-    protected void transferEnergy(BlockFacing side)
+    protected void transferEnergy(BlockFacing side, float dt)
     {
         if (sideConfig[side] != IOEnergySideConfig.OUTPUT) return;
         BlockPos outPos = Pos.Copy().Offset(side);
         BlockEntity tileEntity = Api.World.BlockAccessor.GetBlockEntity(outPos);
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
-        int eout = Math.Min(getTransferLimit(), energyStorage.getEnergyStored());
-        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false));
+        float eout = Math.Min(MyMiniLib.GetAttributeInt(Block, "transfer", 10000) * dt, energyStorage.getEnergyStored() * dt);
+        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false, dt));
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
         if (from == null || sideConfig[from] == IOEnergySideConfig.INPUT)
         {
-            return energyStorage.receiveEnergy(Math.Min(getTransferLimit(), maxReceive), simulate);
+            return energyStorage.receiveEnergy(Math.Min(MyMiniLib.GetAttributeInt(Block, "transfer", 10000) * dt, maxReceive), simulate, dt);
         }
         return 0;
     }
@@ -161,15 +159,6 @@ public class BETFRelay : BlockEntity, IFluxStorage, IIOEnergySideConfig
 
         MarkDirty(true);
         return true;
-    }
-
-    public int getTransferLimit()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["transfer"] != null)
-        {
-            return Block.Attributes["transfer"].AsInt();
-        }
-        return 1000;
     }
 
     public FluxStorage GetFluxStorage()

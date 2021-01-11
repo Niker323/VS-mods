@@ -78,41 +78,6 @@ public class BlockTFEngine : BlockMPBase, IMPPowered
         return ok;
     }
 
-    //public override void OnBlockRemoved(IWorldAccessor world, BlockPos pos)
-    //{
-    //    base.OnBlockRemoved(world, pos);
-    //    BlockPos tmpPos = new BlockPos();
-
-    //    for (int d1 = -1; d1 <= 1; d1++)
-    //    {
-    //        for (int d2 = -1; d2 <= 1; d2++)
-    //        {
-    //            if (d1 == 0 && d2 == 0) continue;
-    //            if (powerOutFacing == BlockFacing.EAST || powerOutFacing == BlockFacing.WEST)
-    //            {
-    //                tmpPos.Set(pos.X, pos.Y + d1, pos.Z + d2);
-    //            }
-    //            else
-    //            {
-    //                tmpPos.Set(pos.X + d2, pos.Y + d1, pos.Z);
-    //            }
-
-    //            //Destroy any fake blocks; revert small gears to their normal peg gear type
-    //            BEMPMultiblockBase be = world.BlockAccessor.GetBlockEntity(tmpPos) as BEMPMultiblockBase;
-    //            if (be != null && pos.Equals(be.Principal))
-    //            {
-    //                be.Principal = null;  //signal to BlockMPMultiblockWood that it can be broken normally without triggering this in a loop
-    //                world.BlockAccessor.SetBlock(0, tmpPos);
-    //            }
-    //            else
-    //            {
-    //                //BlockAngledGears smallgear = world.BlockAccessor.GetBlock(tmpPos) as BlockAngledGears;
-    //                //if (smallgear != null) smallgear.ToPegGear(world, tmpPos);
-    //            }
-    //        }
-    //    }
-    //}
-
     public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
     {
         return true;
@@ -135,15 +100,15 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 1000, 0);
+            energyStorage = new FluxStorage(10000, 10000, 0);
         }
 
-        RegisterGameTickListener(OnTick, 50);
+        RegisterGameTickListener(OnTick, 250);
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
-        return energyStorage.receiveEnergy(Math.Min(1000, maxReceive), simulate);
+        return energyStorage.receiveEnergy(Math.Min(energyStorage.getLimitReceive() * dt, maxReceive), simulate, dt);
     }
 
     public FluxStorage GetFluxStorage()
@@ -164,9 +129,9 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
             return;
         }
 
-        int res = Math.Min(100, energyStorage.getEnergyStored());
+        float res = Math.Min(1000 * dt, energyStorage.getEnergyStored() * dt);
         energyStorage.modifyEnergyStored(-res);
-        ((BEBehaviorTFEngine)Behaviors[0]).speed = res;
+        ((BEBehaviorTFEngine)Behaviors[0]).speed = res / (1000 * dt);
     }
 
     #region Events
@@ -177,9 +142,9 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 1000, 0);
+            energyStorage = new FluxStorage(10000, 10000, 0);
         }
-        energyStorage.setEnergy(tree.GetInt("energy", 0));
+        energyStorage.setEnergy(tree.GetFloat("energy", 0));
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -188,7 +153,7 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
 
         if (energyStorage != null)
         {
-            tree.SetInt("energy", energyStorage.getEnergyStored());
+            tree.SetFloat("energy", energyStorage.getEnergyStored());
         }
     }
 
@@ -205,7 +170,7 @@ public class BEBehaviorTFEngine : BEBehaviorMPRotor
 {
     float rotateY = 0f;
     float rotateZ = 0f;
-    public int speed = 0;
+    public float speed = 0;
 
     protected override float Resistance
     {
@@ -227,7 +192,7 @@ public class BEBehaviorTFEngine : BEBehaviorMPRotor
     {
         get
         {
-            return 0.01f * speed;
+            return 1 * speed;
         }
     }
 
@@ -235,7 +200,7 @@ public class BEBehaviorTFEngine : BEBehaviorMPRotor
     {
         get
         {
-            return 0.01f * speed;
+            return 1 * speed;
         }
     }
 

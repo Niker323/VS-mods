@@ -8,6 +8,11 @@
   //],
   "behaviors": [ { "name": "HorizontalOrientable" } ],
   "renderpass": "OpaqueNoCull",
+  "attributes": {
+    "storage": 10000,
+    "input": 1000,
+    "output": 1000
+  },
   //"attributes": {
   //  "handbook": {
   //    "include": true,
@@ -58,13 +63,7 @@
   "sideopaque": {
     "all": false
   },
-  //"drops": [
-  //  {
-  //    "type": "block",
-  //    "code": "windmillrotor-north"
-  //  }
-  //],
-  "replaceable": 999,
+  //"replaceable": 999,
   "resistance": 1.5,
   "lightAbsorption": 0
   //"sounds": {

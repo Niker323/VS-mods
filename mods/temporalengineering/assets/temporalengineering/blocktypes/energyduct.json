@@ -3,6 +3,9 @@
 	"blockmaterial": "stone",
 	"class": "BlockEnergyDuct",
 	"entityclass": "BlockEntityEnergyDuct",
+	"attributes": {
+		"transfer": 1000
+	},
 	"creativeinventory": {
 		"general": [ "*-ew" ],
 		"temporalengineering": [ "*-ew" ]
@@ -1650,11 +1653,6 @@
 	//	"up": { "base": "block/capacitor/capacitor-{type}-{up}" },
 	//	"down": { "base": "block/capacitor/capacitor-{type}-{down}" }
 	//},
-	"attributesByType": {
-		"*": {
-			"transfer": 1000
-		}
-	},
 	//"sounds": {
 	//	"place": "game:block/stone",
 	//	"break": "game:block/stone"

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
@@ -53,7 +54,7 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 100, 100);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), MyMiniLib.GetAttributeInt(Block, "output", 1000));
         }
 
         inventory.LateInitialize("charger-" + Pos.ToString(), api);
@@ -64,14 +65,14 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
             loadToolMeshes();
         }
 
-        RegisterGameTickListener(OnTick, 50);
+        RegisterGameTickListener(OnTick, 250);
     }
 
     private void OnTick(float dt)
     {
         if (inventory[0]?.Itemstack?.Item is IFluxStorageItem)
         {
-            energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Item).receiveEnergy(inventory[0].Itemstack, energyStorage.getLimitExtract()));
+            energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Item).receiveEnergy(inventory[0].Itemstack, (int)(energyStorage.getLimitExtract() * dt)));
         }
         MarkDirty();
     }
@@ -240,9 +241,9 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 100, 100);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), MyMiniLib.GetAttributeInt(Block, "output", 1000));
         }
-        energyStorage.setEnergy(tree.GetInt("energy", 0));
+        energyStorage.setEnergy(tree.GetFloat("energy"));
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -254,7 +255,7 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
 
         if (energyStorage != null)
         {
-            tree.SetInt("energy", energyStorage.getEnergyStored());
+            tree.SetFloat("energy", energyStorage.getEnergyStored());
         }
     }
 
@@ -321,9 +322,9 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
         return energyStorage;
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
-        return energyStorage.receiveEnergy(maxReceive, simulate);
+        return energyStorage.receiveEnergy(Math.Min(energyStorage.getLimitReceive() * dt, maxReceive), simulate, dt);
     }
 
     public bool CanWireConnect(BlockFacing side)

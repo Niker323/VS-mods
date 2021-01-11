@@ -182,13 +182,13 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
 
         if (api.Side.IsServer())
         {
-            RegisterGameTickListener(OnCommonTick, 50);
+            RegisterGameTickListener(OnCommonTick, 250);
         }
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
-        return energyStorage.receiveEnergy(Math.Min(1000, maxReceive), simulate);
+        return energyStorage.receiveEnergy(Math.Min(energyStorage.getLimitReceive() * dt, maxReceive), simulate, dt);
     }
 
     public FluxStorage GetFluxStorage()
@@ -258,9 +258,9 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
     Vec3d tmpPos = new Vec3d();
     private void OnCommonTick(float dt)
     {
-        if (energyStorage.getEnergyStored() >= 90)
+        if (energyStorage.getEnergyStored() >= 500 * dt)
         {
-            energyStorage.modifyEnergyStored(-90);
+            energyStorage.modifyEnergyStored(-500 * dt);
             if (burning == false)
             {
                 burning = true;
@@ -500,7 +500,7 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
         {
             energyStorage = new FluxStorage(10000, 1000, 0);
         }
-        energyStorage.setEnergy(tree.GetInt("energy", 0));
+        energyStorage.setEnergy(tree.GetFloat("energy"));
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -513,7 +513,7 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
 
         if (energyStorage != null)
         {
-            tree.SetInt("energy", energyStorage.getEnergyStored());
+            tree.SetFloat("energy", energyStorage.getEnergyStored());
         }
     }
 

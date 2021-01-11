@@ -4,6 +4,9 @@
 	"class": "BlockConnector",
 	"entityclass": "BlockEntityConnector",
 	"renderpass": "OpaqueNoCull",
+	"attributes": {
+		"transfer": 500
+	},
 	"creativeinventory": {
 		"general": [ "*-down" ],
 		"temporalengineering": [ "*-down" ]
@@ -18,12 +21,6 @@
 		"copper": { "base": "game:block/metal/ingot/copper" },
 		"ceramic": { "base": "game:block/clay/ceramic" }
 	},
-	//"drops": [
-	//	{
-	//		"type": "block",
-	//		"code": "energyduct-ew"
-	//	}
-	//],
 	"shapeByType": {
 		"*-north": {
 			"base": "block/connector",
@@ -124,17 +121,12 @@
 	},
 	"resistance": 3.5,
 	"lightAbsorption": 0,
-	"attributesByType": {
-		"*": {
-			"transfer": 100
-		}
-	},
 	"sidesolid": {
 		"all": false
 	},
 	"sideopaque": {
 		"all": false
-	},
+	}
 	//"sounds": {
 	//	"walk": "game:walk/stone",
 	//	"place": "game:block/stone",

@@ -11,6 +11,9 @@
 			//}
 		}
 	],
+	"attributes": {
+		"transfer": 10000
+	},
 	"variantgroups": [
 		{
 			"code": "state",

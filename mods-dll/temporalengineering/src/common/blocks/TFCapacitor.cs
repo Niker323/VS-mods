@@ -30,9 +30,9 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(getMaxStorage(), getMaxInput(), getMaxOutput());
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), MyMiniLib.GetAttributeInt(Block, "output", 1000));
         }
-        energyStorage.setEnergy(tree.GetInt("energy", 0));
+        energyStorage.setEnergy(tree.GetFloat("energy"));
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -41,7 +41,7 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
 
         if (energyStorage != null)
         {
-            tree.SetInt("energy", energyStorage.getEnergyStored());
+            tree.SetFloat("energy", energyStorage.getEnergyStored());
         }
     }
 
@@ -49,17 +49,15 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
     {
         base.Initialize(api);
         Api = api;
-        //Debug.WriteLine("Initialize");
-        //Debug.WriteLine(api is ICoreServerAPI);
 
         if (api.World.Side == EnumAppSide.Server)
         {
-            RegisterGameTickListener(tick, 50);
+            RegisterGameTickListener(tick, 100);
         }
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(getMaxStorage(), getMaxInput(), getMaxOutput());
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), MyMiniLib.GetAttributeInt(Block, "output", 1000));
         }
         if (sideConfig.Count == 0)
         {
@@ -89,26 +87,26 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
     private void tick(float dt)
     {
         foreach (BlockFacing f in BlockFacing.ALLFACES)
-            transferEnergy(f);
+            transferEnergy(f, dt);
         MarkDirty();
     }
 
-    protected void transferEnergy(BlockFacing side)
+    protected void transferEnergy(BlockFacing side, float dt)
     {
         if (sideConfig[side] != IOEnergySideConfig.OUTPUT) return;
         BlockPos outPos = Pos.Copy().Offset(side);
         BlockEntity tileEntity = Api.World.BlockAccessor.GetBlockEntity(outPos);
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
-        int eout = Math.Min(getMaxOutput(), energyStorage.getEnergyStored());
-        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false));
+        float eout = Math.Min(energyStorage.getLimitExtract() * dt, energyStorage.getEnergyStored() * dt);
+        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false, dt));
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
         if (from == null || sideConfig[from] == IOEnergySideConfig.INPUT)
         {
-            return energyStorage.receiveEnergy(Math.Min(getMaxInput(), maxReceive), simulate);
+            return energyStorage.receiveEnergy(Math.Min(energyStorage.getLimitReceive() * dt, maxReceive), simulate, dt);
         }
         return 0;
     }
@@ -125,51 +123,15 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
 
     public bool toggleSide(BlockFacing side)//, PlayerEntity player
     {
-        //Debug.WriteLine("toggleSide");
-        //Debug.WriteLine(Api is ICoreServerAPI);
         if (Api is ICoreServerAPI)
         {
             sideConfig[side] = sideConfig[side].next();
-
-            //Block block = Api.World.BlockAccessor.GetBlock(Pos);
-            //string[] splitedPath = block.Code.Path.Split('-');
-            //Debug.WriteLine(side.ToString());
-            //Debug.WriteLine(sideConfig[side].toString());
-            //Debug.WriteLine(Block.CodeWithVariant(side.ToString(), sideConfig[side].toString()).Path);
-
 
             Api.World.BlockAccessor.ExchangeBlock(Api.World.GetBlock(Block.CodeWithVariant(side.ToString(), sideConfig[side].toString())).BlockId, Pos);
         }
 
         //MarkDirty();
         return true;
-    }
-
-    public int getMaxStorage()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["storage"] != null)
-        {
-            return Block.Attributes["storage"].AsInt();
-        }
-        return 10000;
-    }
-
-    public int getMaxInput()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["input"] != null)
-        {
-            return Block.Attributes["input"].AsInt();
-        }
-        return 100;
-    }
-
-    public int getMaxOutput()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["output"] != null)
-        {
-            return Block.Attributes["output"].AsInt();
-        }
-        return 100;
     }
 
     public FluxStorage GetFluxStorage()

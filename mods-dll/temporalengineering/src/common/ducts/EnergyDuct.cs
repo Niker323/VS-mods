@@ -9,22 +9,16 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 {
     public EnergyDuctCore core;
     List<BlockFacing> skipList = new List<BlockFacing>();
-    //public override void OnLoaded(ICoreAPI api)
-    //{
-    //    base.OnLoaded(api);
-    //}
 
     public override void Initialize(ICoreAPI api)
     {
         base.Initialize(api);
-        //Debug.WriteLine("Initialize");
-        //Debug.WriteLine(api.World.Side == EnumAppSide.Server);
 
         if (api.World.Side == EnumAppSide.Server)
         {
             InitializeEnergyPoint(api);
 
-            RegisterGameTickListener(tick, 50);
+            RegisterGameTickListener(tick, 250);
         }
     }
 
@@ -42,7 +36,7 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
                     {
                         if (block.core == null)
                         {
-                            core = new EnergyDuctCore(getTransferLimit());
+                            core = new EnergyDuctCore(MyMiniLib.GetAttributeInt(Block, "transfer", 500));
                             core.ducts.Add(this);
                         }
                         else
@@ -62,7 +56,7 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
             }
             if (core == null)
             {
-                core = new EnergyDuctCore(getTransferLimit());
+                core = new EnergyDuctCore(MyMiniLib.GetAttributeInt(Block, "transfer", 500));
                 core.ducts.Add(this);
             }
         }
@@ -71,20 +65,20 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
     private void tick(float dt)
     {
         foreach (BlockFacing f in BlockFacing.ALLFACES)
-            if (!skipList.Contains(f)) transferEnergy(f);
+            if (!skipList.Contains(f)) transferEnergy(f, dt);
         skipList.Clear();
         //MarkDirty();
     }
 
-    protected void transferEnergy(BlockFacing side)
+    protected void transferEnergy(BlockFacing side, float dt)
     {
         BlockPos outPos = Pos.Copy().Offset(side);
         BlockEntity tileEntity = Api.World.BlockAccessor.GetBlockEntity(outPos);
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
         if (tileEntity is IEnergyPoint && ((IEnergyPoint)tileEntity).GetCore() == GetCore()) return;
-        int eout = Math.Min(getTransferLimit(), core.storage.getEnergyStored());
-        eout = ((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false);
+        float eout = Math.Min(MyMiniLib.GetAttributeInt(Block, "transfer", 500) * dt, core.storage.getEnergyStored() * dt);
+        eout = ((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false, dt);
         if (tileEntity is IEnergyPoint && eout > 0)
         {
             ((IEnergyPoint)tileEntity).AddSkipSide(side.Opposite);
@@ -100,15 +94,6 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
         {
             core.OnDuctRemoved(this, Api);
         }
-    }
-
-    public int getTransferLimit()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["transfer"] != null)
-        {
-            return Block.Attributes["transfer"].AsInt();
-        }
-        return 100;
     }
 
     public void AddSkipSide(BlockFacing face)
@@ -131,9 +116,9 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
         return core.storage;
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
-        return core.storage.receiveEnergy(Math.Min(maxReceive, getTransferLimit()), simulate);
+        return core.storage.receiveEnergy(Math.Min(maxReceive, MyMiniLib.GetAttributeInt(Block, "transfer", 500) * dt), simulate, dt);
     }
 
     public bool CanWireConnect(BlockFacing side)
@@ -144,11 +129,6 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 
 public class BlockEnergyDuct : Block
 {
-    //public override void OnLoaded(ICoreAPI api)
-    //{
-    //    base.OnLoaded(api);
-    //}
-
     public string GetOrientations(IWorldAccessor world, BlockPos pos)
     {
         string orientations =

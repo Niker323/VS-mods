@@ -94,6 +94,7 @@
     <Compile Include="src\common\wires\IWirePoint.cs" />
     <Compile Include="src\common\wires\WireClass.cs" />
     <Compile Include="src\common\wires\WirePoint.cs" />
+    <Compile Include="src\MyMiniLib.cs" />
     <Compile Include="src\TemporalEngineeringMod.cs" />
   </ItemGroup>
   <ItemGroup />

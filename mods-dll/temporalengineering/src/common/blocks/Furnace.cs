@@ -46,8 +46,6 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage, IH
     public float furnaceTemperature = 20;
     // Current temperature of the ore (Degree Celsius * deg
     //public float oreTemperature = 20;
-    // Maximum temperature that can be reached with the currently used fuel
-    public int maxTemperature = 1500;
     // For how long the ore has been cooking
     public float inputStackCookingTime;
 
@@ -109,19 +107,19 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage, IH
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 30, 0);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), 0);
         }
 
         inventory.pos = Pos;
         inventory.LateInitialize("smelting-" + Pos.X + "/" + Pos.Y + "/" + Pos.Z, api);
 
-        RegisterGameTickListener(OnBurnTick, 50);
+        RegisterGameTickListener(OnBurnTick, 250);
         RegisterGameTickListener(On500msTick, 500);
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
-        return energyStorage.receiveEnergy(Math.Min(30, maxReceive), simulate);
+        return energyStorage.receiveEnergy(Math.Min(energyStorage.getLimitReceive() * dt, maxReceive), simulate, dt);
     }
 
     public FluxStorage GetFluxStorage()
@@ -171,7 +169,7 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage, IH
         // Furnace is burning: Heat furnace
         if (IsBurning)
         {
-            furnaceTemperature = changeTemperature(furnaceTemperature, maxTemperature, dt);
+            furnaceTemperature = changeTemperature(furnaceTemperature, MyMiniLib.GetAttributeInt(Block, "maxheat", 1300), dt);
         }
 
         // Ore follows furnace temperature
@@ -196,9 +194,10 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage, IH
             smeltItems();
         }
 
-        if (energyStorage.getEnergyStored() >= 15)
+        float consume = MyMiniLib.GetAttributeInt(Block, "consume", 300) * dt;
+        if (energyStorage.getEnergyStored() >= consume)
         {
-            energyStorage.modifyEnergyStored(-15);
+            energyStorage.modifyEnergyStored(-consume);
 
             if (!IsBurning)
             {
@@ -509,16 +508,16 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage, IH
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 30, 0);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), 0);
         }
-        energyStorage.setEnergy(tree.GetInt("energy", 0));
+        energyStorage.setEnergy(tree.GetFloat("energy"));
     }
 
     void SetDialogValues(ITreeAttribute dialogTree)
     {
         dialogTree.SetFloat("furnaceTemperature", furnaceTemperature);
 
-        dialogTree.SetInt("maxTemperature", maxTemperature);
+        dialogTree.SetInt("maxTemperature", MyMiniLib.GetAttributeInt(Block, "maxheat", 1300));
         dialogTree.SetFloat("oreCookingTime", inputStackCookingTime);
 
         if (inputSlot.Itemstack != null)
@@ -550,7 +549,7 @@ public class BlockEntityFurnace : BlockEntityOpenableContainer, IFluxStorage, IH
 
         if (energyStorage != null)
         {
-            tree.SetInt("energy", energyStorage.getEnergyStored());
+            tree.SetFloat("energy", energyStorage.getEnergyStored());
         }
     }
 

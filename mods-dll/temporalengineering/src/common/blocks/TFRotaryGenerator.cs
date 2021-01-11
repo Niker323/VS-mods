@@ -16,8 +16,9 @@ using Vintagestory.GameContent.Mechanics;
 public class TFRotaryGenerator : BlockEntity, IFluxStorage
 {
     public FluxStorage energyStorage;
-    private int generation = 0;
+    private float generation = 0;
     private int maxgenerate;
+    private int maxspeed = 1;
 
     BEBehaviorTFRotaryGenerator pvBh;
 
@@ -36,7 +37,7 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
             dsc.AppendLine(energyStorage.GetFluxStorageInfo());
         }
 
-        dsc.AppendLine(Lang.Get("Generation:") + generation + " TF/T");
+        dsc.AppendLine(Lang.Get("Generation") + ": " + Math.Round(generation) + " TF/s");
     }
 
     public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldForResolving)
@@ -45,12 +46,12 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(getMaxStorage(), getMaxInput(), getMaxOutput());
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), 0, MyMiniLib.GetAttributeInt(Block, "output", 500));
         }
-        energyStorage.setEnergy(tree.GetInt("energy", 0));
+        energyStorage.setEnergy(tree.GetFloat("energy"));
         if (Api != null && Api.World.Side == EnumAppSide.Client)
         {
-            generation = tree.GetInt("gen", 0);
+            generation = tree.GetFloat("gen");
         }
     }
 
@@ -60,11 +61,11 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
 
         if (energyStorage != null)
         {
-            tree.SetInt("energy", energyStorage.getEnergyStored());
+            tree.SetFloat("energy", energyStorage.getEnergyStored());
         }
         if (Api != null && Api.World.Side == EnumAppSide.Server)
         {
-            tree.SetInt("gen", generation);
+            tree.SetFloat("gen", generation);
         }
     }
 
@@ -72,22 +73,21 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
     {
         base.Initialize(api);
         Api = api;
-        //Debug.WriteLine("Initialize");
-        //Debug.WriteLine(api is ICoreServerAPI);
 
         pvBh = GetBehavior<BEBehaviorTFRotaryGenerator>();
 
         if (api.World.Side == EnumAppSide.Server)
         {
-            RegisterGameTickListener(tick, 50);
+            RegisterGameTickListener(tick, 100);
         }
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(getMaxStorage(), getMaxInput(), getMaxOutput());
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), 0, MyMiniLib.GetAttributeInt(Block, "output", 500));
         }
 
-        maxgenerate = getMaxGenerate();
+        maxgenerate = MyMiniLib.GetAttributeInt(Block, "maxgenerate", 200);
+        maxspeed = MyMiniLib.GetAttributeInt(Block, "maxspeed", 5);
 
         Facing = BlockFacing.FromCode(Block.Variant["side"]);
         if (Facing == null) Facing = BlockFacing.NORTH;
@@ -96,20 +96,12 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
     private void tick(float dt)
     {
         foreach (BlockFacing f in BlockFacing.ALLFACES)
-            transferEnergy(f);
+            transferEnergy(f, dt);
 
         if (pvBh != null && pvBh.Network != null)
         {
-            //Debug.WriteLine(pvBh.Network.NetworkResistance);
-            //Debug.WriteLine(pvBh.Network.NetworkTorque);
-            //Debug.WriteLine(pvBh.Network.TotalAvailableTorque);
-            //Debug.WriteLine(pvBh.isRotationReversed());
-            //Debug.WriteLine(pvBh.OutFacingForNetworkDiscovery);
-            //Debug.WriteLine(pvBh.Network.DirectionHasReversed);
-            //Debug.WriteLine(pvBh.Network.TurnDir);//Clockwise
-            float maxspeed = 5f;
-            generation = Math.Min(maxgenerate, Math.Abs((int)Math.Round(maxgenerate * pvBh.Network.Speed * pvBh.GearedRatio / maxspeed)));
-            energyStorage.modifyEnergyStored(generation);
+            generation = Math.Min(maxgenerate, Math.Abs(maxgenerate * pvBh.Network.Speed * pvBh.GearedRatio / maxspeed));
+            energyStorage.modifyEnergyStored(generation * dt);
         }
         else
         {
@@ -118,57 +110,18 @@ public class TFRotaryGenerator : BlockEntity, IFluxStorage
         MarkDirty();
     }
 
-    protected void transferEnergy(BlockFacing side)
+    protected void transferEnergy(BlockFacing side, float dt)
     {
         BlockPos outPos = Pos.Copy().Offset(side);
         BlockEntity tileEntity = Api.World.BlockAccessor.GetBlockEntity(outPos);
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
-        int eout = Math.Min(getMaxOutput(), energyStorage.getEnergyStored());
-        //Debug.WriteLine(Pos);
-        //Debug.WriteLine(tileEntity.GetType().FindInterfaces(typeof(IFluxStorage)));
-        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false));
+        float eout = Math.Min(energyStorage.getLimitExtract() * dt, energyStorage.getEnergyStored() * dt);
+        energyStorage.modifyEnergyStored(-((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false, dt));
     }
 
-    public int scaleStoredEnergyTo(int scale)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
-        return (int)(scale * (energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()));
-    }
-
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
-    {
-        return 0;
-    }
-
-    public int getMaxStorage()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["storage"] != null)
-        {
-            return Block.Attributes["storage"].AsInt();
-        }
-        return 10000;
-    }
-
-    public int getMaxInput()
-    {
-        return 0;
-    }
-
-    public int getMaxOutput()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["output"] != null)
-        {
-            return Block.Attributes["output"].AsInt();
-        }
-        return 100;
-    }
-
-    public int getMaxGenerate()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["maxgenerate"] != null)
-        {
-            return Block.Attributes["maxgenerate"].AsInt();
-        }
         return 0;
     }
 

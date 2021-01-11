@@ -3,6 +3,12 @@
 	"class": "BlockTFRotaryGenerator",
 	"entityclass": "TFRotaryGenerator",
 	"entityBehaviors": [ { "name": "BEBehaviorTFRotaryGenerator" } ],
+	"attributes": {
+		"storage": 10000,
+		"output": 500,
+		"maxgenerate": 200,
+		"maxspeed": 5
+	},
 	"creativeinventory": {
 		"general": [ "*-north" ],
 		"temporalengineering": [ "*-north" ]
@@ -31,13 +37,6 @@
 	},
 	"sideopaque": {
 		"all": false
-	},
-	"attributesByType": {
-		"*": {
-			"storage": 10000,
-			"maxgenerate": 10,
-			"output": 100
-		}
 	},
 	"sounds": {
 		"hit": "game:block/planks",

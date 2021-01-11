@@ -2,7 +2,7 @@
 
 public class FluxStorage
 {
-	protected int energy;
+	protected float energy;
 	protected int capacity;
 	protected int limitReceive;
 	protected int limitExtract;
@@ -47,7 +47,7 @@ public class FluxStorage
 		return limitExtract;
 	}
 
-	public void setEnergy(int energy)
+	public void setEnergy(float energy)
 	{
 		this.energy = energy;
 		if (this.energy > capacity)
@@ -56,7 +56,7 @@ public class FluxStorage
 			this.energy = 0;
 	}
 
-	public void modifyEnergyStored(int energy)
+	public void modifyEnergyStored(float energy)
 	{
 		this.energy += energy;
 		if (this.energy > capacity)
@@ -65,23 +65,23 @@ public class FluxStorage
 			this.energy = 0;
 	}
 
-	public int receiveEnergy(int energy, bool simulate)
+	public float receiveEnergy(float energy, bool simulate, float dt)
 	{
-		int received = Math.Min(capacity - this.energy, Math.Min(this.limitReceive, energy));
+		float received = Math.Min(capacity - this.energy, Math.Min(limitReceive * dt, energy));
 		if (!simulate)
 			this.energy += received;
 		return received;
 	}
 
-	public int extractEnergy(int energy, bool simulate)
+	public float extractEnergy(float energy, bool simulate, float dt)
 	{
-		int extracted = Math.Min(this.energy, Math.Min(this.limitExtract, energy));
+		float extracted = Math.Min(this.energy, Math.Min(limitExtract * dt, energy));
 		if (!simulate)
 			this.energy -= extracted;
 		return extracted;
 	}
 
-	public int getEnergyStored()
+	public float getEnergyStored()
 	{
 		return energy;
 	}
@@ -93,11 +93,11 @@ public class FluxStorage
 
 	public string GetFluxStorageInfo()
 	{
-		return energy.ToString() + "/" + capacity.ToString();
+		return Math.Round(energy).ToString() + "/" + capacity.ToString();
 	}
 
 	public int scaleStoredEnergyTo(int scale)
 	{
-		return (int)(scale * (getEnergyStored() / (float)getMaxEnergyStored()));
+		return (int)(scale * (getEnergyStored() / getMaxEnergyStored()));
 	}
 }

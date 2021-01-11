@@ -22,7 +22,7 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
         {
             InitializeEnergyPoint(api);
 
-            RegisterGameTickListener(tick, 50);
+            RegisterGameTickListener(tick, 250);
         }
     }
 
@@ -39,7 +39,7 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
                     {
                         if (block.core == null)
                         {
-                            core = new EnergyDuctCore(getTransferLimit());
+                            core = new EnergyDuctCore(MyMiniLib.GetAttributeInt(Block, "transfer", 500));
                             core.ducts.Add(this);
                         }
                         else
@@ -59,7 +59,7 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
             }
             if (core == null)
             {
-                core = new EnergyDuctCore(getTransferLimit());
+                core = new EnergyDuctCore(MyMiniLib.GetAttributeInt(Block, "transfer", 500));
                 core.ducts.Add(this);
             }
         }
@@ -67,20 +67,20 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
 
     private void tick(float dt)
     {
-        if (!skipList.Contains(powerOutFacing)) transferEnergy(powerOutFacing);
+        if (!skipList.Contains(powerOutFacing)) transferEnergy(powerOutFacing, dt);
         skipList.Clear();
         //MarkDirty();
     }
 
-    protected void transferEnergy(BlockFacing side)
+    protected void transferEnergy(BlockFacing side, float dt)
     {
         BlockPos outPos = Pos.Copy().Offset(side);
         BlockEntity tileEntity = Api.World.BlockAccessor.GetBlockEntity(outPos);
         if (tileEntity == null) return;
         if (!(tileEntity is IFluxStorage)) return;
         if (tileEntity is IEnergyPoint && ((IEnergyPoint)tileEntity).GetCore() == GetCore()) return;
-        int eout = Math.Min(getTransferLimit(), core.storage.getEnergyStored());
-        eout = ((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false);
+        float eout = Math.Min(MyMiniLib.GetAttributeInt(Block, "transfer", 500) * dt, core.storage.getEnergyStored() * dt);
+        eout = ((IFluxStorage)tileEntity).receiveEnergy(side.Opposite, eout, false, dt);
         if (tileEntity is IEnergyPoint && eout > 0)
         {
             ((IEnergyPoint)tileEntity).AddSkipSide(side.Opposite);
@@ -96,15 +96,6 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
         {
             core.OnDuctRemoved(this, Api);
         }
-    }
-
-    public int getTransferLimit()
-    {
-        if (Block != null && Block.Attributes != null && Block.Attributes["transfer"] != null)
-        {
-            return Block.Attributes["transfer"].AsInt();
-        }
-        return 100;
     }
 
     public void AddSkipSide(BlockFacing face)
@@ -127,9 +118,9 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
         return core.storage;
     }
 
-    public int receiveEnergy(BlockFacing from, int maxReceive, bool simulate)
+    public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
     {
-        if (from == powerOutFacing) return core.storage.receiveEnergy(Math.Min(maxReceive, getTransferLimit()), simulate);
+        if (from == powerOutFacing) return core.storage.receiveEnergy(Math.Min(maxReceive, MyMiniLib.GetAttributeInt(Block, "transfer", 500) * dt), simulate, dt);
         else return 0;
     }
 
