@@ -2,7 +2,6 @@
   "code": "charger",
   "class": "BlockCharger",
   "entityClass": "BlockEntityCharger",
-  //"entityBehaviors": [ { "name": "BEBehaviorWatermillRotor" } ],
   //"behaviors": [
   //  { "name": "Container" }
   //],

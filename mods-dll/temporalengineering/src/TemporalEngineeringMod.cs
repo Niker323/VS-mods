@@ -23,6 +23,7 @@ namespace TemporalEngineering
             api.RegisterBlockClass("BlockTFForge", typeof(BlockTFForge));
             api.RegisterBlockClass("BlockCharger", typeof(BlockTFCharger));
             api.RegisterBlockClass("BlockConnector", typeof(BlockConnector));
+            api.RegisterBlockClass("BlockTFCapacitor", typeof(BlockTFCapacitor));
 
             api.RegisterBlockEntityClass("TFCapacitor", typeof(TFCapacitor));
             api.RegisterBlockEntityClass("TFRotaryGenerator", typeof(TFRotaryGenerator));

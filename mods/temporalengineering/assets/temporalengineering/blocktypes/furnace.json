@@ -34,35 +34,35 @@
   "blockmaterial": "Stone",
   "shapebytype": {
     "*-lit-north": {
-      "base": "block/furnace-lit",
+      "base": "block/furnace/furnace-lit",
       "rotateY": 0
     },
     "*-lit-east": {
-      "base": "block/furnace-lit",
+      "base": "block/furnace/furnace-lit",
       "rotateY": 270
     },
     "*-lit-south": {
-      "base": "block/furnace-lit",
+      "base": "block/furnace/furnace-lit",
       "rotateY": 180
     },
     "*-lit-west": {
-      "base": "block/furnace-lit",
+      "base": "block/furnace/furnace-lit",
       "rotateY": 90
     },
     "*-unlit-north": {
-      "base": "block/furnace-unlit",
+      "base": "block/furnace/furnace-unlit",
       "rotateY": 0
     },
     "*-unlit-east": {
-      "base": "block/furnace-unlit",
+      "base": "block/furnace/furnace-unlit",
       "rotateY": 270
     },
     "*-unlit-south": {
-      "base": "block/furnace-unlit",
+      "base": "block/furnace/furnace-unlit",
       "rotateY": 180
     },
     "*-unlit-west": {
-      "base": "block/furnace-unlit",
+      "base": "block/furnace/furnace-unlit",
       "rotateY": 90
     }
   },

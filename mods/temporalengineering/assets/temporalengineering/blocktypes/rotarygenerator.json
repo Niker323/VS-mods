@@ -19,6 +19,7 @@
 			"states": [ "north", "east", "south", "west", "up", "down" ]
 		}
 	],
+	"lightAbsorption": 0,
 	"resistance": 3.5,
 	"blockmaterial": "Wood",
 	"textures": {

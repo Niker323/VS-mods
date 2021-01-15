@@ -4,7 +4,7 @@
 	"class": "BlockEnergyDuct",
 	"entityclass": "BlockEntityEnergyDuct",
 	"attributes": {
-		"transfer": 1000
+		"transfer": 2000
 	},
 	"creativeinventory": {
 		"general": [ "*-ew" ],
@@ -1645,14 +1645,6 @@
 	},
 	"resistance": 3.5,
 	"lightAbsorption": 0,
-	//"textures": {
-	//	"north": { "base": "block/capacitor/capacitor-{type}-{north}" },
-	//	"east": { "base": "block/capacitor/capacitor-{type}-{east}" },
-	//	"south": { "base": "block/capacitor/capacitor-{type}-{south}" },
-	//	"west": { "base": "block/capacitor/capacitor-{type}-{west}" },
-	//	"up": { "base": "block/capacitor/capacitor-{type}-{up}" },
-	//	"down": { "base": "block/capacitor/capacitor-{type}-{down}" }
-	//},
 	//"sounds": {
 	//	"place": "game:block/stone",
 	//	"break": "game:block/stone"

@@ -119,6 +119,7 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
     TFForgeContentsRenderer renderer;
     ItemStack contents;
     bool burning;
+    int consume = 0;
 
     double lastTickTotalHours;
     ILoadedSound ambientSound;
@@ -165,7 +166,7 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 1000, 0);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), 0);
         }
 
         if (api is ICoreClientAPI)
@@ -177,6 +178,7 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
             RegisterGameTickListener(OnClientTick, 500);
         }
 
+        consume = MyMiniLib.GetAttributeInt(Block, "consume", 500);
 
         wsys = api.ModLoader.GetModSystem<WeatherSystemBase>();
 
@@ -258,9 +260,9 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
     Vec3d tmpPos = new Vec3d();
     private void OnCommonTick(float dt)
     {
-        if (energyStorage.getEnergyStored() >= 500 * dt)
+        if (energyStorage.getEnergyStored() >= consume * dt)
         {
-            energyStorage.modifyEnergyStored(-500 * dt);
+            energyStorage.modifyEnergyStored(-consume * dt);
             if (burning == false)
             {
                 burning = true;
@@ -278,7 +280,7 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
 
         if (burning)
         {
-            double hoursPassed = Api.World.Calendar.TotalHours - lastTickTotalHours;
+            //double hoursPassed = Api.World.Calendar.TotalHours - lastTickTotalHours;
 
             if (contents != null)
             {
@@ -374,30 +376,6 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
         else
         {
             if (slot.Itemstack == null) return false;
-
-            // Add fuel
-            //CombustibleProperties combprops = slot.Itemstack.Collectible.CombustibleProps;
-            //if (combprops != null && combprops.BurnTemperature > 1000)
-            //{
-            //    if (fuelLevel >= 5 / 16f) return false;
-            //    fuelLevel += 1 / 16f;
-
-            //    if (renderer != null)
-            //    {
-            //        renderer.SetContents(contents, burning, false);
-            //    }
-            //    MarkDirty();
-
-            //    if (byPlayer.WorldData.CurrentGameMode != EnumGameMode.Creative)
-            //    {
-            //        slot.TakeOut(1);
-            //        slot.MarkDirty();
-            //    }
-
-
-            //    return true;
-            //}
-
 
             string firstCodePart = slot.Itemstack.Collectible.FirstCodePart();
             bool forgableGeneric = false;
@@ -498,7 +476,7 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 1000, 0);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 1000), 0);
         }
         energyStorage.setEnergy(tree.GetFloat("energy"));
     }
@@ -634,7 +612,7 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
         hetexpos = capi.BlockTextureAtlas.GetPosition(block, "he");
 
         MeshData heMesh;
-        Shape ovshape = capi.Assets.TryGet(new AssetLocation("temporalengineering:shapes/block/heating_element.json")).ToObject<Shape>();
+        Shape ovshape = capi.Assets.TryGet(new AssetLocation("temporalengineering:shapes/block/tfforge/heating_element.json")).ToObject<Shape>();
         capi.Tesselator.TesselateShape(block, ovshape, out heMesh);
 
         for (int i = 0; i < heMesh.Uv.Length; i += 2)
@@ -763,9 +741,6 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
             rpi.RenderMesh(workItemMeshRef);
         }
 
-        //if (fuelLevel > 0)
-        //{
-
         if (burning)
         {
             float[] glowColor = ColorUtil.GetIncandescenceColorAsColor4f(1200);
@@ -781,16 +756,14 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
         prog.ExtraGlow = burning ? 255 : 0;
 
-        // The coal or embers
-        rpi.BindTexture2d(hetexpos.atlasTextureId);//rpi.BindTexture2d(burning ? embertexpos.atlasTextureId : coaltexpos.atlasTextureId);
 
-        prog.ModelMatrix = ModelMat.Identity().Translate(pos.X - camPos.X, pos.Y - camPos.Y, pos.Z - camPos.Z).Values;//prog.ModelMatrix = ModelMat.Identity().Translate(pos.X - camPos.X, pos.Y - camPos.Y + 10 / 16f + fuelLevel * 0.65f, pos.Z - camPos.Z).Values;
+        rpi.BindTexture2d(hetexpos.atlasTextureId);
+
+        prog.ModelMatrix = ModelMat.Identity().Translate(pos.X - camPos.X, pos.Y - camPos.Y, pos.Z - camPos.Z).Values;
         prog.ViewMatrix = rpi.CameraMatrixOriginf;
         prog.ProjectionMatrix = rpi.CurrentProjectionMatrix;
 
-        rpi.RenderMesh(heQuadRef);//rpi.RenderMesh(burning ? emberQuadRef : coalQuadRef);
-
-        //}
+        rpi.RenderMesh(heQuadRef);
 
         prog.Stop();
     }

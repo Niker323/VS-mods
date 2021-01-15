@@ -77,6 +77,11 @@ public class BlockEntityWirePoint : BlockEntity, IWirePoint
         }
     }
 
+    public bool IsConnectedTo(BlockPos point)
+    {
+        return wiresList.ContainsKey(point);
+    }
+
     public override void ToTreeAttributes(ITreeAttribute tree)
     {
         base.ToTreeAttributes(tree);

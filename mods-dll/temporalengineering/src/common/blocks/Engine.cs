@@ -87,6 +87,7 @@ public class BlockTFEngine : BlockMPBase, IMPPowered
 public class BlockEntityTFEngine : BlockEntity, IFluxStorage
 {
     FluxStorage energyStorage;
+    int consume = 0;
 
 
     public BlockEntityTFEngine()
@@ -100,10 +101,15 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 10000, 0);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 10000), 0);
         }
 
-        RegisterGameTickListener(OnTick, 250);
+        consume = MyMiniLib.GetAttributeInt(Block, "consume", 1000);
+
+        if (Api.Side.IsServer())
+        {
+            RegisterGameTickListener(OnServerTick, 250);
+        }
     }
 
     public float receiveEnergy(BlockFacing from, float maxReceive, bool simulate, float dt)
@@ -121,17 +127,11 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
         return true;
     }
 
-    private void OnTick(float dt)
+    private void OnServerTick(float dt)
     {
-        // Only tick on the server and merely sync to client
-        if (Api is ICoreClientAPI)
-        {
-            return;
-        }
-
-        float res = Math.Min(1000 * dt, energyStorage.getEnergyStored() * dt);
+        float res = Math.Min(consume * dt, energyStorage.getEnergyStored());
         energyStorage.modifyEnergyStored(-res);
-        ((BEBehaviorTFEngine)Behaviors[0]).speed = res / (1000 * dt);
+        ((BEBehaviorTFEngine)Behaviors[0]).speed = res / (consume * dt);
     }
 
     #region Events
@@ -142,7 +142,7 @@ public class BlockEntityTFEngine : BlockEntity, IFluxStorage
 
         if (energyStorage == null)
         {
-            energyStorage = new FluxStorage(10000, 10000, 0);
+            energyStorage = new FluxStorage(MyMiniLib.GetAttributeInt(Block, "storage", 10000), MyMiniLib.GetAttributeInt(Block, "input", 10000), 0);
         }
         energyStorage.setEnergy(tree.GetFloat("energy", 0));
     }

@@ -22,8 +22,17 @@ class ItemWire : Item
                 {
                     if (memory != block)
                     {
-                        new WireClass(api, memory, block);
-                        memory = null;
+                        if (!((IWirePoint)memory).IsConnectedTo(block.Pos) && (memory.Pos.ToVec3f() - block.Pos.ToVec3f()).Length() < 16)
+                        {
+                            new WireClass(api, memory, block);
+                            memory = null;
+                            slot.TakeOut(1);
+                            slot.MarkDirty();
+                        }
+                        else
+                        {
+                            //error
+                        }
                     }
                     else
                     {

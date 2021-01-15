@@ -2,19 +2,11 @@
   "code": "tfforge",
   "class": "BlockTFForge",
   "entityClass": "BlockEntityTFForge",
-  //"entityBehaviors": [ { "name": "BEBehaviorTFEngine" } ],
-  //"behaviors": [ { "name": "HorizontalOrientable" } ],
-  //"attributes": {
-  //  "handbook": {
-  //    "groupBy": [ "windmillrotor-*" ]
-  //  }
-  //},
-  //"variantgroups": [
-  //  {
-  //    "code": "side",
-  //    "states": [ "north", "east", "south", "west", "up", "down" ]
-  //  }
-  //],
+  "attributes": {
+    "storage": 10000,
+    "input": 1000,
+    "consume": 500
+  },
   "blockmaterial": "Stone",
   "renderpass": "OpaqueNoCull",
   "creativeinventory": {
@@ -27,7 +19,7 @@
     "he": { "base": "game:block/metal/ingot/iron" }
   },
   "shape": {
-    "base": "block/tfforge"
+    "base": "block/tfforge/tfforge"
   },
   "collisionSelectionBoxes": [
     {
@@ -45,12 +37,6 @@
   "sideopaque": {
     "all": false
   },
-  //"drops": [
-  //  {
-  //    "type": "block",
-  //    "code": "windmillrotor-north"
-  //  }
-  //],
   "replaceable": 500,
   "resistance": 3.5,
   "lightAbsorption": 0,

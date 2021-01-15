@@ -139,3 +139,56 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
         return energyStorage;
     }
 }
+
+public class BlockTFCapacitor : BlockSideconfigInteractions, IFluxStorageItem
+{
+    int maxCapacity = 1;
+
+    public override void OnLoaded(ICoreAPI api)
+    {
+        maxCapacity = MyMiniLib.GetAttributeInt(this, "storage", 1);
+        Durability = 100;
+    }
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(inSlot.Itemstack.Attributes.GetInt("energy", 0) + "/" + maxCapacity);
+    }
+
+    public int receiveEnergy(ItemStack itemstack, int maxReceive)
+    {
+        int energy = itemstack.Attributes.GetInt("energy", 0);
+        int received = Math.Min(maxCapacity - energy, maxReceive);
+        itemstack.Attributes.SetInt("energy", energy + received);
+        int durab = (energy + received) / (maxCapacity / GetDurability(itemstack));
+        itemstack.Attributes.SetInt("durability", durab);
+        return received;
+    }
+
+    public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+    {
+        TFCapacitor be = world.BlockAccessor.GetBlockEntity(pos) as TFCapacitor;
+        ItemStack item = new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:capacitor-"+ FirstCodePart(1) +"-input-input-input-input-input-input")));
+        if (be != null) item.Attributes.SetInt("energy", (int)be.energyStorage?.getEnergyStored());
+        return new ItemStack[] {item};
+    }
+
+    public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
+    {
+        ItemStack item = new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:capacitor-" + FirstCodePart(1) + "-input-input-input-input-input-input")));
+        TFCapacitor be = world.BlockAccessor.GetBlockEntity(pos) as TFCapacitor;
+        if (be != null) item.Attributes.SetInt("energy", (int)be.energyStorage?.getEnergyStored());
+        return item;
+    }
+
+    public override void OnBlockPlaced(IWorldAccessor world, BlockPos blockPos, ItemStack byItemStack = null)
+    {
+        base.OnBlockPlaced(world, blockPos, byItemStack);
+        if (byItemStack != null)
+        {
+            TFCapacitor be = world.BlockAccessor.GetBlockEntity(blockPos) as TFCapacitor;
+            be.energyStorage.setEnergy(byItemStack.Attributes.GetInt("energy", 0));
+        }
+    }
+}

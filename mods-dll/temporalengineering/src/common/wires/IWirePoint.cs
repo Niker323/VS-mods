@@ -7,4 +7,5 @@ public interface IWirePoint
     BlockPos GetBlockPos();
     void AddWire(BlockPos point, WireClass wire);
     void RemoveWire(BlockPos point);
+    bool IsConnectedTo(BlockPos point);
 }

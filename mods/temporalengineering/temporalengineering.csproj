@@ -98,7 +98,7 @@
     <None Include="assets\temporalengineering\blocktypes\tfforge.json" />
     <None Include="assets\temporalengineering\blocktypes\watermill.json" />
     <None Include="assets\temporalengineering\blocktypes\wire.json" />
-    <None Include="assets\temporalengineering\itemtypes\machinecasing.json.d" />
+    <None Include="assets\temporalengineering\itemtypes\machinecasing.json" />
     <None Include="assets\temporalengineering\itemtypes\resource\coil.json" />
     <None Include="assets\temporalengineering\itemtypes\resource\wire.json" />
     <None Include="assets\temporalengineering\itemtypes\tool\tfchisel.json" />

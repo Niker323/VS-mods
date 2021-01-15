@@ -43,6 +43,7 @@ public class WireClass
 
     public void OnPointRemoved(BlockEntity block)
     {
+        block.Api.World.SpawnItemEntity(new ItemStack(block.Api.World.GetItem(new AssetLocation("temporalengineering:wire-copper"))), block.Pos.ToVec3d().Add(0.5, 0.5, 0.5));
         if (block == block1) ((IWirePoint)block2)?.RemoveWire(block1.Pos);
         else ((IWirePoint)block1)?.RemoveWire(block2.Pos);
         api = null;

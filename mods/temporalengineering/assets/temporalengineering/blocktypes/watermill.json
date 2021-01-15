@@ -23,9 +23,27 @@
   "textures": {
     "wood": { "base": "game:block/wood/planks/generic" }
   },
-  "shape": {
-    "base": "block/watermill",
-    "rotateX": 90
+  "shapebytype": {
+    "*-north": {
+      "base": "block/watermill",
+      "rotateX": 90,
+      "rotateZ": 0
+    },
+    "*-east": {
+      "base": "block/watermill",
+      "rotateX": 90,
+      "rotateZ": 90
+    },
+    "*-south": {
+      "base": "block/watermill",
+      "rotateX": 90,
+      "rotateZ": 180
+    },
+    "*-west": {
+      "base": "block/watermill",
+      "rotateX": 90,
+      "rotateZ": 270
+    }
   },
   "sidesolid": {
     "all": false

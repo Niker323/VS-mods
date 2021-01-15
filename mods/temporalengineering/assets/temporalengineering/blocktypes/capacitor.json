@@ -1,7 +1,7 @@
 {
 	"code": "capacitor",
 	"blockmaterial": "stone",
-	"class": "BlockSideconfigInteractions",
+	"class": "BlockTFCapacitor",
 	"entityclass": "TFCapacitor",
 	"attributesByType": {
 		"*-low-*": {
@@ -20,6 +20,7 @@
 			"output": 10000
 		}
 	},
+	"durability": 100,
 	"variantgroups": [
 		{
 			"code": "type",
@@ -80,7 +81,7 @@
 			"base": "block/capacitor/capacitor-{type}",
 			"overlays": [ "block/energy/sides/{down}" ]
 		}
-	},
+	}
 	//"sounds": {
 	//	"walk": "game:walk/stone",
 	//	"place": "game:block/stone",

@@ -64,8 +64,10 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
         {
             loadToolMeshes();
         }
-
-        RegisterGameTickListener(OnTick, 250);
+        else
+        {
+            RegisterGameTickListener(OnTick, 250);
+        }
     }
 
     private void OnTick(float dt)
@@ -73,6 +75,10 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
         if (inventory[0]?.Itemstack?.Item is IFluxStorageItem)
         {
             energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Item).receiveEnergy(inventory[0].Itemstack, (int)(energyStorage.getLimitExtract() * dt)));
+        }
+        else if (inventory[0]?.Itemstack?.Block is IFluxStorageItem)
+        {
+            energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Block).receiveEnergy(inventory[0].Itemstack, (int)(energyStorage.getLimitExtract() * dt)));
         }
         MarkDirty();
     }

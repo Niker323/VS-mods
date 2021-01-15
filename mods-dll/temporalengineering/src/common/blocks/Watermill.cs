@@ -185,7 +185,6 @@ public class BEBehaviorWatermillRotor : BEBehaviorMPRotor
 {
     private int willSpeed = 0;
     BlockFacing face;
-    //bool inverted = false;
 
     protected override float Resistance
     {
@@ -219,6 +218,18 @@ public class BEBehaviorWatermillRotor : BEBehaviorMPRotor
         }
     }
 
+    public override float AngleRad
+    {
+        get
+        {
+            float angle = base.AngleRad;
+
+            bool flip = propagationDir == OutFacingForNetworkDiscovery;
+
+            return flip ? angle : GameMath.TWOPI - angle;
+        }
+    }
+
     public BEBehaviorWatermillRotor(BlockEntity blockentity) : base(blockentity)
     {
 
@@ -227,11 +238,18 @@ public class BEBehaviorWatermillRotor : BEBehaviorMPRotor
     public override void Initialize(ICoreAPI api, JsonObject properties)
     {
         base.Initialize(api, properties);
+
         if (api.Side.IsServer())
         {
             face = BlockFacing.FromCode(Block.Variant["side"]);
+            CheckWater(0);
             Blockentity.RegisterGameTickListener(CheckWater, 1000);
         }
+    }
+
+    public override bool isInvertedNetworkFor(BlockPos pos)
+    {
+        return face != propagationDir;
     }
 
     private void CheckWater(float dt)
@@ -299,65 +317,41 @@ public class BEBehaviorWatermillRotor : BEBehaviorMPRotor
         {
             willSpeed--;
         }
-        //Debug.WriteLine(propagationDir);
-        //Debug.WriteLine(OutFacingForNetworkDiscovery);
-        ////Debug.WriteLine(network.NetworkResistance);
-        ////Debug.WriteLine(network.NetworkTorque);
-        ////Debug.WriteLine(network.TotalAvailableTorque);
-        //Debug.WriteLine(network?.DirectionHasReversed);
-        //Debug.WriteLine(network?.TurnDir);//Clockwise
         if (willSpeed < 0)
         {
-            //inverted = true;
             willSpeed = Math.Abs(willSpeed);
-            //if (Api.Side.IsServer()) 
+            //SetPropagationDirection(new MechPowerPath(face.Opposite, 1 /*GearedRatio*/, null, true));
             propagationDir = OutFacingForNetworkDiscovery.Opposite;
         }
         else
         {
-            //inverted = false;
-            //if (Api.Side.IsServer()) 
+            //SetPropagationDirection(new MechPowerPath(face.Opposite, 1 /*GearedRatio*/, null, false));
             propagationDir = OutFacingForNetworkDiscovery;
         }
     }
 
-    //public override void SetPropagationDirection(MechPowerPath path)
+    //protected override CompositeShape GetShape()
     //{
-    //    Debug.WriteLine("SetPropagationDirection");
-    //    BlockFacing turnDir = path.NetworkDir();
-    //    if (Api.Side.IsServer()) turnDir = inverted ? path.NetworkDir().Opposite : path.NetworkDir();
-    //    Debug.WriteLine(turnDir);
-    //    if (this.propagationDir == turnDir.Opposite && this.network != null)
+    //    CompositeShape shape = Block.Shape.Clone();
+    //    shape.Base = new AssetLocation("temporalengineering:shapes/block/watermill.json");
+    //    shape.rotateX = 90;
+    //    switch (BlockFacing.FromCode(Block.Variant["side"]).Index)
     //    {
-    //        if (!network.DirectionHasReversed) network.TurnDir = network.TurnDir == EnumRotDirection.Clockwise ? EnumRotDirection.Counterclockwise : EnumRotDirection.Clockwise;
-    //        network.DirectionHasReversed = true;
+    //        case 0:
+    //            shape.rotateZ = 0;
+    //            break;
+    //        case 1:
+    //            shape.rotateZ = 90;
+    //            break;
+    //        case 2:
+    //            shape.rotateZ = 180;
+    //            break;
+    //        case 3:
+    //            shape.rotateZ = 270;
+    //            break;
+    //        default:
+    //            break;
     //    }
-    //    this.propagationDir = turnDir;// inverted ? turnDir.Opposite :
-    //    this.GearedRatio = path.gearingRatio;
+    //    return shape;
     //}
-
-    protected override CompositeShape GetShape()
-    {
-        CompositeShape shape = Block.Shape.Clone();
-        shape.Base = new AssetLocation("temporalengineering:shapes/block/watermill.json");
-        shape.rotateX = 90;
-        switch (BlockFacing.FromCode(Block.Variant["side"]).Index)
-        {
-            case 0:
-                shape.rotateZ = 0;
-                break;
-            case 1:
-                shape.rotateZ = 90;
-                break;
-            case 2:
-                shape.rotateZ = 180;
-                break;
-            case 3:
-                shape.rotateZ = 270;
-                break;
-            default:
-                break;
-        }
-        return shape;
-    }
 }

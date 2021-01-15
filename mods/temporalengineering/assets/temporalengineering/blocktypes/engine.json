@@ -9,6 +9,11 @@
   //    "groupBy": [ "windmillrotor-*" ]
   //  }
   //},
+  "attributes": {
+    "storage": 10000,
+    "input": 10000,
+    "consume": 1000
+  },
   "variantgroups": [
     {
       "code": "side",
