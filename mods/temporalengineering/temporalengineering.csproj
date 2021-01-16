@@ -62,9 +62,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low.png" />
-    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-high_top.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-low_top.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor-medium_top.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor_bottom.png" />
+    <Content Include="assets\temporalengineering\textures\block\capacitor\capacitor_side.png" />
     <Content Include="assets\temporalengineering\textures\block\copper_coil.png" />
     <Content Include="assets\temporalengineering\textures\block\energy\sides\input.png" />
     <Content Include="assets\temporalengineering\textures\block\energy\sides\none.png" />
@@ -81,14 +83,14 @@
     <Content Include="assets\temporalengineering\textures\block\tfforge\forge.png" />
     <Content Include="assets\temporalengineering\textures\block\trampoline.png" />
     <Content Include="assets\temporalengineering\textures\block\wire.png" />
-    <Content Include="assets\temporalengineering\textures\item\wranch.png" />
+    <Content Include="assets\temporalengineering\textures\item\wrench.png" />
     <Content Include="modinfo.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\temporalengineering\blocktypes\capacitor.json" />
     <None Include="assets\temporalengineering\blocktypes\charger.json" />
     <None Include="assets\temporalengineering\blocktypes\clay\mold\toolmold.json" />
-    <None Include="assets\temporalengineering\blocktypes\connecter.json" />
+    <None Include="assets\temporalengineering\blocktypes\connector.json" />
     <None Include="assets\temporalengineering\blocktypes\energyduct.json" />
     <None Include="assets\temporalengineering\blocktypes\engine.json" />
     <None Include="assets\temporalengineering\blocktypes\furnace.json" />
@@ -102,12 +104,18 @@
     <None Include="assets\temporalengineering\itemtypes\resource\coil.json" />
     <None Include="assets\temporalengineering\itemtypes\resource\wire.json" />
     <None Include="assets\temporalengineering\itemtypes\tool\tfchisel.json" />
-    <None Include="assets\temporalengineering\itemtypes\tool\wranch.json" />
+    <None Include="assets\temporalengineering\itemtypes\tool\wrench.json" />
     <None Include="assets\temporalengineering\lang\en.json" />
     <None Include="assets\temporalengineering\recipes\clayforming\wiremold.json" />
+    <None Include="assets\temporalengineering\recipes\grid\connector.json" />
+    <None Include="assets\temporalengineering\recipes\grid\energyduct.json" />
+    <None Include="assets\temporalengineering\recipes\grid\generatorshaft.json" />
     <None Include="assets\temporalengineering\recipes\grid\coil.json" />
-    <None Include="assets\temporalengineering\recipes\grid\machinecasing.json.d" />
+    <None Include="assets\temporalengineering\recipes\grid\machinecasing.json" />
+    <None Include="assets\temporalengineering\recipes\grid\rotarygenerator.json" />
+    <None Include="assets\temporalengineering\recipes\grid\tfchisel.json" />
     <None Include="assets\temporalengineering\recipes\grid\watermill.json" />
+    <None Include="assets\temporalengineering\recipes\smithing\wrench.json" />
     <None Include="assets\temporalengineering\shapes\block\charger.json" />
     <None Include="assets\temporalengineering\shapes\block\clay\mold\wire.json" />
     <None Include="assets\temporalengineering\shapes\block\connector.json" />
@@ -121,25 +129,38 @@
     <None Include="assets\temporalengineering\shapes\block\ducts\duct4_2.json" />
     <None Include="assets\temporalengineering\shapes\block\ducts\duct5.json" />
     <None Include="assets\temporalengineering\shapes\block\ducts\duct6.json" />
-    <None Include="assets\temporalengineering\shapes\block\furnace-lit.json" />
-    <None Include="assets\temporalengineering\shapes\block\furnace-unlit.json" />
-    <None Include="assets\temporalengineering\shapes\block\heating_element.json" />
-    <None Include="assets\temporalengineering\shapes\block\relay_off.json" />
-    <None Include="assets\temporalengineering\shapes\block\relay_on.json" />
-    <None Include="assets\temporalengineering\shapes\block\testmodel.json" />
-    <None Include="assets\temporalengineering\shapes\block\testmodel2.json" />
-    <None Include="assets\temporalengineering\shapes\block\testmodel3.json" />
-    <None Include="assets\temporalengineering\shapes\block\testmodel4.json" />
-    <None Include="assets\temporalengineering\shapes\block\tfforge.json" />
-    <None Include="assets\temporalengineering\shapes\block\tfforge_he.json" />
+    <None Include="assets\temporalengineering\shapes\block\furnace\furnace-lit.json" />
+    <None Include="assets\temporalengineering\shapes\block\furnace\furnace-unlit.json" />
+    <None Include="assets\temporalengineering\shapes\block\generator\body.json" />
+    <None Include="assets\temporalengineering\shapes\block\generator\item.json" />
+    <None Include="assets\temporalengineering\shapes\block\generator\shaft.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-off-down.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-off-east.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-off-north.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-off-south.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-off-up.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-off-west.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-on-down.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-on-east.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-on-north.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-on-south.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-on-up.json" />
+    <None Include="assets\temporalengineering\shapes\block\relay\relay-on-west.json" />
+    <None Include="assets\temporalengineering\shapes\block\tfforge\heating_element.json" />
+    <None Include="assets\temporalengineering\shapes\block\tfforge\tfforge.json" />
+    <None Include="assets\temporalengineering\shapes\block\tfforge\tfforge_he.json" />
     <None Include="assets\temporalengineering\shapes\block\watermill.json" />
     <None Include="assets\temporalengineering\shapes\block\wire.json" />
     <None Include="assets\temporalengineering\shapes\item\coil.json" />
+    <None Include="assets\temporalengineering\shapes\item\shaft.json" />
     <None Include="assets\temporalengineering\shapes\item\tfchisel.json" />
     <None Include="assets\temporalengineering\shapes\item\wire.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\temporalengineering\itemtypes\generatorshaft.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

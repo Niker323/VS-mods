@@ -33,7 +33,7 @@
     "copper_coil": { "base": "block/copper_coil" }
   },
   "shape": {
-    "base": "block/testmodel4"
+    "base": "block/generator/item"
   },
   "sidesolid": {
     "all": false

@@ -1,0 +1,20 @@
+{
+  "ingredientPattern": "CIC",
+  "ingredients": {
+    "C": {
+      "type": "item",
+      "code": "game:clay-*"
+    },
+    "I": {
+      "type": "item",
+      "code": "game:ingot-copper"
+    }
+  },
+  "width": 3,
+  "height": 1,
+  "output": {
+    "type": "block",
+    "code": "connector-down",
+    "quantity": 3
+  }
+}

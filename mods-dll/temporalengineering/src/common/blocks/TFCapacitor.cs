@@ -146,6 +146,8 @@ public class BlockTFCapacitor : BlockSideconfigInteractions, IFluxStorageItem
 
     public override void OnLoaded(ICoreAPI api)
     {
+        base.OnLoaded(api);
+
         maxCapacity = MyMiniLib.GetAttributeInt(this, "storage", 1);
         Durability = 100;
     }
@@ -169,14 +171,14 @@ public class BlockTFCapacitor : BlockSideconfigInteractions, IFluxStorageItem
     public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
     {
         TFCapacitor be = world.BlockAccessor.GetBlockEntity(pos) as TFCapacitor;
-        ItemStack item = new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:capacitor-"+ FirstCodePart(1) +"-input-input-input-input-input-input")));
+        ItemStack item = new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:capacitor-"+ FirstCodePart(1) + "-none-none-none-none-none-none")));
         if (be != null) item.Attributes.SetInt("energy", (int)be.energyStorage?.getEnergyStored());
         return new ItemStack[] {item};
     }
 
     public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
     {
-        ItemStack item = new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:capacitor-" + FirstCodePart(1) + "-input-input-input-input-input-input")));
+        ItemStack item = new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:capacitor-" + FirstCodePart(1) + "-none-none-none-none-none-none")));
         TFCapacitor be = world.BlockAccessor.GetBlockEntity(pos) as TFCapacitor;
         if (be != null) item.Attributes.SetInt("energy", (int)be.energyStorage?.getEnergyStored());
         return item;

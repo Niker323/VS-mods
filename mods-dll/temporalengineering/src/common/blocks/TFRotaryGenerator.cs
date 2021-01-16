@@ -155,7 +155,7 @@ public class BEBehaviorTFRotaryGenerator : BEBehaviorMPBase//BEBehaviorMPRotor
     protected override CompositeShape GetShape()
     {
         CompositeShape shape = Block.Shape.Clone();
-        shape.Base = new AssetLocation("temporalengineering:shapes/block/testmodel3.json");
+        shape.Base = new AssetLocation("temporalengineering:shapes/block/generator/shaft.json");
         switch (BlockFacing.FromCode(Block.Variant["side"]).Index)
         {
             case 0:
@@ -187,7 +187,7 @@ public class BEBehaviorTFRotaryGenerator : BEBehaviorMPBase//BEBehaviorMPRotor
     public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tesselator)
     {
         ICoreClientAPI capi = Api as ICoreClientAPI;
-        Shape shape = capi.Assets.TryGet("temporalengineering:shapes/block/testmodel2.json").ToObject<Shape>();
+        Shape shape = capi.Assets.TryGet("temporalengineering:shapes/block/generator/body.json").ToObject<Shape>();
         switch (BlockFacing.FromCode(Block.Variant["side"]).Index)
         {
             case 0:

@@ -55,8 +55,8 @@
 	//	}
 	//],
 	"creativeinventory": {
-		"general": [ "*-off-north-input-input-input-input-input-input" ],
-		"temporalengineering": [ "*-off-north-input-input-input-input-input-input" ]
+		"general": [ "*-off-north-none-none-none-none-none-none" ],
+		"temporalengineering": [ "*-off-north-none-none-none-none-none-none" ]
 	},
 	"resistance": 3.5,
 	"shapeByType": {
@@ -109,23 +109,6 @@
 			"overlays": [ "block/energy/sides/{down}" ]
 		}
 	},
-	//"attributesByType": {
-	//	"*-low-*": {
-	//		"storage": 10000,
-	//		"input": 10,
-	//		"output": 10
-	//	},
-	//	"*-medium-*": {
-	//		"storage": 100000,
-	//		"input": 100,
-	//		"output": 100
-	//	},
-	//	"*-high-*": {
-	//		"storage": 1000000,
-	//		"input": 1000,
-	//		"output": 1000
-	//	}
-	//}
 	"sounds": {
 		"walk": "game:walk/stone",
 		"place": "game:block/stone",

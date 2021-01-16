@@ -1,5 +1,5 @@
 {
-	"code": "connecter",
+	"code": "connector",
 	"blockmaterial": "stone",
 	"class": "BlockConnector",
 	"entityclass": "BlockEntityConnector",

@@ -1,0 +1,16 @@
+{
+  "ingredientPattern": "WWW",
+  "ingredients": {
+    "W": {
+      "type": "item",
+      "code": "wire-copper"
+    }
+  },
+  "width": 3,
+  "height": 1,
+  "output": {
+    "type": "block",
+    "code": "energyduct-ew",
+    "quantity": 3
+  }
+}

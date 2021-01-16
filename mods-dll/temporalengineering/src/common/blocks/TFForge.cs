@@ -280,17 +280,17 @@ public class BlockEntityTFForge : BlockEntity, IHeatSource, IFluxStorage
 
         if (burning)
         {
-            //double hoursPassed = Api.World.Calendar.TotalHours - lastTickTotalHours;
+            double hoursPassed = Api.World.Calendar.TotalHours - lastTickTotalHours;
 
             if (contents != null)
             {
                 float temp = contents.Collectible.GetTemperature(Api.World, contents);
                 if (temp < 1100)
                 {
-                    //float tempGain = (float)(hoursPassed * 1500);
+                    float tempGain = (float)(hoursPassed * 1100);
 
-                    float diff = Math.Abs(temp - 1100);
-                    float tempGain = dt + dt * (diff / 28);
+                    //float diff = Math.Abs(temp - 1100);
+                    //float tempGain = dt + dt * (diff / 28);
 
                     contents.Collectible.SetTemperature(Api.World, contents, Math.Min(1100, temp + tempGain));
                     MarkDirty(true);
@@ -560,7 +560,6 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
     MeshRef workItemMeshRef;
 
-    //MeshRef emberQuadRef;
     MeshRef heQuadRef;
 
 
@@ -690,7 +689,6 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
         if (mesh != null)
         {
-            //mesh.Rgba2 = null;
             workItemMeshRef = capi.Render.UploadMesh(mesh);
         }
     }
@@ -699,8 +697,6 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
     public void OnRenderFrame(float deltaTime, EnumRenderStage stage)
     {
-        //if (stack == null) return;
-
         IRenderAPI rpi = capi.Render;
         IClientWorldAccessor worldAccess = capi.World;
         Vec3d camPos = worldAccess.Player.Entity.CameraPos;
@@ -773,7 +769,6 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
     public void Dispose()
     {
         capi.Event.UnregisterRenderer(this, EnumRenderStage.Opaque);
-        //if (emberQuadRef != null) emberQuadRef.Dispose();
         if (heQuadRef != null) heQuadRef.Dispose();
         if (workItemMeshRef != null) workItemMeshRef.Dispose();
     }

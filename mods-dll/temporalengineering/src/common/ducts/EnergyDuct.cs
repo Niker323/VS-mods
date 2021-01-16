@@ -194,11 +194,11 @@ public class BlockEnergyDuct : Block
     //    return new BlockDropItemStack[] { new BlockDropItemStack(handbookStack) };
     //}
 
-    //public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1f)
-    //{
-    //    Block block = world.BlockAccessor.GetBlock(CodeWithVariants(new string[] { "side", "cover" }, new string[] { "ew", "free" }));
-    //    return new ItemStack[] { new ItemStack(block) };
-    //}
+    public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1f)
+    {
+        Block block = world.BlockAccessor.GetBlock(CodeWithVariants(new string[] { "side" }, new string[] { "ew" }));
+        return new ItemStack[] { new ItemStack(block) };
+    }
 
     public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
     {
@@ -217,61 +217,6 @@ public class BlockEnergyDuct : Block
         }
         else return false;
     }
-
-
-    //static string[] OneDir = new string[] { "n", "e", "s", "w" };
-    //static string[] TwoDir = new string[] { "ns", "ew" };
-    //static string[] AngledDir = new string[] { "ne", "es", "sw", "nw" };
-    //static string[] ThreeDir = new string[] { "nes", "new", "nsw", "esw" };
-
-    //static string[] GateLeft = new string[] { "egw", "ngs" };
-    //static string[] GateRight = new string[] { "gew", "gns" };
-
-    //static Dictionary<string, KeyValuePair<string[], int>> AngleGroups = new Dictionary<string, KeyValuePair<string[], int>>();
-
-    //static BlockEnergyDuct()
-    //{
-    //    AngleGroups["n"] = new KeyValuePair<string[], int>(OneDir, 0);
-    //    AngleGroups["e"] = new KeyValuePair<string[], int>(OneDir, 1);
-    //    AngleGroups["s"] = new KeyValuePair<string[], int>(OneDir, 2);
-    //    AngleGroups["w"] = new KeyValuePair<string[], int>(OneDir, 3);
-
-    //    AngleGroups["ns"] = new KeyValuePair<string[], int>(TwoDir, 0);
-    //    AngleGroups["ew"] = new KeyValuePair<string[], int>(TwoDir, 1);
-
-    //    AngleGroups["ne"] = new KeyValuePair<string[], int>(AngledDir, 0);
-    //    AngleGroups["es"] = new KeyValuePair<string[], int>(AngledDir, 1);
-    //    AngleGroups["sw"] = new KeyValuePair<string[], int>(AngledDir, 2);
-    //    AngleGroups["nw"] = new KeyValuePair<string[], int>(AngledDir, 3);
-
-    //    AngleGroups["nes"] = new KeyValuePair<string[], int>(ThreeDir, 0);
-    //    AngleGroups["new"] = new KeyValuePair<string[], int>(ThreeDir, 1);
-    //    AngleGroups["nsw"] = new KeyValuePair<string[], int>(ThreeDir, 2);
-    //    AngleGroups["esw"] = new KeyValuePair<string[], int>(ThreeDir, 3);
-
-
-    //    AngleGroups["egw"] = new KeyValuePair<string[], int>(GateLeft, 0);
-    //    AngleGroups["ngs"] = new KeyValuePair<string[], int>(GateLeft, 1);
-
-    //    AngleGroups["gew"] = new KeyValuePair<string[], int>(GateRight, 0);
-    //    AngleGroups["gns"] = new KeyValuePair<string[], int>(GateRight, 1);
-    //}
-
-    //public override AssetLocation GetRotatedBlockCode(int angle)
-    //{
-    //    string type = Variant["side"];
-
-    //    if (type == "empty" || type == "nesw") return Code;
-
-
-    //    int angleIndex = angle / 90;
-
-    //    var val = AngleGroups[type];
-
-    //    string newFacing = val.Key[GameMath.Mod(val.Value + angleIndex, val.Key.Length)];
-
-    //    return CodeWithVariant("side", newFacing);
-    //}
 
     public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
     {

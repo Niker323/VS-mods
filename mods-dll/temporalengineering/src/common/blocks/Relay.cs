@@ -196,11 +196,11 @@ public class BlockTFRelay : BlockSideconfigInteractions
 
     public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
     {
-        return new ItemStack[] { new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:relay-off-north-input-input-input-input-input-input"))) };
+        return new ItemStack[] { new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:relay-off-north-none-none-none-none-none-none"))) };
     }
 
     public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
     {
-        return new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:relay-off-north-input-input-input-input-input-input")));
+        return new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:relay-off-north-none-none-none-none-none-none")));
     }
 }

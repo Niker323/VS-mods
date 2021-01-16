@@ -1,8 +1,8 @@
 {
-	"code": "wranch",
+	"code": "wrench",
 	"class": "Wrench",
 	"texture": {
-		"base": "item/wranch"
+		"base": "item/wrench"
 	},
 	"creativeinventory": {
 		"general": [ "*" ],

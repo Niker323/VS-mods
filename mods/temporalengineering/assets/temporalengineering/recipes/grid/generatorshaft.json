@@ -1,0 +1,19 @@
+{
+  "ingredientPattern": "I,R",
+  "ingredients": {
+    "I": {
+      "type": "item",
+      "code": "game:ingot-iron"
+    },
+    "R": {
+      "type": "block",
+      "code": "game:woodenaxle-ud"
+    }
+  },
+  "width": 1,
+  "height": 2,
+  "output": {
+    "type": "item",
+    "code": "generatorshaft"
+  }
+}

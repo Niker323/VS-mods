@@ -1,0 +1,24 @@
+{
+  "ingredientPattern": "PCP,CSC,PCP",
+  "ingredients": {
+    "P": {
+      "type": "item",
+      "code": "game:plank-*",
+      "quantity": 2
+    },
+    "C": {
+      "type": "item",
+      "code": "coil"
+    },
+    "S": {
+      "type": "item",
+      "code": "generatorshaft"
+    }
+  },
+  "width": 3,
+  "height": 3,
+  "output": {
+    "type": "block",
+    "code": "rotarygenerator-north"
+  }
+}
