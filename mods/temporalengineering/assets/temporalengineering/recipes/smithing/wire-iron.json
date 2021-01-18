@@ -1,0 +1,20 @@
+{
+	"ingredient": {
+		"type": "item",
+		"code": "game:ingot-iron"
+	},
+	"pattern": [
+		[
+			"#########",
+			"________#",
+			"#########",
+			"#________",
+			"#########"
+		]
+	],
+	"name": "Wire",
+	"output": {
+		"type": "item",
+		"code": "wire-iron"
+	}
+}

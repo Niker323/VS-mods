@@ -3,19 +3,21 @@
   "class": "TFChisel",
   "attributes": {
     "rechargeable": true,
-    "toolrackTransform": {
-      "translation": {
-        "x": 0,
-        "y": 0.61,
-        "z": 0
-      },
-      "rotation": {
-        "x": 5,
-        "y": 180,
-        "z": -1
-      },
-      "scale": 1.25
-    }
+    "storage": 20000,
+    "consume": 20
+    //"toolrackTransform": {
+    //  "translation": {
+    //    "x": 0,
+    //    "y": 0.61,
+    //    "z": 0
+    //  },
+    //  "rotation": {
+    //    "x": 5,
+    //    "y": 180,
+    //    "z": -1
+    //  },
+    //  "scale": 1.25
+    //}
   },
   "shape": { "base": "item/tfchisel" },
   "creativeinventory": {
@@ -25,7 +27,7 @@
   "tool": "Chisel",
   "enabled": true,
   "heldTpHitAnimation": "breaktool",
-  "durability": 1000,
+  //"durability": 1000,
   "textures": {
     "iron": { "base": "game:block/metal/ingot/iron" },
     "copper_coil": { "base": "block/copper_coil" }

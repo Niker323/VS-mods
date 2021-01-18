@@ -1,0 +1,19 @@
+{
+  "ingredientPattern": "BBB,BWB,BBB",
+  "ingredients": {
+    "B": {
+      "type": "item",
+      "code": "game:burnedbrick-fire"
+    },
+    "W": {
+      "type": "item",
+      "code": "wire-iron"
+    }
+  },
+  "width": 3,
+  "height": 3,
+  "output": {
+    "type": "block",
+    "code": "furnace-unlit-south"
+  }
+}

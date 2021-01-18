@@ -93,7 +93,7 @@ public class FluxStorage
 
 	public string GetFluxStorageInfo()
 	{
-		return Math.Round(energy).ToString() + "/" + capacity.ToString();
+		return Math.Round(energy).ToString() + "/" + capacity.ToString() + " TF";
 	}
 
 	public int scaleStoredEnergyTo(int scale)

@@ -1,0 +1,19 @@
+{
+  "ingredientPattern": "_B_,BCB,_B_",
+  "ingredients": {
+    "B": {
+      "type": "item",
+      "code": "battery"
+    },
+    "C": {
+      "type": "block",
+      "code": "capacitor-low-*"
+    }
+  },
+  "width": 3,
+  "height": 3,
+  "output": {
+    "type": "block",
+    "code": "capacitor-medium-none-none-none-none-none-none"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "ingredientPattern": "PPP,W_W,PPP",
+  "ingredients": {
+    "W": {
+      "type": "item",
+      "code": "wire-copper"
+    },
+    "P": {
+      "type": "item",
+      "code": "game:plank-*",
+      "quantity": 2
+    }
+  },
+  "width": 3,
+  "height": 3,
+  "output": {
+    "type": "block",
+    "code": "relay-off-north-none-none-none-none-none-none"
+  }
+}

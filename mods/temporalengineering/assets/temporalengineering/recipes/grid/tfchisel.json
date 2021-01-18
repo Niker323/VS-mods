@@ -1,13 +1,13 @@
 {
-  "ingredientPattern": "T,G,C",
+  "ingredientPattern": "T,G,B",
   "ingredients": {
     "T": {
       "type": "item",
       "code": "game:chisel-iron"
     },
-    "C": {
+    "B": {
       "type": "item",
-      "code": "coil"
+      "code": "battery"
     },
     "G": {
       "type": "item",

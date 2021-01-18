@@ -1,0 +1,24 @@
+{
+  "ingredientPattern": "_G_,PBP",
+  "ingredients": {
+    "B": {
+      "type": "item",
+      "code": "battery"
+    },
+    "G": {
+      "type": "block",
+      "code": "game:glass-plain"
+    },
+    "P": {
+      "type": "item",
+      "code": "game:plank-*",
+      "quantity": 2
+    }
+  },
+  "width": 3,
+  "height": 2,
+  "output": {
+    "type": "block",
+    "code": "charger"
+  }
+}

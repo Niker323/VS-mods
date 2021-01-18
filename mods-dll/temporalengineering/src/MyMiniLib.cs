@@ -3,7 +3,7 @@ using Vintagestory.API.Common;
 
 public static class MyMiniLib
 {
-    public static int GetAttributeInt(Block block, string attrname, int def = 0)
+    public static int GetAttributeInt(CollectibleObject block, string attrname, int def = 0)
     {
         if (block != null && block.Attributes != null && block.Attributes[attrname] != null)
         {

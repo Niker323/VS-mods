@@ -23,7 +23,7 @@
     "temporalengineering": [ "*" ]
   },
   //"blockmaterial": "stone",
-  //"blockmaterial": "Wood",
+  "blockmaterial": "Wood",
   //"textures": {
   //  "clear": { "base": "game:block/wood/displaycase/clear" }
   //},
@@ -57,11 +57,11 @@
   },
   //"replaceable": 999,
   "resistance": 1.5,
-  "lightAbsorption": 0
-  //"sounds": {
-  //  "hit": "block/planks",
-  //  "break": "block/planks",
-  //  "place": "block/planks",
-  //  "walk": "walk/wood"
-  //}
+  "lightAbsorption": 0,
+  "sounds": {
+    "hit": "block/planks",
+    "break": "block/planks",
+    "place": "block/planks",
+    "walk": "walk/wood"
+  }
 }

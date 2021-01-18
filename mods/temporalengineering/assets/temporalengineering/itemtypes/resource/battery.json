@@ -1,0 +1,28 @@
+{
+	"code": "battery",
+	"maxstacksize": 16,
+	"attributes": {
+		"displaycaseable": true,
+		"shelvable": true
+	},
+	//"variantgroups": [
+	//	{
+	//		"code": "metal",
+	//		"loadFromProperties": "block/metal"
+	//	}
+	//],
+	//"attributesByType": {
+	//	"ingot-lead": {
+	//		"workableTemperature": 0
+	//	}
+	//},
+	"materialDensity": 2000,
+	"storageFlags": 1,
+	"texture": {
+		"base": "item/battery"
+	},
+	"creativeinventory": {
+		"general": [ "*" ],
+		"temporalengineering": [ "*" ]
+	}
+}

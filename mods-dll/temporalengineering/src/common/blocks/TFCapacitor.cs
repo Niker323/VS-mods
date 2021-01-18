@@ -155,7 +155,7 @@ public class BlockTFCapacitor : BlockSideconfigInteractions, IFluxStorageItem
     public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
     {
         base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
-        dsc.AppendLine(inSlot.Itemstack.Attributes.GetInt("energy", 0) + "/" + maxCapacity);
+        dsc.AppendLine(inSlot.Itemstack.Attributes.GetInt("energy", 0) + "/" + maxCapacity + " TF");
     }
 
     public int receiveEnergy(ItemStack itemstack, int maxReceive)
