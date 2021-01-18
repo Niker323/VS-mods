@@ -5,16 +5,19 @@
 	"entityclass": "TFCapacitor",
 	"attributesByType": {
 		"*-low-*": {
+			"rechargeable": true,
 			"storage": 50000,
 			"input": 500,
 			"output": 500
 		},
 		"*-medium-*": {
+			"rechargeable": true,
 			"storage": 200000,
 			"input": 2000,
 			"output": 2000
 		},
 		"*-high-*": {
+			"rechargeable": true,
 			"storage": 1000000,
 			"input": 10000,
 			"output": 10000

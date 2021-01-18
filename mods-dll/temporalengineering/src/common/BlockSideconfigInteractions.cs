@@ -10,7 +10,7 @@ public class BlockSideconfigInteractions : Block
     {
         base.OnLoaded(api);
 
-        interactions = ObjectCacheUtil.GetOrCreate(api, "capacitorInteractions", () =>
+        interactions = ObjectCacheUtil.GetOrCreate(api, "sideconfigInteractions", () =>
         {
             return new WorldInteraction[]
             {
@@ -18,7 +18,7 @@ public class BlockSideconfigInteractions : Block
                     {
                         ActionLangCode = "blockhelp-temporalengineering-sideconfig",
                         MouseButton = EnumMouseButton.Right,
-                        Itemstacks = new ItemStack[] { new ItemStack(api.World.GetItem(new AssetLocation("temporalengineering:wranch"))) }
+                        Itemstacks = new ItemStack[] { new ItemStack(api.World.GetItem(new AssetLocation("temporalengineering:wrench"))) }
                     },
             };
         });

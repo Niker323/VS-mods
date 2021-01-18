@@ -110,8 +110,9 @@
 		}
 	},
 	"sounds": {
-		"walk": "game:walk/stone",
-		"place": "game:block/stone",
-		"break": "game:block/stone"
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"place": "game:block/planks",
+		"walk": "game:walk/wood"
 	}
 }

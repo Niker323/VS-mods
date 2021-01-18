@@ -9,6 +9,7 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 {
     public EnergyDuctCore core;
     List<BlockFacing> skipList = new List<BlockFacing>();
+    //Dictionary<BlockFacing, bool> sideConfig = new Dictionary<BlockFacing, bool>(IOEnergySideConfig.VALUES.Length);
 
     public override void Initialize(ICoreAPI api)
     {

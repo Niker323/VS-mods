@@ -12,16 +12,16 @@
 		//	"*-blackbronze": 400,
 		//	"*-iron": 800
 		//},
-		//"handbook": {
-		//	"excludeByType": {
-		//		"*-chromium": true,
-		//		"*-platinum": true,
-		//		"*-titanium": true,
-		//		"*-rhodium": true,
-		//		"*-stainlessteel": true,
-		//		"*-uranium": true
-		//	}
-		//},
+		"handbook": {
+			"excludeByType": {
+				"*-chromium": true,
+				"*-platinum": true,
+				"*-titanium": true,
+				"*-rhodium": true,
+				"*-stainlesssteel": true,
+				"*-uranium": true
+			}
+		},
 		//"handbook": {
 		//	"groupBy": [ "wire-*" ]
 		//},

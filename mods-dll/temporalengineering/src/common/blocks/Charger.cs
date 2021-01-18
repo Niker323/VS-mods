@@ -74,28 +74,21 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
     {
         if (inventory[0]?.Itemstack?.Item is IFluxStorageItem)
         {
-            energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Item).receiveEnergy(inventory[0].Itemstack, (int)(energyStorage.getLimitExtract() * dt)));
+            energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Item).receiveEnergy(inventory[0].Itemstack, (int)Math.Min(energyStorage.getLimitExtract() * dt, energyStorage.getEnergyStored())));
         }
         else if (inventory[0]?.Itemstack?.Block is IFluxStorageItem)
         {
-            energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Block).receiveEnergy(inventory[0].Itemstack, (int)(energyStorage.getLimitExtract() * dt)));
+            energyStorage.modifyEnergyStored(-((IFluxStorageItem)inventory[0].Itemstack.Block).receiveEnergy(inventory[0].Itemstack, (int)Math.Min(energyStorage.getLimitExtract() * dt, energyStorage.getEnergyStored())));
         }
         MarkDirty();
     }
 
     void loadToolMeshes()
     {
-        BlockFacing facing = getFacing().GetCCW();
-        if (facing == null) return;
-
-        Vec3f facingNormal = facing.Normalf;
-
         Vec3f origin = new Vec3f(0.5f, 0.5f, 0.5f);
 
         ICoreClientAPI clientApi = (ICoreClientAPI)Api;
 
-        //for (int i = 0; i < 1; i++)
-        //{
         toolMeshes[0] = null;
         IItemStack stack = inventory[0].Itemstack;
         if (stack == null) return;
@@ -112,27 +105,21 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
         }
 
 
-        if (tmpItem.Attributes?["toolrackTransform"].Exists == true)
-        {
-            ModelTransform transform = tmpItem.Attributes["toolrackTransform"].AsObject<ModelTransform>();
-            transform.EnsureDefaultValues();
-
-            toolMeshes[0].ModelTransform(transform);
-        }
-
-
         //float zOff = i > 1 ? (-1.8f / 16f) : 0;
 
-        if (stack.Class == EnumItemClass.Item && stack.Item.Shape?.VoxelizeTexture == true)
+        if (stack.Class == EnumItemClass.Item)
         {
-            toolMeshes[0].Scale(origin, 0.33f, 0.33f, 0.33f);
-            //toolMeshes[0].Translate(
-            //    (((i % 2) == 0) ? 0.23f : -0.3f),
-            //    ((i > 1) ? 0.2f : -0.3f) + zOff,
-            //    0.433f * ((facing.Axis == EnumAxis.X) ? -1 : 1)
-            //);
-            toolMeshes[0].Rotate(origin, 0, facing.HorizontalAngleIndex * 90 * GameMath.DEG2RAD, 0);
-            toolMeshes[0].Rotate(origin, 180 * GameMath.DEG2RAD, 0, 0);
+            if (stack.Item.Shape?.VoxelizeTexture == true)
+            {
+                toolMeshes[0].Scale(origin, 0.33f, 0.33f, 0.33f);
+            }
+            else
+            {
+                origin.Y = 1f/30f;
+                toolMeshes[0].Scale(origin, 0.5f, 0.5f, 0.5f);
+                toolMeshes[0].Rotate(origin, 0, 0, 90 * GameMath.DEG2RAD);
+                toolMeshes[0].Translate(0, 0.5f, 0);
+            }
         }
         else
         {
@@ -142,10 +129,9 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
             //float z = ((i % 2 == 0) ? 0.23f : -0.2f) * (facing.Axis == EnumAxis.X ? 1f : -1f);
 
             //toolMeshes[0].Translate(x, 0.433f + zOff, z);
-            toolMeshes[0].Rotate(origin, 0, facing.HorizontalAngleIndex * 90 * GameMath.DEG2RAD, GameMath.PIHALF);
-            toolMeshes[0].Rotate(origin, 0, GameMath.PIHALF, 0);
+            //toolMeshes[0].Rotate(origin, 0, facing.HorizontalAngleIndex * 90 * GameMath.DEG2RAD, GameMath.PIHALF);
+            //toolMeshes[0].Rotate(origin, 0, GameMath.PIHALF, 0);
         }
-        //}
     }
 
 
@@ -164,7 +150,7 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
     bool PutInSlot(IPlayer player, int slot)
     {
         IItemStack stack = player.InventoryManager.ActiveHotbarSlot.Itemstack;
-        if (stack == null) return false;
+        if (stack == null || !(stack.Class == EnumItemClass.Block ? stack.Block is IFluxStorageItem : stack.Item is IFluxStorageItem)) return false;
 
         player.InventoryManager.ActiveHotbarSlot.TryPutInto(Api.World, inventory[slot]);
 
@@ -205,13 +191,6 @@ public class BlockEntityTFCharger : BlockEntity, ITexPositionSource, IFluxStorag
     {
         ItemStack stack = inventory[0].Itemstack;
         if (stack != null) Api.World.SpawnItemEntity(stack, Pos.ToVec3d().Add(0.5, 0.5, 0.5));
-    }
-
-    BlockFacing getFacing()
-    {
-        Block block = Api.World.BlockAccessor.GetBlock(Pos);
-        BlockFacing facing = BlockFacing.FromCode(block.LastCodePart());
-        return facing == null ? BlockFacing.NORTH : facing;
     }
 
     public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tesselator)
@@ -374,13 +353,13 @@ public class BlockTFCharger : Block
         ICoreClientAPI capi = api as ICoreClientAPI;
 
 
-        interactions = ObjectCacheUtil.GetOrCreate(api, "toolrackBlockInteractions", () =>
+        interactions = ObjectCacheUtil.GetOrCreate(api, "chargerBlockInteractions", () =>
         {
             List<ItemStack> rackableStacklist = new List<ItemStack>();
 
             foreach (CollectibleObject obj in api.World.Collectibles)
             {
-                //if (obj.Tool == null && obj.Attributes?["rackable"].AsBool() != true) continue;
+                if (obj.Attributes?["rechargeable"].AsBool() != true) continue;
 
                 List<ItemStack> stacks = obj.GetHandBookStacks(capi);
                 if (stacks != null) rackableStacklist.AddRange(stacks);

@@ -5,57 +5,50 @@
   //"behaviors": [
   //  { "name": "Container" }
   //],
-  "behaviors": [ { "name": "HorizontalOrientable" } ],
+  //"behaviors": [ { "name": "HorizontalOrientable" } ],
   "renderpass": "OpaqueNoCull",
   "attributes": {
     "storage": 10000,
     "input": 1000,
     "output": 1000
   },
-  //"attributes": {
-  //  "handbook": {
-  //    "include": true,
-  //    "extraSections": [
-  //      {
-  //        "title": "firepit-handbook-help-title",
-  //        "text": "firepit-handbook-help-text"
-  //      }
-  //    ]
+  //"variantgroups": [
+  //  {
+  //    "code": "side",
+  //    "loadFromProperties": "abstract/horizontalorientation"
   //  }
-  //},
-  "variantgroups": [
-    {
-      "code": "side",
-      "loadFromProperties": "abstract/horizontalorientation"
-    }
-  ],
+  //],
   "creativeinventory": {
-    "general": [ "*-north" ],
-    "temporalengineering": [ "*-north" ]
+    "general": [ "*" ],
+    "temporalengineering": [ "*" ]
   },
   //"blockmaterial": "stone",
   //"blockmaterial": "Wood",
   //"textures": {
-  //  "wood": { "base": "game:block/wood/planks/generic" }
+  //  "clear": { "base": "game:block/wood/displaycase/clear" }
   //},
-  "shapebytype": {
-    "*-north": {
-      "base": "block/charger",
-      "rotateY": 180
-    },
-    "*-east": {
-      "base": "block/charger",
-      "rotateY": 90
-    },
-    "*-south": {
-      "base": "block/charger",
-      "rotateY": 0
-    },
-    "*-west": {
-      "base": "block/charger",
-      "rotateY": 270
-    }
+  "shape": {
+    "base": "block/charger"
   },
+  "drawtype": "json",
+	"collisionSelectionBoxes": [
+		{
+			"x1": 0,
+			"y1": 0,
+			"z1": 0,
+			"x2": 1,
+			"y2": 0.125,
+			"z2": 1
+		},
+    {
+      "x1": 0.25,
+      "y1": 0.125,
+      "z1": 0.25,
+      "x2": 0.75,
+      "y2": 0.75,
+      "z2": 0.75
+    }
+	],
   "sidesolid": {
     "all": false
   },
@@ -65,10 +58,6 @@
   //"replaceable": 999,
   "resistance": 1.5,
   "lightAbsorption": 0
-  //"sounds": {
-  //  "place": "game:block/stone",
-  //  "break": "game:block/stone"
-  //}
   //"sounds": {
   //  "hit": "block/planks",
   //  "break": "block/planks",

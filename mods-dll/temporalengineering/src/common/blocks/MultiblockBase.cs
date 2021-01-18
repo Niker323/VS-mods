@@ -1,6 +1,8 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent.Mechanics;
@@ -18,11 +20,6 @@ public class BlockMPMultiblockBase : Block
         BlockSelection bs = blockSel.Clone();
         bs.Position = be.Principal;
         return centerBlock.OnGettingBroken(player, bs, itemslot, remainingResistance, dt, counter);
-    }
-
-    public override void OnBlockPlaced(IWorldAccessor world, BlockPos blockPos, ItemStack byItemStack = null)
-    {
-        base.OnBlockPlaced(world, blockPos, byItemStack);
     }
 
     public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1f)
@@ -80,16 +77,6 @@ public class BEMPMultiblockBase : BlockEntity
 {
     public BlockPos Principal { get; set; }
 
-    public override void Initialize(ICoreAPI api)
-    {
-        base.Initialize(api);
-    }
-
-    public override void OnBlockPlaced(ItemStack byItemStack = null)
-    {
-        base.OnBlockPlaced(byItemStack);
-    }
-
     public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor world)
     {
         base.FromTreeAttributes(tree, world);
@@ -118,16 +105,6 @@ public class BEMPMultiblockBase : BlockEntity
 
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder sb)
     {
-        if (Api.World.EntityDebugMode)
-        {
-            if (Principal == null)
-            {
-                sb.AppendLine("null center");
-                return;
-            }
-            sb.AppendLine("center at " + Principal);
-        }
-
         if (Principal == null) return;
 
         BlockEntity be = Api.World.BlockAccessor.GetBlockEntity(Principal);

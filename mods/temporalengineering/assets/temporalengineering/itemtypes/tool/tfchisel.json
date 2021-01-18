@@ -2,6 +2,7 @@
   "code": "tfchisel",
   "class": "TFChisel",
   "attributes": {
+    "rechargeable": true,
     "toolrackTransform": {
       "translation": {
         "x": 0,
