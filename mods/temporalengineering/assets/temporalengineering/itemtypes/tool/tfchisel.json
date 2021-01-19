@@ -30,7 +30,8 @@
   //"durability": 1000,
   "textures": {
     "iron": { "base": "game:block/metal/ingot/iron" },
-    "copper_coil": { "base": "block/copper_coil" }
+    "chromium": { "base": "game:block/metal/ingot/chromium" },
+    "temporalgear": { "base": "game:item/resource/temporalgear" }
   },
   "guiTransform": {
     "translation": {

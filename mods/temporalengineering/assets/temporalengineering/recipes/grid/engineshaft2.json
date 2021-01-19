@@ -1,0 +1,19 @@
+{
+  "ingredientPattern": "CSC",
+  "ingredients": {
+    "S": {
+      "type": "item",
+      "code": "generatorshaft"
+    },
+    "C": {
+      "type": "item",
+      "code": "coil"
+    }
+  },
+  "width": 3,
+  "height": 1,
+  "output": {
+    "type": "item",
+    "code": "engineshaft"
+  }
+}
