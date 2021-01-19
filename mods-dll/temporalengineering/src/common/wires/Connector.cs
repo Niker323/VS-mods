@@ -2,9 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using Vintagestory.API;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Util;
 
 public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyPoint
 {
@@ -132,38 +136,36 @@ public class BlockEntityConnector : BlockEntityWirePoint, IFluxStorage, IEnergyP
 
 public class BlockConnector : Block
 {
-    //public bool ShouldConnectAt(IWorldAccessor world, BlockPos ownPos, BlockFacing side)
-    //{
-    //    BlockEntity block = world.BlockAccessor.GetBlockEntity(ownPos.AddCopy(side));
-    //    if (block is IFluxStorage)
-    //    {
-    //        return true;
-    //    }
-    //    else return false;
-    //}
-
-
-
-
     bool handleDrops = true;
     string dropBlockFace = "down";
     string dropBlock = null;
+    WorldInteraction[] interactions;
+    int transfer = 500;
 
-    //public override void Initialize(JsonObject properties)
-    //{
-    //    base.Initialize(properties);
+    public override void OnLoaded(ICoreAPI api)
+    {
+        base.OnLoaded(api);
 
-    //    handleDrops = properties["handleDrops"].AsBool(true);
+        transfer = MyMiniLib.GetAttributeInt(this, "transfer", transfer);
 
-    //    if (properties["dropBlockFace"].Exists)
-    //    {
-    //        dropBlockFace = properties["dropBlockFace"].AsString();
-    //    }
-    //    if (properties["dropBlock"].Exists)
-    //    {
-    //        dropBlock = properties["dropBlock"].AsString();
-    //    }
-    //}
+        interactions = ObjectCacheUtil.GetOrCreate(api, "wireconnectInteractions", () =>
+        {
+            return new WorldInteraction[]
+            {
+                    new WorldInteraction()
+                    {
+                        ActionLangCode = "blockhelp-temporalengineering-wireconnect",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = new ItemStack[] { new ItemStack(api.World.GetItem(new AssetLocation("temporalengineering:wire-copper"))) }
+                    },
+            };
+        });
+    }
+
+    public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
+    {
+        return interactions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+    }
 
     public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
     {
@@ -266,4 +268,10 @@ public class BlockConnector : Block
     //    }
     //    return Code;
     //}
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(Lang.Get("Traversing") + ": " + transfer + " TF/s");
+    }
 }

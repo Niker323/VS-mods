@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using Vintagestory.API;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent.Mechanics;
@@ -11,10 +13,12 @@ using Vintagestory.GameContent.Mechanics;
 public class BlockTFEngine : BlockMPBase, IMPPowered
 {
     BlockFacing powerOutFacing;
+    int consume = 1000;
 
     public override void OnLoaded(ICoreAPI api)
     {
         powerOutFacing = BlockFacing.FromCode(Variant["side"]).Opposite;
+        consume = MyMiniLib.GetAttributeInt(this, "consume", consume);
 
         base.OnLoaded(api);
     }
@@ -81,6 +85,12 @@ public class BlockTFEngine : BlockMPBase, IMPPowered
     public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
     {
         return true;
+    }
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(Lang.Get("Consumes") + ": " + consume + " TF/s");
     }
 }
 

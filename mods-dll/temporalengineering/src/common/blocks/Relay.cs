@@ -5,6 +5,7 @@ using System.Text;
 using Vintagestory.API;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
@@ -170,10 +171,12 @@ public class BETFRelay : BlockEntity, IFluxStorage, IIOEnergySideConfig
 public class BlockTFRelay : BlockSideconfigInteractions
 {
     BlockFacing face;
+    int transfer = 10000;
 
     public override void OnLoaded(ICoreAPI api)
     {
         face = BlockFacing.FromCode(Variant["side"]);
+        transfer = MyMiniLib.GetAttributeInt(this, "transfer", transfer);
 
         base.OnLoaded(api);
     }
@@ -202,5 +205,11 @@ public class BlockTFRelay : BlockSideconfigInteractions
     public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
     {
         return new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:relay-off-north-none-none-none-none-none-none")));
+    }
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(Lang.Get("Traversing") + ": " + transfer + " TF/s");
     }
 }

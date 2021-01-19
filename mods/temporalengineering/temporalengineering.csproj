@@ -129,7 +129,7 @@
     <None Include="assets\temporalengineering\recipes\grid\rotarygenerator.json" />
     <None Include="assets\temporalengineering\recipes\grid\tfchisel.json" />
     <None Include="assets\temporalengineering\recipes\grid\tfforge.json" />
-    <None Include="assets\temporalengineering\recipes\grid\watermill.json" />
+    <None Include="assets\temporalengineering\recipes\grid\waterwheel.json" />
     <None Include="assets\temporalengineering\recipes\smithing\wire-iron.json" />
     <None Include="assets\temporalengineering\recipes\smithing\wrench.json" />
     <None Include="assets\temporalengineering\shapes\block\charger.json" />

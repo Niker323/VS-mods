@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 
 public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
@@ -130,6 +132,15 @@ public class BlockEntityEnergyDuct : BlockEntity, IFluxStorage, IEnergyPoint
 
 public class BlockEnergyDuct : Block
 {
+    int transfer = 2000;
+
+    public override void OnLoaded(ICoreAPI api)
+    {
+        transfer = MyMiniLib.GetAttributeInt(this, "transfer", transfer);
+
+        base.OnLoaded(api);
+    }
+
     public string GetOrientations(IWorldAccessor world, BlockPos pos)
     {
         string orientations =
@@ -222,5 +233,11 @@ public class BlockEnergyDuct : Block
     public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
     {
         return block is BlockConnector;
+    }
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(Lang.Get("Traversing") + ": " + transfer + " TF/s");
     }
 }

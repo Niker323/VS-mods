@@ -13,8 +13,8 @@
   ],
   "attributes": {
     "storage": 10000,
-    "input": 500,
-    "consume": 300,
+    "input": 1000,
+    "consume": 500,
     "maxheat": 1300
   },
   "variantgroups": [

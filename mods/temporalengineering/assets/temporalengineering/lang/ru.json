@@ -1,8 +1,14 @@
 {
 	"game:Furnace": "Печь",
 	"game:Generation": "Выработка",
+	"game:Storage": "Хранение",
+	"game:Input": "Вход",
+	"game:Output": "Выход",
+	"game:Traversing": "Передает",
+	"game:Consumes": "Потребляет",
 
 	"game:blockhelp-temporalengineering-sideconfig": "Настроить сторону",
+	"game:blockhelp-temporalengineering-wireconnect": "Соединить",
 
 	"temporalengineering:block-engine-*": "Электромотор",
 	"temporalengineering:block-rotarygenerator-*": "Генератор",

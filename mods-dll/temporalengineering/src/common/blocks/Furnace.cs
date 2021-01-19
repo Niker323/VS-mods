@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -14,8 +15,12 @@ using Vintagestory.GameContent;
 
 public class BlockFurnace : Block
 {
+    int consume = 500;
+
     public override void OnLoaded(ICoreAPI api)
     {
+        consume = MyMiniLib.GetAttributeInt(this, "consume", consume);
+
         base.OnLoaded(api);
     }
 
@@ -32,6 +37,12 @@ public class BlockFurnace : Block
     public override ItemStack OnPickBlock(IWorldAccessor world, BlockPos pos)
     {
         return new ItemStack(world.BlockAccessor.GetBlock(new AssetLocation("temporalengineering:furnace-unlit-south")));
+    }
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(Lang.Get("Consumes") + ": " + consume + " TF/s");
     }
 }
 

@@ -14,9 +14,14 @@ using Vintagestory.GameContent;
 public class BlockTFForge : Block
 {
     WorldInteraction[] interactions;
+    int consume = 300;
 
     public override void OnLoaded(ICoreAPI api)
     {
+        base.OnLoaded(api);
+
+        consume = MyMiniLib.GetAttributeInt(this, "consume", consume);
+
         if (api.Side != EnumAppSide.Client) return;
         ICoreClientAPI capi = api as ICoreClientAPI;
 
@@ -111,6 +116,12 @@ public class BlockTFForge : Block
     public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
     {
         return blockFace != BlockFacing.UP;
+    }
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(Lang.Get("Consumes") + ": " + consume + " TF/s");
     }
 }
 

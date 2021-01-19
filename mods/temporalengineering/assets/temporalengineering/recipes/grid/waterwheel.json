@@ -1,0 +1,10 @@
+{
+	ingredientPattern: "PPP,PWP,PPP",
+	ingredients: {
+		"W": { type: "block", code: "game:largegear3", quantity: 2 },
+		"P": { type: "item", code: "game:plank-*" }
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "waterwheel-north" }
+}

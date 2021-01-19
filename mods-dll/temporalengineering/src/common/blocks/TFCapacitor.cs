@@ -5,6 +5,7 @@ using System.Text;
 using Vintagestory.API;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
@@ -143,12 +144,14 @@ public class TFCapacitor : BlockEntity, IFluxStorage, IIOEnergySideConfig
 public class BlockTFCapacitor : BlockSideconfigInteractions, IFluxStorageItem
 {
     int maxCapacity = 1;
+    int transfer = 500;
 
     public override void OnLoaded(ICoreAPI api)
     {
         base.OnLoaded(api);
 
-        maxCapacity = MyMiniLib.GetAttributeInt(this, "storage", 1);
+        maxCapacity = MyMiniLib.GetAttributeInt(this, "storage", maxCapacity);
+        transfer = MyMiniLib.GetAttributeInt(this, "output", transfer);
         Durability = 100;
     }
 
@@ -156,6 +159,7 @@ public class BlockTFCapacitor : BlockSideconfigInteractions, IFluxStorageItem
     {
         base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
         dsc.AppendLine(inSlot.Itemstack.Attributes.GetInt("energy", 0) + "/" + maxCapacity + " TF");
+        dsc.AppendLine(Lang.Get("Traversing") + ": " + transfer + " TF/s");
     }
 
     public int receiveEnergy(ItemStack itemstack, int maxReceive)

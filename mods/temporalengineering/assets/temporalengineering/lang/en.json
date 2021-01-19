@@ -2,11 +2,12 @@
 	"game:tabname-temporalengineering": "TEngineering",
 
 	"game:blockhelp-temporalengineering-sideconfig": "Configure side",
+	"game:blockhelp-temporalengineering-wireconnect": "Connect",
 
 	"temporalengineering:block-engine-*": "Engine",
 	"temporalengineering:block-rotarygenerator-*": "Rotary Generator",
-	"temporalengineering:block-waterwheel-*": "Waterwheel",
-	"temporalengineering:block-multiblockwood": "Waterwheel",
+	"temporalengineering:block-waterwheel-*": "Water Wheel",
+	"temporalengineering:block-multiblockwood": "Water Wheel",
 	"temporalengineering:block-capacitor-low-*": "Capacitor (Low)",
 	"temporalengineering:block-capacitor-medium-*": "Capacitor (Medium)",
 	"temporalengineering:block-capacitor-high-*": "Capacitor (High)",

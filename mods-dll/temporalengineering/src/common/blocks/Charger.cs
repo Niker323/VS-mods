@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
@@ -346,12 +347,14 @@ public class BlockTFCharger : Block
 
 
     WorldInteraction[] interactions;
+    int output = 1000;
 
     public override void OnLoaded(ICoreAPI api)
     {
         if (api.Side != EnumAppSide.Client) return;
         ICoreClientAPI capi = api as ICoreClientAPI;
 
+        output = MyMiniLib.GetAttributeInt(this, "output", output);
 
         interactions = ObjectCacheUtil.GetOrCreate(api, "chargerBlockInteractions", () =>
         {
@@ -448,5 +451,11 @@ public class BlockTFCharger : Block
     public override bool CanAttachBlockAt(IBlockAccessor blockAccessor, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea = null)
     {
         return blockFace == BlockFacing.DOWN;
+    }
+
+    public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        dsc.AppendLine(Lang.Get("Traversing") + ": " + output + " TF/s");
     }
 }

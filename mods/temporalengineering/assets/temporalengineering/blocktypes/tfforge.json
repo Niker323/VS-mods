@@ -5,7 +5,7 @@
   "attributes": {
     "storage": 10000,
     "input": 1000,
-    "consume": 500
+    "consume": 300
   },
   "blockmaterial": "Stone",
   "renderpass": "OpaqueNoCull",
