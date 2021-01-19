@@ -75,7 +75,7 @@
     <Compile Include="src\common\blocks\TFCapacitor.cs" />
     <Compile Include="src\common\blocks\TFForge.cs" />
     <Compile Include="src\common\blocks\TFRotaryGenerator.cs" />
-    <Compile Include="src\common\blocks\Watermill.cs" />
+    <Compile Include="src\common\blocks\Waterwheel.cs" />
     <Compile Include="src\common\ducts\EnergyDuct.cs" />
     <Compile Include="src\common\energy\temoralflux\EnergyDuctCore.cs" />
     <Compile Include="src\common\energy\IIOEnergySideConfig.cs" />

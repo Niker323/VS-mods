@@ -101,8 +101,9 @@
     <None Include="assets\temporalengineering\blocktypes\relay.json" />
     <None Include="assets\temporalengineering\blocktypes\rotarygenerator.json" />
     <None Include="assets\temporalengineering\blocktypes\tfforge.json" />
-    <None Include="assets\temporalengineering\blocktypes\watermill.json" />
+    <None Include="assets\temporalengineering\blocktypes\waterwheel.json" />
     <None Include="assets\temporalengineering\blocktypes\wire.json" />
+    <None Include="assets\temporalengineering\itemtypes\engineshaft.json" />
     <None Include="assets\temporalengineering\itemtypes\resource\battery.json" />
     <None Include="assets\temporalengineering\itemtypes\resource\coil.json" />
     <None Include="assets\temporalengineering\itemtypes\resource\wire.json" />
@@ -118,6 +119,9 @@
     <None Include="assets\temporalengineering\recipes\grid\charger.json" />
     <None Include="assets\temporalengineering\recipes\grid\connector.json" />
     <None Include="assets\temporalengineering\recipes\grid\energyduct.json" />
+    <None Include="assets\temporalengineering\recipes\grid\engine.json" />
+    <None Include="assets\temporalengineering\recipes\grid\engineshaft1.json" />
+    <None Include="assets\temporalengineering\recipes\grid\engineshaft2.json" />
     <None Include="assets\temporalengineering\recipes\grid\furnace.json" />
     <None Include="assets\temporalengineering\recipes\grid\generatorshaft.json" />
     <None Include="assets\temporalengineering\recipes\grid\coil.json" />
@@ -141,6 +145,9 @@
     <None Include="assets\temporalengineering\shapes\block\ducts\duct4_2.json" />
     <None Include="assets\temporalengineering\shapes\block\ducts\duct5.json" />
     <None Include="assets\temporalengineering\shapes\block\ducts\duct6.json" />
+    <None Include="assets\temporalengineering\shapes\block\engine\body.json" />
+    <None Include="assets\temporalengineering\shapes\block\engine\item.json" />
+    <None Include="assets\temporalengineering\shapes\block\engine\shaft.json" />
     <None Include="assets\temporalengineering\shapes\block\furnace\furnace-lit.json" />
     <None Include="assets\temporalengineering\shapes\block\furnace\furnace-unlit.json" />
     <None Include="assets\temporalengineering\shapes\block\generator\body.json" />
@@ -161,7 +168,7 @@
     <None Include="assets\temporalengineering\shapes\block\tfforge\heating_element.json" />
     <None Include="assets\temporalengineering\shapes\block\tfforge\tfforge.json" />
     <None Include="assets\temporalengineering\shapes\block\tfforge\tfforge_he.json" />
-    <None Include="assets\temporalengineering\shapes\block\watermill.json" />
+    <None Include="assets\temporalengineering\shapes\block\waterwheel.json" />
     <None Include="assets\temporalengineering\shapes\block\wire.json" />
     <None Include="assets\temporalengineering\shapes\item\coil.json" />
     <None Include="assets\temporalengineering\shapes\item\shaft.json" />

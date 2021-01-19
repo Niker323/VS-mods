@@ -13,7 +13,7 @@ namespace TemporalEngineering
             base.Start(api);
 
             api.RegisterBlockClass("BlockTFRotaryGenerator", typeof(BlockTFRotaryGenerator));
-            api.RegisterBlockClass("BlockWatermillRotor", typeof(BlockWatermillRotor));
+            api.RegisterBlockClass("BlockWaterwheelRotor", typeof(BlockWaterwheelRotor));
             api.RegisterBlockClass("BlockEnergyDuct", typeof(BlockEnergyDuct));
             api.RegisterBlockClass("BlockFurnace", typeof(BlockFurnace));
             api.RegisterBlockClass("BlockMPMultiblockBase", typeof(BlockMPMultiblockBase));
@@ -37,7 +37,7 @@ namespace TemporalEngineering
             api.RegisterBlockEntityClass("BlockEntityConnector", typeof(BlockEntityConnector));
 
             api.RegisterBlockEntityBehaviorClass("BEBehaviorTFRotaryGenerator", typeof(BEBehaviorTFRotaryGenerator));
-            api.RegisterBlockEntityBehaviorClass("BEBehaviorWatermillRotor", typeof(BEBehaviorWatermillRotor));
+            api.RegisterBlockEntityBehaviorClass("BEBehaviorWaterwheelRotor", typeof(BEBehaviorWaterwheelRotor));
             api.RegisterBlockEntityBehaviorClass("BEBehaviorTFEngine", typeof(BEBehaviorTFEngine));
 
             api.RegisterBlockBehaviorClass("OmniOrientable", typeof(BlockBehaviorOmniOrientable));

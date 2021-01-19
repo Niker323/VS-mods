@@ -1,8 +1,8 @@
 {
-  "code": "watermill",
-  "class": "BlockWatermillRotor",
+  "code": "waterwheel",
+  "class": "BlockWaterwheelRotor",
   "entityClass": "Generic",
-  "entityBehaviors": [ { "name": "BEBehaviorWatermillRotor" } ],
+  "entityBehaviors": [ { "name": "BEBehaviorWaterwheelRotor" } ],
   //"behaviors": [ { "name": "HorizontalOrientable" } ],
   //"attributes": {
   //  "handbook": {
@@ -25,22 +25,22 @@
   },
   "shapebytype": {
     "*-north": {
-      "base": "block/watermill",
+      "base": "block/waterwheel",
       "rotateX": 90,
       "rotateZ": 0
     },
     "*-east": {
-      "base": "block/watermill",
+      "base": "block/waterwheel",
       "rotateX": 90,
       "rotateZ": 90
     },
     "*-south": {
-      "base": "block/watermill",
+      "base": "block/waterwheel",
       "rotateX": 90,
       "rotateZ": 180
     },
     "*-west": {
-      "base": "block/watermill",
+      "base": "block/waterwheel",
       "rotateX": 90,
       "rotateZ": 270
     }

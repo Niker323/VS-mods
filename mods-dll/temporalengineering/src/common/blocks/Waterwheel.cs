@@ -10,7 +10,7 @@ using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent.Mechanics;
 
-public class BlockWatermillRotor : BlockMPBase, IMPPowered
+public class BlockWaterwheelRotor : BlockMPBase, IMPPowered
 {
     BlockFacing powerOutFacing;
 
@@ -181,7 +181,7 @@ public class BlockWatermillRotor : BlockMPBase, IMPPowered
     }
 }
 
-public class BEBehaviorWatermillRotor : BEBehaviorMPRotor
+public class BEBehaviorWaterwheelRotor : BEBehaviorMPRotor
 {
     private int willSpeed = 0;
     BlockFacing face;
@@ -230,7 +230,7 @@ public class BEBehaviorWatermillRotor : BEBehaviorMPRotor
         }
     }
 
-    public BEBehaviorWatermillRotor(BlockEntity blockentity) : base(blockentity)
+    public BEBehaviorWaterwheelRotor(BlockEntity blockentity) : base(blockentity)
     {
 
     }
@@ -333,7 +333,7 @@ public class BEBehaviorWatermillRotor : BEBehaviorMPRotor
     //protected override CompositeShape GetShape()
     //{
     //    CompositeShape shape = Block.Shape.Clone();
-    //    shape.Base = new AssetLocation("temporalengineering:shapes/block/watermill.json");
+    //    shape.Base = new AssetLocation("temporalengineering:shapes/block/waterwheel.json");
     //    shape.rotateX = 90;
     //    switch (BlockFacing.FromCode(Block.Variant["side"]).Index)
     //    {

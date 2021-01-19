@@ -5,8 +5,8 @@
 
 	"temporalengineering:block-engine-*": "Engine",
 	"temporalengineering:block-rotarygenerator-*": "Rotary Generator",
-	"temporalengineering:block-watermill-*": "Watermill",
-	"temporalengineering:block-multiblockwood": "Watermill",
+	"temporalengineering:block-waterwheel-*": "Waterwheel",
+	"temporalengineering:block-multiblockwood": "Waterwheel",
 	"temporalengineering:block-capacitor-low-*": "Capacitor (Low)",
 	"temporalengineering:block-capacitor-medium-*": "Capacitor (Medium)",
 	"temporalengineering:block-capacitor-high-*": "Capacitor (High)",

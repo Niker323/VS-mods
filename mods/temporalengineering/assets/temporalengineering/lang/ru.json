@@ -6,7 +6,7 @@
 
 	"temporalengineering:block-engine-*": "Электромотор",
 	"temporalengineering:block-rotarygenerator-*": "Генератор",
-	"temporalengineering:block-watermill-*": "Водяное колесо",
+	"temporalengineering:block-waterwheel-*": "Водяное колесо",
 	"temporalengineering:block-multiblockwood": "Водяное колесо",
 	"temporalengineering:block-capacitor-low-*": "Энергохранитель (Малый)",
 	"temporalengineering:block-capacitor-medium-*": "Энергохранитель (Средний)",
