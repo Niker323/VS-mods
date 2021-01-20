@@ -171,6 +171,7 @@
     <None Include="assets\temporalengineering\shapes\block\waterwheel.json" />
     <None Include="assets\temporalengineering\shapes\block\wire.json" />
     <None Include="assets\temporalengineering\shapes\item\coil.json" />
+    <None Include="assets\temporalengineering\shapes\item\engine_shaft.json" />
     <None Include="assets\temporalengineering\shapes\item\shaft.json" />
     <None Include="assets\temporalengineering\shapes\item\tfchisel.json" />
     <None Include="assets\temporalengineering\shapes\item\wire.json" />

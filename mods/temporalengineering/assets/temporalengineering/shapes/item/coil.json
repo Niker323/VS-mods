@@ -8,7 +8,7 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"copper_coil": "D:/VintageStory/vsmods v1.14.2/mods/temporalengineering/assets/temporalengineering/textures/block/copper_coil"
+		"copper_coil": "block/copper_coil"
 	},
 	"elements": [
 		{

@@ -14,9 +14,8 @@
     "temporalengineering": [ "*" ]
   },
   "textures": {
-    "coal-dust": { "base": "block/tfforge/coal-dust" },
     "forge": { "base": "block/tfforge/forge" },
-    "he": { "base": "game:block/metal/ingot/iron" }
+    "iron": { "base": "game:block/metal/ingot/iron" }
   },
   "shape": {
     "base": "block/tfforge/tfforge"

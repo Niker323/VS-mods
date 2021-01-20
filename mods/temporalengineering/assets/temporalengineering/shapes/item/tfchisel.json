@@ -8,9 +8,9 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"temporalgear": "D:/VintageStory/Vintage Story v1.14.2/assets/survival/textures/item/resource/temporalgear",
-		"chromium": "D:/VintageStory/Vintage Story v1.14.2/assets/survival/textures/block/metal/ingot/chromium",
-		"iron": "D:/VintageStory/Vintage Story v1.14.2/assets/survival/textures/block/metal/ingot/iron"
+		"temporalgear": "game:item/resource/temporalgear",
+		"chromium": "game:block/metal/ingot/chromium",
+		"iron": "game:block/metal/ingot/iron"
 	},
 	"elements": [
 		{
@@ -19,12 +19,12 @@
 			"to": [ 10.0, 0.5, 7.5 ], 
 			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
 			"faces": {
-				"north": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"east": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"south": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"west": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"up": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"down": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+				"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+				"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+				"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false },
+				"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "enabled": false }
 			},
 			"children": [
 				{

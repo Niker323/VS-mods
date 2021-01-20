@@ -619,7 +619,7 @@ public class TFForgeContentsRenderer : IRenderer, ITexPositionSource
 
         Block block = capi.World.GetBlock(new AssetLocation("temporalengineering:tfforge"));
 
-        hetexpos = capi.BlockTextureAtlas.GetPosition(block, "he");
+        hetexpos = capi.BlockTextureAtlas.GetPosition(block, "iron");
 
         MeshData heMesh;
         Shape ovshape = capi.Assets.TryGet(new AssetLocation("temporalengineering:shapes/block/tfforge/heating_element.json")).ToObject<Shape>();

@@ -8,8 +8,8 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"iron": "block/metal/ingot/iron",
-		"generic": "block/wood/planks/generic"
+		"iron": "game:block/metal/ingot/iron",
+		"generic": "game:block/wood/planks/generic"
 	},
 	"elements": [
 		{

@@ -13,10 +13,10 @@
   },
   "resistance": 6,
   "sounds": {
-    "place": "block/planks",
-    "walk": "walk/wood",
-    "hit": "block/planks",
-    "break": "block/planks"
+    "place": "game:block/planks",
+    "walk": "game:walk/wood",
+    "hit": "game:block/planks",
+    "break": "game:block/planks"
   },
   "lightAbsorption": 0
 }

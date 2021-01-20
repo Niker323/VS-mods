@@ -59,9 +59,9 @@
   "resistance": 1.5,
   "lightAbsorption": 0,
   "sounds": {
-    "hit": "block/planks",
-    "break": "block/planks",
-    "place": "block/planks",
-    "walk": "walk/wood"
+    "hit": "game:block/planks",
+    "break": "game:block/planks",
+    "place": "game:block/planks",
+    "walk": "game:walk/wood"
   }
 }

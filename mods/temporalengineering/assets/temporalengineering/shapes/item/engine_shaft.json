@@ -9,8 +9,8 @@
 	},
 	"textures": {
 		"copper_coil": "block/copper_coil",
-		"oak": "D:/VintageStory/Vintage Story v1.14.2/assets/survival/textures/block/wood/oak",
-		"iron": "D:/VintageStory/Vintage Story v1.14.2/assets/survival/textures/block/metal/ingot/iron"
+		"oak": "game:block/wood/oak",
+		"iron": "game:block/metal/ingot/iron"
 	},
 	"elements": [
 		{

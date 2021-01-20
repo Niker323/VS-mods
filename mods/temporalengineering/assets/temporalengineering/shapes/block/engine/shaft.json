@@ -9,8 +9,8 @@
 	},
 	"textures": {
 		"copper_coil": "block/copper_coil",
-		"generic": "D:/VintageStory/Vintage Story v1.14.2/assets/survival/textures/block/wood/oak",
-		"iron": "D:/VintageStory/Vintage Story v1.14.2/assets/survival/textures/block/metal/ingot/iron"
+		"generic": "game:block/wood/oak",
+		"iron": "game:block/metal/ingot/iron"
 	},
 	"elements": [
 		{
@@ -209,7 +209,7 @@
 			"rotationOrigin": [ 0.0, 7.0, 6.0 ],
 			"faces": {
 				"north": { "texture": "#generic", "uv": [ 13.0, 2.0, 14.0, 4.0 ] },
-				"east": { "texture": "#null", "uv": [ 0.0, 3.0, 4.0, 5.0 ] },
+				"east": { "texture": "#null", "uv": [ 0.0, 3.0, 4.0, 5.0 ], "enabled": false },
 				"south": { "texture": "#generic", "uv": [ 0.0, 1.0, 1.0, 3.0 ] },
 				"west": { "texture": "#generic", "uv": [ 0.0, 3.0, 4.0, 5.0 ] },
 				"up": { "texture": "#generic", "uv": [ 0.0, 12.0, 1.0, 16.0 ] },
@@ -223,7 +223,7 @@
 			"rotationOrigin": [ 0.0, 6.0, 7.0 ],
 			"faces": {
 				"north": { "texture": "#generic", "uv": [ 0.0, 1.0, 0.5, 5.0 ] },
-				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 2.0, 4.0 ] },
+				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 2.0, 4.0 ], "enabled": false },
 				"south": { "texture": "#generic", "uv": [ 0.0, 2.0, 0.5, 6.0 ] },
 				"west": { "texture": "#generic", "uv": [ 0.0, 0.0, 2.0, 4.0 ] },
 				"up": { "texture": "#generic", "uv": [ 0.0, 6.0, 1.0, 8.0 ], "autoUv": false },
