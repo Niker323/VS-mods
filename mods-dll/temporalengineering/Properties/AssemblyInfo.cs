@@ -36,7 +36,7 @@ using Vintagestory.API.Common;
 [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: ModInfo("Temporal Engineering", "temporalengineering",
-    Version = "1.1.1",
+    Version = "1.1.2",
     Description = "",
     Authors = new[] { "Niker323" })]
 

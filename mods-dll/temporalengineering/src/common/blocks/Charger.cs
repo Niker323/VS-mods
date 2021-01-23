@@ -408,7 +408,7 @@ public class BlockTFCharger : Block
         for (int i = 0; i < api.World.Items.Count; i++)
         {
             Item item = api.World.Items[i];
-            //if (item.Tool == null && item.Attributes?["rackable"].AsBool() != true) continue;
+            if (item.Attributes?["rechargeable"].AsBool() != true) continue;
 
             ToolTextures tt = new ToolTextures();
 
