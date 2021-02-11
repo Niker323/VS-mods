@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="TemporalEngineering">
       <HintPath>..\..\mods\temporalengineering\TemporalEngineering.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>D:\VintageStory\Vintage Story v1.14.2\VintagestoryAPI.dll</HintPath>
