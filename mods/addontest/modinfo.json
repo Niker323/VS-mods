@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "modid": "addontest",
+  "name": "Drill Addon",
+  "authors": [ "Kotel" ],
+  "description": "Addon for Temporal Engineering",
+  "version": "1.0.0",
+  "dependency": {
+    "game": "1.14.2"
+  }
+}
