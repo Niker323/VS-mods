@@ -33,10 +33,10 @@ using Vintagestory.API.Common;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.14.7")]
 
 [assembly: ModInfo("Temporal Engineering", "temporalengineering",
-    Version = "1.1.2",
+    Version = "1.1.3",
     Description = "",
     Authors = new[] { "Niker323" })]
 

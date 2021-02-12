@@ -8,7 +8,7 @@ public class WireClass
 {
     BlockEntity block1, block2;
     ICoreClientAPI api;
-    MeshData wiremesh = new MeshData();
+    MeshData wiremesh;
 
     public WireClass(ICoreAPI api, BlockEntity block1, BlockEntity block2)
     {
